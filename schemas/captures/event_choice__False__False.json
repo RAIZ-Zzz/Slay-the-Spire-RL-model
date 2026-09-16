@@ -1,0 +1,67 @@
+{
+  "captured_at": "2026-09-07T18:37:19",
+  "decision": "event_choice",
+  "raw_state_type": "event",
+  "raw": {
+    "state_type": "event",
+    "event": {
+      "player": {
+        "character": "铁甲战士",
+        "hp": 74,
+        "max_hp": 80,
+        "gold": 150
+      },
+      "event_id": "MORPHIC_GROVE",
+      "event_name": "变形灵林谷",
+      "is_ancient": false,
+      "in_dialogue": false,
+      "body": null,
+      "options": []
+    },
+    "run": {
+      "act": 1,
+      "floor": 5,
+      "ascension": 0
+    }
+  },
+  "normalized": {
+    "type": "decision",
+    "decision": "event_choice",
+    "context": {
+      "act": 1,
+      "floor": 5,
+      "ascension": 0
+    },
+    "run": {
+      "act": 1,
+      "floor": 5,
+      "ascension": 0
+    },
+    "event_name": "变形灵林谷",
+    "event_id": "MORPHIC_GROVE",
+    "description": null,
+    "options": [],
+    "player": {
+      "character": "铁甲战士",
+      "hp": 74,
+      "max_hp": 80,
+      "gold": 150
+    },
+    "in_dialogue": false,
+    "is_ancient": false,
+    "event": {
+      "player": {
+        "character": "铁甲战士",
+        "hp": 74,
+        "max_hp": 80,
+        "gold": 150
+      },
+      "event_id": "MORPHIC_GROVE",
+      "event_name": "变形灵林谷",
+      "is_ancient": false,
+      "in_dialogue": false,
+      "body": null,
+      "options": []
+    }
+  }
+}

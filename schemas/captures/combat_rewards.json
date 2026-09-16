@@ -1,0 +1,100 @@
+{
+  "captured_at": "2026-09-07T17:19:57",
+  "decision": "combat_rewards",
+  "raw_state_type": "combat_rewards",
+  "raw": {
+    "state_type": "combat_rewards",
+    "rewards": {
+      "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 118,
+        "potion_slots": 3,
+        "open_potion_slots": 3
+      },
+      "items": [
+        {
+          "index": 0,
+          "type": "potion",
+          "description": "敏捷药水",
+          "potion_id": "DEXTERITY_POTION",
+          "potion_name": "敏捷药水"
+        },
+        {
+          "index": 1,
+          "type": "card",
+          "description": "将一张牌添加到你的牌组。"
+        }
+      ],
+      "can_proceed": true
+    },
+    "run": {
+      "act": 1,
+      "floor": 2,
+      "ascension": 0
+    }
+  },
+  "normalized": {
+    "type": "decision",
+    "decision": "combat_rewards",
+    "context": {
+      "act": 1,
+      "floor": 2,
+      "ascension": 0
+    },
+    "run": {
+      "act": 1,
+      "floor": 2,
+      "ascension": 0
+    },
+    "items": [
+      {
+        "index": 0,
+        "type": "potion",
+        "description": "敏捷药水",
+        "potion_id": "DEXTERITY_POTION",
+        "potion_name": "敏捷药水"
+      },
+      {
+        "index": 1,
+        "type": "card",
+        "description": "将一张牌添加到你的牌组。"
+      }
+    ],
+    "can_proceed": true,
+    "player": {
+      "character": "铁甲战士",
+      "hp": 80,
+      "max_hp": 80,
+      "gold": 118,
+      "potion_slots": 3,
+      "open_potion_slots": 3
+    },
+    "rewards": {
+      "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 118,
+        "potion_slots": 3,
+        "open_potion_slots": 3
+      },
+      "items": [
+        {
+          "index": 0,
+          "type": "potion",
+          "description": "敏捷药水",
+          "potion_id": "DEXTERITY_POTION",
+          "potion_name": "敏捷药水"
+        },
+        {
+          "index": 1,
+          "type": "card",
+          "description": "将一张牌添加到你的牌组。"
+        }
+      ],
+      "can_proceed": true
+    }
+  }
+}

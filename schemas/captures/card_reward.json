@@ -1,0 +1,176 @@
+{
+  "captured_at": "2026-09-07T17:19:58",
+  "decision": "card_reward",
+  "raw_state_type": "card_reward",
+  "raw": {
+    "state_type": "card_reward",
+    "card_reward": {
+      "cards": [
+        {
+          "index": 0,
+          "id": "UPPERCUT",
+          "name": "上勾拳",
+          "type": "Attack",
+          "cost": "2",
+          "star_cost": null,
+          "description": "造成13点伤害。 给予1层虚弱。 给予1层易伤。",
+          "rarity": "Uncommon",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "虚弱",
+              "description": "虚弱的生物造成的攻击伤害减少25%。"
+            },
+            {
+              "name": "易伤",
+              "description": "易伤的生物从攻击中受到的伤害增加50%。"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "id": "BREAKTHROUGH",
+          "name": "突破",
+          "type": "Attack",
+          "cost": "1",
+          "star_cost": null,
+          "description": "失去1点生命。 对所有敌人造成9点伤害。",
+          "rarity": "Common",
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 2,
+          "id": "SWORD_BOOMERANG",
+          "name": "飞剑回旋镖",
+          "type": "Attack",
+          "cost": "1",
+          "star_cost": null,
+          "description": "随机对敌人造成3点伤害3次。",
+          "rarity": "Common",
+          "is_upgraded": false,
+          "keywords": []
+        }
+      ],
+      "can_skip": true
+    },
+    "run": {
+      "act": 1,
+      "floor": 2,
+      "ascension": 0
+    }
+  },
+  "normalized": {
+    "type": "decision",
+    "decision": "card_reward",
+    "context": {
+      "act": 1,
+      "floor": 2,
+      "ascension": 0
+    },
+    "run": {
+      "act": 1,
+      "floor": 2,
+      "ascension": 0
+    },
+    "cards": [
+      {
+        "index": 0,
+        "id": "UPPERCUT",
+        "name": "上勾拳",
+        "type": "Attack",
+        "cost": "2",
+        "star_cost": null,
+        "description": "造成13点伤害。 给予1层虚弱。 给予1层易伤。",
+        "rarity": "Uncommon",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "虚弱",
+            "description": "虚弱的生物造成的攻击伤害减少25%。"
+          },
+          {
+            "name": "易伤",
+            "description": "易伤的生物从攻击中受到的伤害增加50%。"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "id": "BREAKTHROUGH",
+        "name": "突破",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "失去1点生命。 对所有敌人造成9点伤害。",
+        "rarity": "Common",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "index": 2,
+        "id": "SWORD_BOOMERANG",
+        "name": "飞剑回旋镖",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "随机对敌人造成3点伤害3次。",
+        "rarity": "Common",
+        "is_upgraded": false,
+        "keywords": []
+      }
+    ],
+    "can_skip": true,
+    "player": {},
+    "card_reward": {
+      "cards": [
+        {
+          "index": 0,
+          "id": "UPPERCUT",
+          "name": "上勾拳",
+          "type": "Attack",
+          "cost": "2",
+          "star_cost": null,
+          "description": "造成13点伤害。 给予1层虚弱。 给予1层易伤。",
+          "rarity": "Uncommon",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "虚弱",
+              "description": "虚弱的生物造成的攻击伤害减少25%。"
+            },
+            {
+              "name": "易伤",
+              "description": "易伤的生物从攻击中受到的伤害增加50%。"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "id": "BREAKTHROUGH",
+          "name": "突破",
+          "type": "Attack",
+          "cost": "1",
+          "star_cost": null,
+          "description": "失去1点生命。 对所有敌人造成9点伤害。",
+          "rarity": "Common",
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 2,
+          "id": "SWORD_BOOMERANG",
+          "name": "飞剑回旋镖",
+          "type": "Attack",
+          "cost": "1",
+          "star_cost": null,
+          "description": "随机对敌人造成3点伤害3次。",
+          "rarity": "Common",
+          "is_upgraded": false,
+          "keywords": []
+        }
+      ],
+      "can_skip": true
+    }
+  }
+}

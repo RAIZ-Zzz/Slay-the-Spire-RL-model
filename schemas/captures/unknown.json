@@ -1,0 +1,39 @@
+{
+  "captured_at": "2026-09-07T17:15:10",
+  "decision": "unknown",
+  "raw_state_type": "unknown",
+  "raw": {
+    "state_type": "unknown",
+    "room_type": null,
+    "run": {
+      "act": 1,
+      "floor": 0,
+      "ascension": 0
+    }
+  },
+  "normalized": {
+    "type": "status",
+    "decision": "unknown",
+    "context": {
+      "act": 1,
+      "floor": 0,
+      "ascension": 0
+    },
+    "run": {
+      "act": 1,
+      "floor": 0,
+      "ascension": 0
+    },
+    "raw_state_type": "unknown",
+    "message": null,
+    "raw": {
+      "state_type": "unknown",
+      "room_type": null,
+      "run": {
+        "act": 1,
+        "floor": 0,
+        "ascension": 0
+      }
+    }
+  }
+}

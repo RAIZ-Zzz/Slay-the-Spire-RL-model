@@ -1,0 +1,169 @@
+{
+  "captured_at": "2026-09-07T17:16:18",
+  "decision": "event_choice",
+  "raw_state_type": "event",
+  "raw": {
+    "state_type": "event",
+    "event": {
+      "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99
+      },
+      "event_id": "NEOW",
+      "event_name": "涅奥",
+      "is_ancient": true,
+      "in_dialogue": false,
+      "body": null,
+      "options": [
+        {
+          "index": 0,
+          "title": "橙型香盒",
+          "description": "升级一张牌。",
+          "is_locked": false,
+          "is_proceed": false,
+          "was_chosen": false,
+          "relic_name": "橙型香盒",
+          "relic_description": "拾起时，升级一张牌。",
+          "keywords": []
+        },
+        {
+          "index": 1,
+          "title": "金色珍珠",
+          "description": "拾起时，获得150金币。",
+          "is_locked": false,
+          "is_proceed": false,
+          "was_chosen": false,
+          "relic_name": "金色珍珠",
+          "relic_description": "拾起时，获得150金币。",
+          "keywords": []
+        },
+        {
+          "index": 2,
+          "title": "巨大扭蛋",
+          "description": "获得2件随机遗物。额外将一对打击和防御，加入你的牌组。",
+          "is_locked": false,
+          "is_proceed": false,
+          "was_chosen": false,
+          "relic_name": "巨大扭蛋",
+          "relic_description": "拾起时，获得2件随机遗物。额外将一对打击和防御，加入你的牌组。",
+          "keywords": []
+        }
+      ]
+    },
+    "run": {
+      "act": 1,
+      "floor": 1,
+      "ascension": 0
+    }
+  },
+  "normalized": {
+    "type": "decision",
+    "decision": "event_choice",
+    "context": {
+      "act": 1,
+      "floor": 1,
+      "ascension": 0
+    },
+    "run": {
+      "act": 1,
+      "floor": 1,
+      "ascension": 0
+    },
+    "event_name": "涅奥",
+    "event_id": "NEOW",
+    "description": null,
+    "options": [
+      {
+        "index": 0,
+        "title": "橙型香盒",
+        "description": "升级一张牌。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false,
+        "relic_name": "橙型香盒",
+        "relic_description": "拾起时，升级一张牌。",
+        "keywords": []
+      },
+      {
+        "index": 1,
+        "title": "金色珍珠",
+        "description": "拾起时，获得150金币。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false,
+        "relic_name": "金色珍珠",
+        "relic_description": "拾起时，获得150金币。",
+        "keywords": []
+      },
+      {
+        "index": 2,
+        "title": "巨大扭蛋",
+        "description": "获得2件随机遗物。额外将一对打击和防御，加入你的牌组。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false,
+        "relic_name": "巨大扭蛋",
+        "relic_description": "拾起时，获得2件随机遗物。额外将一对打击和防御，加入你的牌组。",
+        "keywords": []
+      }
+    ],
+    "player": {
+      "character": "铁甲战士",
+      "hp": 80,
+      "max_hp": 80,
+      "gold": 99
+    },
+    "in_dialogue": false,
+    "is_ancient": true,
+    "event": {
+      "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99
+      },
+      "event_id": "NEOW",
+      "event_name": "涅奥",
+      "is_ancient": true,
+      "in_dialogue": false,
+      "body": null,
+      "options": [
+        {
+          "index": 0,
+          "title": "橙型香盒",
+          "description": "升级一张牌。",
+          "is_locked": false,
+          "is_proceed": false,
+          "was_chosen": false,
+          "relic_name": "橙型香盒",
+          "relic_description": "拾起时，升级一张牌。",
+          "keywords": []
+        },
+        {
+          "index": 1,
+          "title": "金色珍珠",
+          "description": "拾起时，获得150金币。",
+          "is_locked": false,
+          "is_proceed": false,
+          "was_chosen": false,
+          "relic_name": "金色珍珠",
+          "relic_description": "拾起时，获得150金币。",
+          "keywords": []
+        },
+        {
+          "index": 2,
+          "title": "巨大扭蛋",
+          "description": "获得2件随机遗物。额外将一对打击和防御，加入你的牌组。",
+          "is_locked": false,
+          "is_proceed": false,
+          "was_chosen": false,
+          "relic_name": "巨大扭蛋",
+          "relic_description": "拾起时，获得2件随机遗物。额外将一对打击和防御，加入你的牌组。",
+          "keywords": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,7130 @@
+{
+ "generated_at": "2026-09-14T15:49:00",
+ "note": "One entry per (decision, variant). `layers` holds a key census per layer - raw is what the bridge posts, normalized is what choose() reads, brief is what a policy is shown. A key's count below `observations` means it is optional.",
+ "all_decisions": [
+  "menu",
+  "map_select",
+  "combat_play",
+  "combat_rewards",
+  "card_reward",
+  "card_select",
+  "hand_select",
+  "event_choice",
+  "rest_site",
+  "shop",
+  "treasure",
+  "relic_select",
+  "game_over",
+  "overlay",
+  "unknown"
+ ],
+ "variants": {
+  "card_reward": {
+   "decision": "card_reward",
+   "variant": "card_reward",
+   "first_seen": "12:16:17",
+   "last_seen": "21:44:47",
+   "observations": 47,
+   "layers": {
+    "raw": {
+     "observations": 4,
+     "keys": {
+      "state_type": 4,
+      "card_reward": 4,
+      "run": 4
+     },
+     "sample": {
+      "state_type": "card_reward",
+      "card_reward": {
+       "cards": [
+        {
+         "index": 0,
+         "id": "UPPERCUT",
+         "name": "上勾拳",
+         "type": "Attack",
+         "cost": "2",
+         "star_cost": null,
+         "description": "造成13点伤害。 给予1层虚弱。 给予1层易伤。",
+         "rarity": "Uncommon",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "虚弱",
+           "description": "虚弱的生物造成的攻击伤害减少25%。"
+          },
+          {
+           "name": "易伤",
+           "description": "易伤的生物从攻击中受到的伤害增加50%。"
+          }
+         ]
+        },
+        {
+         "index": 1,
+         "id": "BREAKTHROUGH",
+         "name": "突破",
+         "type": "Attack",
+         "cost": "1",
+         "star_cost": null,
+         "description": "失去1点生命。 对所有敌人造成9点伤害。",
+         "rarity": "Common",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 2,
+         "id": "SWORD_BOOMERANG",
+         "name": "飞剑回旋镖",
+         "type": "Attack",
+         "cost": "1",
+         "star_cost": null,
+         "description": "随机对敌人造成3点伤害3次。",
+         "rarity": "Common",
+         "is_upgraded": false,
+         "keywords": []
+        }
+       ],
+       "can_skip": true
+      },
+      "run": {
+       "act": 1,
+       "floor": 2,
+       "ascension": 0
+      }
+     },
+     "sample_at": "2026-09-07T17:19:58"
+    },
+    "normalized": {
+     "observations": 4,
+     "keys": {
+      "type": 4,
+      "decision": 4,
+      "context": 4,
+      "run": 4,
+      "cards": 4,
+      "can_skip": 4,
+      "player": 4,
+      "card_reward": 4,
+      "alternatives": 3,
+      "deck": 3,
+      "held_relics": 3,
+      "held_potions": 3,
+      "can_discard_potions": 3
+     },
+     "sample": {
+      "type": "decision",
+      "decision": "card_reward",
+      "context": {
+       "act": 1,
+       "floor": 2,
+       "ascension": 0
+      },
+      "run": {
+       "act": 1,
+       "floor": 2,
+       "ascension": 0
+      },
+      "cards": [
+       {
+        "index": 0,
+        "id": "CINDER",
+        "name": "余烬",
+        "type": "Attack",
+        "cost": "2",
+        "star_cost": null,
+        "description": "造成18点伤害。 随机消耗1张牌。",
+        "rarity": "Common",
+        "is_upgraded": false,
+        "keywords": [
+         {
+          "name": "消耗",
+          "description": "在战斗结束前移除。"
+         }
+        ]
+       },
+       {
+        "index": 1,
+        "id": "HEADBUTT",
+        "name": "头槌",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "造成9点伤害。 将你弃牌堆中的一张牌放到抽牌堆顶部。",
+        "rarity": "Common",
+        "is_upgraded": false,
+        "keywords": []
+       },
+       {
+        "index": 2,
+        "id": "IRON_WAVE",
+        "name": "铁斩波",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "获得5点格挡。 造成5点伤害。",
+        "rarity": "Common",
+        "is_upgraded": false,
+        "keywords": [
+         {
+          "name": "格挡",
+          "description": "在下个回合前，阻挡伤害。"
+         }
+        ]
+       }
+      ],
+      "alternatives": null,
+      "can_skip": true,
+      "player": {},
+      "card_reward": {
+       "cards": [
+        {
+         "index": 0,
+         "id": "CINDER",
+         "name": "余烬",
+         "type": "Attack",
+         "cost": "2",
+         "star_cost": null,
+         "description": "造成18点伤害。 随机消耗1张牌。",
+         "rarity": "Common",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "消耗",
+           "description": "在战斗结束前移除。"
+          }
+         ]
+        },
+        {
+         "index": 1,
+         "id": "HEADBUTT",
+         "name": "头槌",
+         "type": "Attack",
+         "cost": "1",
+         "star_cost": null,
+         "description": "造成9点伤害。 将你弃牌堆中的一张牌放到抽牌堆顶部。",
+         "rarity": "Common",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 2,
+         "id": "IRON_WAVE",
+         "name": "铁斩波",
+         "type": "Attack",
+         "cost": "1",
+         "star_cost": null,
+         "description": "获得5点格挡。 造成5点伤害。",
+         "rarity": "Common",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        }
+       ],
+       "can_skip": true
+      },
+      "deck": null,
+      "held_relics": null,
+      "held_potions": null,
+      "can_discard_potions": null
+     },
+     "sample_at": "2026-09-07T18:30:42.931"
+    },
+    "brief": {
+     "observations": 43,
+     "keys": {
+      "decision": 43,
+      "act": 43,
+      "floor": 43,
+      "hp": 43,
+      "max_hp": 43,
+      "gold": 43,
+      "deck": 43,
+      "held_relics": 29,
+      "held_potions": 15,
+      "options": 43,
+      "alternatives": 10,
+      "can_skip": 43,
+      "send": 43
+     },
+     "sample": {
+      "decision": "card_reward",
+      "act": 1,
+      "floor": 2,
+      "hp": null,
+      "max_hp": null,
+      "gold": null,
+      "deck": {
+       "size": 10,
+       "by_type": {
+        "Attack": 6,
+        "Skill": 4
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "金色珍珠",
+        "description": "拾起时，获得150金币。"
+       }
+      ],
+      "held_potions": [
+       {
+        "slot": 0,
+        "name": "火焰药水",
+        "description": "造成20点伤害。"
+       }
+      ],
+      "options": [
+       {
+        "index": 0,
+        "name": "全身撞击",
+        "type": "Attack",
+        "cost": "1",
+        "rarity": "Common",
+        "description": "造成你当前格挡值的伤害。"
+       },
+       {
+        "index": 1,
+        "name": "破灭",
+        "type": "Skill",
+        "cost": "1",
+        "rarity": "Common",
+        "description": "打出抽牌堆顶部的牌并将其消耗。"
+       },
+       {
+        "index": 2,
+        "name": "撕裂",
+        "type": "Power",
+        "cost": "1",
+        "rarity": "Uncommon",
+        "description": "每当你在你的回合失去生命值时, 获得1点力量。"
+       }
+      ],
+      "alternatives": [
+       {
+        "index": 0,
+        "option_id": "跳过",
+        "title": "跳过",
+        "is_enabled": true
+       }
+      ],
+      "can_skip": true,
+      "send": "select_card_reward(card_index=<index>) or skip_card_reward(index=<an index from alternatives>)"
+     },
+     "sample_at": "15:26:03"
+    }
+   }
+  },
+  "card_select__upgrade": {
+   "decision": "card_select",
+   "variant": "card_select__upgrade",
+   "first_seen": "13:20:48",
+   "last_seen": "2026-09-07T17:18:47",
+   "observations": 7,
+   "layers": {
+    "raw": {
+     "observations": 1,
+     "keys": {
+      "state_type": 1,
+      "card_select": 1,
+      "run": 1
+     },
+     "sample": {
+      "state_type": "card_select",
+      "card_select": {
+       "screen_type": "upgrade",
+       "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99
+       },
+       "prompt": "选择1张牌来升级。",
+       "cards": [
+        {
+         "index": 0,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 1,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 2,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 3,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 4,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 5,
+         "id": "DEFEND_IRONCLAD",
+         "name": "防御",
+         "type": "Skill",
+         "cost": "1",
+         "description": "获得5点格挡。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 6,
+         "id": "DEFEND_IRONCLAD",
+         "name": "防御",
+         "type": "Skill",
+         "cost": "1",
+         "description": "获得5点格挡。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 7,
+         "id": "DEFEND_IRONCLAD",
+         "name": "防御",
+         "type": "Skill",
+         "cost": "1",
+         "description": "获得5点格挡。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 8,
+         "id": "DEFEND_IRONCLAD",
+         "name": "防御",
+         "type": "Skill",
+         "cost": "1",
+         "description": "获得5点格挡。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 9,
+         "id": "BASH",
+         "name": "痛击",
+         "type": "Attack",
+         "cost": "2",
+         "description": "造成8点伤害。 给予2层易伤。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "易伤",
+           "description": "易伤的生物从攻击中受到的伤害增加50%。"
+          }
+         ]
+        }
+       ],
+       "preview_showing": false,
+       "can_cancel": false,
+       "can_confirm": false
+      },
+      "run": {
+       "act": 1,
+       "floor": 1,
+       "ascension": 0
+      }
+     },
+     "sample_at": "2026-09-07T17:18:47"
+    },
+    "normalized": {
+     "observations": 1,
+     "keys": {
+      "type": 1,
+      "decision": 1,
+      "context": 1,
+      "run": 1,
+      "screen_type": 1,
+      "prompt": 1,
+      "cards": 1,
+      "player": 1,
+      "preview_showing": 1,
+      "can_skip": 1,
+      "can_confirm": 1,
+      "can_cancel": 1,
+      "card_select": 1
+     },
+     "sample": {
+      "type": "decision",
+      "decision": "card_select",
+      "context": {
+       "act": 1,
+       "floor": 1,
+       "ascension": 0
+      },
+      "run": {
+       "act": 1,
+       "floor": 1,
+       "ascension": 0
+      },
+      "screen_type": "upgrade",
+      "prompt": "选择1张牌来升级。",
+      "cards": [
+       {
+        "index": 0,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "description": "造成6点伤害。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+       },
+       {
+        "index": 1,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "description": "造成6点伤害。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+       },
+       {
+        "index": 2,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "description": "造成6点伤害。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+       },
+       {
+        "index": 3,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "description": "造成6点伤害。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+       },
+       {
+        "index": 4,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "description": "造成6点伤害。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+       },
+       {
+        "index": 5,
+        "id": "DEFEND_IRONCLAD",
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "description": "获得5点格挡。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+         {
+          "name": "格挡",
+          "description": "在下个回合前，阻挡伤害。"
+         }
+        ]
+       },
+       {
+        "index": 6,
+        "id": "DEFEND_IRONCLAD",
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "description": "获得5点格挡。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+         {
+          "name": "格挡",
+          "description": "在下个回合前，阻挡伤害。"
+         }
+        ]
+       },
+       {
+        "index": 7,
+        "id": "DEFEND_IRONCLAD",
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "description": "获得5点格挡。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+         {
+          "name": "格挡",
+          "description": "在下个回合前，阻挡伤害。"
+         }
+        ]
+       },
+       {
+        "index": 8,
+        "id": "DEFEND_IRONCLAD",
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "description": "获得5点格挡。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+         {
+          "name": "格挡",
+          "description": "在下个回合前，阻挡伤害。"
+         }
+        ]
+       },
+       {
+        "index": 9,
+        "id": "BASH",
+        "name": "痛击",
+        "type": "Attack",
+        "cost": "2",
+        "description": "造成8点伤害。 给予2层易伤。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+         {
+          "name": "易伤",
+          "description": "易伤的生物从攻击中受到的伤害增加50%。"
+         }
+        ]
+       }
+      ],
+      "player": {
+       "character": "铁甲战士",
+       "hp": 80,
+       "max_hp": 80,
+       "gold": 99
+      },
+      "preview_showing": false,
+      "can_skip": false,
+      "can_confirm": false,
+      "can_cancel": false,
+      "card_select": {
+       "screen_type": "upgrade",
+       "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99
+       },
+       "prompt": "选择1张牌来升级。",
+       "cards": [
+        {
+         "index": 0,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 1,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 2,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 3,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 4,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 5,
+         "id": "DEFEND_IRONCLAD",
+         "name": "防御",
+         "type": "Skill",
+         "cost": "1",
+         "description": "获得5点格挡。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 6,
+         "id": "DEFEND_IRONCLAD",
+         "name": "防御",
+         "type": "Skill",
+         "cost": "1",
+         "description": "获得5点格挡。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 7,
+         "id": "DEFEND_IRONCLAD",
+         "name": "防御",
+         "type": "Skill",
+         "cost": "1",
+         "description": "获得5点格挡。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 8,
+         "id": "DEFEND_IRONCLAD",
+         "name": "防御",
+         "type": "Skill",
+         "cost": "1",
+         "description": "获得5点格挡。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 9,
+         "id": "BASH",
+         "name": "痛击",
+         "type": "Attack",
+         "cost": "2",
+         "description": "造成8点伤害。 给予2层易伤。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "易伤",
+           "description": "易伤的生物从攻击中受到的伤害增加50%。"
+          }
+         ]
+        }
+       ],
+       "preview_showing": false,
+       "can_cancel": false,
+       "can_confirm": false
+      }
+     },
+     "sample_at": "2026-09-07T17:18:47"
+    },
+    "brief": {
+     "observations": 6,
+     "keys": {
+      "decision": 6,
+      "act": 6,
+      "floor": 6,
+      "hp": 6,
+      "max_hp": 6,
+      "gold": 6,
+      "deck": 6,
+      "held_relics": 6,
+      "held_potions": 6,
+      "screen_type": 6,
+      "prompt": 6,
+      "can_confirm": 6,
+      "can_skip": 6,
+      "options": 6,
+      "send": 6
+     },
+     "sample": {
+      "decision": "card_select",
+      "act": 1,
+      "floor": 9,
+      "hp": 68,
+      "max_hp": 80,
+      "gold": 30,
+      "deck": {
+       "size": 15,
+       "by_type": {
+        "Attack": 7,
+        "Skill": 7,
+        "Quest": 1
+       },
+       "cards": {
+        "打击": 3,
+        "防御": 4,
+        "痛击": 1,
+        "欺凌": 1,
+        "藏宝图": 1,
+        "拆卸": 1,
+        "挑衅": 1,
+        "坚毅": 1,
+        "狂怒": 1,
+        "双重打击": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "精准剪刀",
+        "description": "拾起时，从你的牌组中移除1张牌。"
+       }
+      ],
+      "held_potions": [
+       {
+        "slot": 0,
+        "name": "再生药水",
+        "description": "获得5层再生。"
+       },
+       {
+        "slot": 1,
+        "name": "异蛇之油",
+        "description": "抽7张牌。在本回合随机化你手牌中所有牌的耗能。"
+       }
+      ],
+      "screen_type": "upgrade",
+      "prompt": "选择1张牌来升级。",
+      "can_confirm": false,
+      "can_skip": false,
+      "options": [
+       {
+        "index": 0,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 1,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 2,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 3,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 4,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 5,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 6,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 7,
+        "name": "痛击",
+        "type": "Attack",
+        "cost": "2",
+        "is_upgraded": false
+       },
+       {
+        "index": 8,
+        "name": "欺凌",
+        "type": "Attack",
+        "cost": "0",
+        "is_upgraded": false
+       },
+       {
+        "index": 9,
+        "name": "拆卸",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 10,
+        "name": "挑衅",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 11,
+        "name": "坚毅",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 12,
+        "name": "狂怒",
+        "type": "Skill",
+        "cost": "0",
+        "is_upgraded": false
+       },
+       {
+        "index": 13,
+        "name": "双重打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       }
+      ],
+      "send": "select_card(index=) then confirm_selection(); cancel_selection() to skip"
+     },
+     "sample_at": "13:20:48"
+    }
+   }
+  },
+  "combat_play__monster": {
+   "decision": "combat_play",
+   "variant": "combat_play__monster",
+   "first_seen": "2026-09-07T18:29:24.355",
+   "last_seen": "2026-09-07T18:37:12.318",
+   "observations": 67,
+   "layers": {
+    "raw": {
+     "observations": 67,
+     "keys": {
+      "state_type": 67,
+      "battle": 65,
+      "run": 67,
+      "message": 2
+     },
+     "sample": {
+      "state_type": "monster",
+      "battle": {
+       "round": 1,
+       "turn": "player",
+       "is_play_phase": true,
+       "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "block": 0,
+        "energy": 3,
+        "max_energy": 3,
+        "hand": [
+         {
+          "index": 0,
+          "id": "HEADBUTT",
+          "name": "头槌",
+          "type": "Attack",
+          "cost": "1",
+          "star_cost": null,
+          "description": "造成9点伤害。 将你弃牌堆中的一张牌放到抽牌堆顶部。",
+          "target_type": "AnyEnemy",
+          "can_play": true,
+          "unplayable_reason": null,
+          "is_upgraded": false,
+          "keywords": []
+         },
+         {
+          "index": 1,
+          "id": "INJURY",
+          "name": "受伤",
+          "type": "Curse",
+          "cost": "0",
+          "star_cost": null,
+          "description": "不能被打出。",
+          "target_type": "None",
+          "can_play": false,
+          "unplayable_reason": "HasUnplayableKeyword",
+          "is_upgraded": false,
+          "keywords": [
+           {
+            "name": "不能被打出",
+            "description": "不能被打出的牌无法被打出。"
+           }
+          ]
+         },
+         {
+          "index": 2,
+          "id": "IMPERVIOUS",
+          "name": "岿然不动",
+          "type": "Skill",
+          "cost": "2",
+          "star_cost": null,
+          "description": "获得30点格挡。 消耗。",
+          "target_type": "Self",
+          "can_play": true,
+          "unplayable_reason": null,
+          "is_upgraded": false,
+          "keywords": [
+           {
+            "name": "格挡",
+            "description": "在下个回合前，阻挡伤害。"
+           },
+           {
+            "name": "消耗",
+            "description": "在战斗结束前移除。"
+           }
+          ]
+         },
+         {
+          "index": 3,
+          "id": "STRIKE_IRONCLAD",
+          "name": "打击",
+          "type": "Attack",
+          "cost": "1",
+          "star_cost": null,
+          "description": "造成6点伤害。",
+          "target_type": "AnyEnemy",
+          "can_play": true,
+          "unplayable_reason": null,
+          "is_upgraded": false,
+          "keywords": []
+         },
+         {
+          "index": 4,
+          "id": "DEFEND_IRONCLAD",
+          "name": "防御",
+          "type": "Skill",
+          "cost": "1",
+          "star_cost": null,
+          "description": "获得5点格挡。",
+          "target_type": "Self",
+          "can_play": true,
+          "unplayable_reason": null,
+          "is_upgraded": false,
+          "keywords": [
+           {
+            "name": "格挡",
+            "description": "在下个回合前，阻挡伤害。"
+           }
+          ]
+         }
+        ],
+        "draw_pile_count": 8,
+        "discard_pile_count": 0,
+        "exhaust_pile_count": 0,
+        "draw_pile": [
+         {
+          "name": "痛击",
+          "description": "造成8点伤害。 给予2层易伤。"
+         },
+         {
+          "name": "防御",
+          "description": "获得5点格挡。"
+         },
+         {
+          "name": "打击",
+          "description": "造成6点伤害。"
+         },
+         {
+          "name": "打击",
+          "description": "造成6点伤害。"
+         },
+         {
+          "name": "防御",
+          "description": "获得5点格挡。"
+         },
+         {
+          "name": "打击",
+          "description": "造成6点伤害。"
+         },
+         {
+          "name": "打击",
+          "description": "造成6点伤害。"
+         },
+         {
+          "name": "防御",
+          "description": "获得5点格挡。"
+         }
+        ],
+        "discard_pile": [],
+        "exhaust_pile": [],
+        "gold": 119,
+        "status": [],
+        "relics": [
+         {
+          "id": "BURNING_BLOOD",
+          "name": "燃烧之血",
+          "description": "在战斗结束时，回复6点生命。",
+          "counter": null,
+          "keywords": []
+         },
+         {
+          "id": "HEFTY_TABLET",
+          "name": "沉重石板",
+          "description": "拾起时，从3张稀有牌中选择1张加入你的牌组，同时将1张受伤加入你的牌组。",
+          "counter": null,
+          "keywords": [
+           {
+            "name": "受伤",
+            "description": "不能被打出。"
+           },
+           {
+            "name": "不能被打出",
+            "description": "不能被打出的牌无法被打出。"
+           }
+          ]
+         }
+        ],
+        "potions": [
+         {
+          "id": "VULNERABLE_POTION",
+          "name": "易伤药水",
+          "description": "给予3层易伤。",
+          "slot": 0,
+          "can_use_in_combat": true,
+          "target_type": "AnyEnemy",
+          "keywords": [
+           {
+            "name": "易伤",
+            "description": "易伤的生物从攻击中受到的伤害增加50%。"
+           }
+          ]
+         }
+        ]
+       },
+       "enemies": [
+        {
+         "entity_id": "SHRINKER_BEETLE_0",
+         "combat_id": 1,
+         "name": "缩小甲虫",
+         "hp": 40,
+         "max_hp": 40,
+         "block": 0,
+         "status": [],
+         "intents": [
+          {
+           "type": "DebuffStrong",
+           "label": "",
+           "title": "策略",
+           "description": "这个敌人将要对你施加一个负面效果。"
+          }
+         ]
+        }
+       ]
+      },
+      "run": {
+       "act": 1,
+       "floor": 3,
+       "ascension": 0
+      }
+     },
+     "sample_at": "2026-09-07T18:30:58"
+    },
+    "normalized": {
+     "observations": 67,
+     "keys": {
+      "type": 67,
+      "decision": 67,
+      "room_type": 67,
+      "context": 67,
+      "run": 67,
+      "round": 67,
+      "turn": 67,
+      "is_play_phase": 67,
+      "energy": 67,
+      "max_energy": 67,
+      "hand": 67,
+      "enemies": 67,
+      "player": 67,
+      "draw_pile_count": 67,
+      "discard_pile_count": 67,
+      "exhaust_pile_count": 67,
+      "battle": 67,
+      "is_resolving": 66,
+      "resolving_action": 66,
+      "deck": 66,
+      "held_relics": 66,
+      "held_potions": 66,
+      "can_discard_potions": 66
+     },
+     "sample": {
+      "type": "decision",
+      "decision": "combat_play",
+      "room_type": "monster",
+      "context": {
+       "act": 1,
+       "floor": 2,
+       "ascension": 0
+      },
+      "run": {
+       "act": 1,
+       "floor": 2,
+       "ascension": 0
+      },
+      "round": 1,
+      "turn": "player",
+      "is_play_phase": true,
+      "is_resolving": null,
+      "resolving_action": null,
+      "energy": 0,
+      "max_energy": 3,
+      "hand": [],
+      "enemies": [
+       {
+        "entity_id": "NIBBIT_0",
+        "combat_id": 1,
+        "name": "小啃兽",
+        "hp": 45,
+        "max_hp": 45,
+        "block": 0,
+        "status": [],
+        "intents": [
+         {
+          "type": "Attack",
+          "label": "12",
+          "title": "攻势",
+          "description": "这个敌人将要攻击造成12点伤害。"
+         }
+        ]
+       }
+      ],
+      "player": {
+       "character": "铁甲战士",
+       "hp": 80,
+       "max_hp": 80,
+       "block": 0,
+       "energy": 0,
+       "max_energy": 3,
+       "hand": [],
+       "draw_pile_count": 12,
+       "discard_pile_count": 0,
+       "exhaust_pile_count": 0,
+       "draw_pile": [
+        {
+         "name": "打击",
+         "description": "造成6点伤害。"
+        },
+        {
+         "name": "防御",
+         "description": "获得5点格挡。"
+        },
+        {
+         "name": "受伤",
+         "description": "不能被打出。"
+        },
+        {
+         "name": "岿然不动",
+         "description": "获得30点格挡。 消耗。"
+        },
+        {
+         "name": "防御",
+         "description": "获得5点格挡。"
+        },
+        {
+         "name": "痛击",
+         "description": "造成8点伤害。 给予2层易伤。"
+        },
+        {
+         "name": "防御",
+         "description": "获得5点格挡。"
+        },
+        {
+         "name": "打击",
+         "description": "造成6点伤害。"
+        },
+        {
+         "name": "打击",
+         "description": "造成6点伤害。"
+        },
+        {
+         "name": "防御",
+         "description": "获得5点格挡。"
+        },
+        {
+         "name": "打击",
+         "description": "造成6点伤害。"
+        },
+        {
+         "name": "打击",
+         "description": "造成6点伤害。"
+        }
+       ],
+       "discard_pile": [],
+       "exhaust_pile": [],
+       "gold": 99,
+       "status": [],
+       "relics": [
+        {
+         "id": "BURNING_BLOOD",
+         "name": "燃烧之血",
+         "description": "在战斗结束时，回复6点生命。",
+         "counter": null,
+         "keywords": []
+        },
+        {
+         "id": "HEFTY_TABLET",
+         "name": "沉重石板",
+         "description": "拾起时，从3张稀有牌中选择1张加入你的牌组，同时将1张受伤加入你的牌组。",
+         "counter": null,
+         "keywords": [
+          {
+           "name": "受伤",
+           "description": "不能被打出。"
+          },
+          {
+           "name": "不能被打出",
+           "description": "不能被打出的牌无法被打出。"
+          }
+         ]
+        }
+       ],
+       "potions": []
+      },
+      "draw_pile_count": 12,
+      "discard_pile_count": 0,
+      "exhaust_pile_count": 0,
+      "battle": {
+       "round": 1,
+       "turn": "player",
+       "is_play_phase": true,
+       "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "block": 0,
+        "energy": 0,
+        "max_energy": 3,
+        "hand": [],
+        "draw_pile_count": 12,
+        "discard_pile_count": 0,
+        "exhaust_pile_count": 0,
+        "draw_pile": [
+         {
+          "name": "打击",
+          "description": "造成6点伤害。"
+         },
+         {
+          "name": "防御",
+          "description": "获得5点格挡。"
+         },
+         {
+          "name": "受伤",
+          "description": "不能被打出。"
+         },
+         {
+          "name": "岿然不动",
+          "description": "获得30点格挡。 消耗。"
+         },
+         {
+          "name": "防御",
+          "description": "获得5点格挡。"
+         },
+         {
+          "name": "痛击",
+          "description": "造成8点伤害。 给予2层易伤。"
+         },
+         {
+          "name": "防御",
+          "description": "获得5点格挡。"
+         },
+         {
+          "name": "打击",
+          "description": "造成6点伤害。"
+         },
+         {
+          "name": "打击",
+          "description": "造成6点伤害。"
+         },
+         {
+          "name": "防御",
+          "description": "获得5点格挡。"
+         },
+         {
+          "name": "打击",
+          "description": "造成6点伤害。"
+         },
+         {
+          "name": "打击",
+          "description": "造成6点伤害。"
+         }
+        ],
+        "discard_pile": [],
+        "exhaust_pile": [],
+        "gold": 99,
+        "status": [],
+        "relics": [
+         {
+          "id": "BURNING_BLOOD",
+          "name": "燃烧之血",
+          "description": "在战斗结束时，回复6点生命。",
+          "counter": null,
+          "keywords": []
+         },
+         {
+          "id": "HEFTY_TABLET",
+          "name": "沉重石板",
+          "description": "拾起时，从3张稀有牌中选择1张加入你的牌组，同时将1张受伤加入你的牌组。",
+          "counter": null,
+          "keywords": [
+           {
+            "name": "受伤",
+            "description": "不能被打出。"
+           },
+           {
+            "name": "不能被打出",
+            "description": "不能被打出的牌无法被打出。"
+           }
+          ]
+         }
+        ],
+        "potions": []
+       },
+       "enemies": [
+        {
+         "entity_id": "NIBBIT_0",
+         "combat_id": 1,
+         "name": "小啃兽",
+         "hp": 45,
+         "max_hp": 45,
+         "block": 0,
+         "status": [],
+         "intents": [
+          {
+           "type": "Attack",
+           "label": "12",
+           "title": "攻势",
+           "description": "这个敌人将要攻击造成12点伤害。"
+          }
+         ]
+        }
+       ]
+      },
+      "deck": null,
+      "held_relics": null,
+      "held_potions": null,
+      "can_discard_potions": null
+     },
+     "sample_at": "2026-09-07T18:29:24.355"
+    }
+   }
+  },
+  "combat_rewards": {
+   "decision": "combat_rewards",
+   "variant": "combat_rewards",
+   "first_seen": "12:00:47",
+   "last_seen": "21:45:19",
+   "observations": 156,
+   "layers": {
+    "raw": {
+     "observations": 7,
+     "keys": {
+      "state_type": 7,
+      "rewards": 7,
+      "run": 7
+     },
+     "sample": {
+      "state_type": "combat_rewards",
+      "rewards": {
+       "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 118,
+        "potion_slots": 3,
+        "open_potion_slots": 3
+       },
+       "items": [
+        {
+         "index": 0,
+         "type": "potion",
+         "description": "敏捷药水",
+         "potion_id": "DEXTERITY_POTION",
+         "potion_name": "敏捷药水"
+        },
+        {
+         "index": 1,
+         "type": "card",
+         "description": "将一张牌添加到你的牌组。"
+        }
+       ],
+       "can_proceed": true
+      },
+      "run": {
+       "act": 1,
+       "floor": 2,
+       "ascension": 0
+      }
+     },
+     "sample_at": "2026-09-07T17:19:57"
+    },
+    "normalized": {
+     "observations": 7,
+     "keys": {
+      "type": 7,
+      "decision": 7,
+      "context": 7,
+      "run": 7,
+      "items": 7,
+      "can_proceed": 7,
+      "player": 7,
+      "rewards": 7,
+      "is_complete": 6,
+      "deck": 6,
+      "held_relics": 6,
+      "held_potions": 6,
+      "can_discard_potions": 6
+     },
+     "sample": {
+      "type": "decision",
+      "decision": "combat_rewards",
+      "context": {
+       "act": 1,
+       "floor": 2,
+       "ascension": 0
+      },
+      "run": {
+       "act": 1,
+       "floor": 2,
+       "ascension": 0
+      },
+      "items": [
+       {
+        "index": 0,
+        "type": "gold",
+        "description": "20金币",
+        "gold_amount": 20
+       },
+       {
+        "index": 1,
+        "type": "potion",
+        "description": "易伤药水",
+        "potion_id": "VULNERABLE_POTION",
+        "potion_name": "易伤药水"
+       },
+       {
+        "index": 2,
+        "type": "card",
+        "description": "将一张牌添加到你的牌组。"
+       }
+      ],
+      "can_proceed": true,
+      "is_complete": null,
+      "player": {
+       "character": "铁甲战士",
+       "hp": 80,
+       "max_hp": 80,
+       "gold": 99,
+       "potion_slots": 3,
+       "open_potion_slots": 3
+      },
+      "rewards": {
+       "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99,
+        "potion_slots": 3,
+        "open_potion_slots": 3
+       },
+       "items": [
+        {
+         "index": 0,
+         "type": "gold",
+         "description": "20金币",
+         "gold_amount": 20
+        },
+        {
+         "index": 1,
+         "type": "potion",
+         "description": "易伤药水",
+         "potion_id": "VULNERABLE_POTION",
+         "potion_name": "易伤药水"
+        },
+        {
+         "index": 2,
+         "type": "card",
+         "description": "将一张牌添加到你的牌组。"
+        }
+       ],
+       "can_proceed": true
+      },
+      "deck": null,
+      "held_relics": null,
+      "held_potions": null,
+      "can_discard_potions": null
+     },
+     "sample_at": "2026-09-07T18:30:40.875"
+    },
+    "brief": {
+     "observations": 149,
+     "keys": {
+      "decision": 149,
+      "act": 149,
+      "floor": 149,
+      "hp": 149,
+      "max_hp": 149,
+      "gold": 149,
+      "deck": 149,
+      "held_relics": 101,
+      "options": 149,
+      "open_potion_slots": 149,
+      "send": 149,
+      "held_potions": 56
+     },
+     "sample": {
+      "decision": "combat_rewards",
+      "act": 1,
+      "floor": 2,
+      "hp": 79,
+      "max_hp": 80,
+      "gold": 269,
+      "deck": {
+       "size": 10,
+       "by_type": {
+        "Attack": 6,
+        "Skill": 4
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "金色珍珠",
+        "description": "拾起时，获得150金币。"
+       }
+      ],
+      "held_potions": [
+       {
+        "slot": 0,
+        "name": "火焰药水",
+        "description": "造成20点伤害。"
+       }
+      ],
+      "options": [
+       {
+        "index": 0,
+        "type": "card",
+        "description": "将一张牌添加到你的牌组。"
+       }
+      ],
+      "open_potion_slots": 2,
+      "send": "claim_reward(index=<index>)"
+     },
+     "sample_at": "15:26:02"
+    }
+   }
+  },
+  "event_choice__True__False": {
+   "decision": "event_choice",
+   "variant": "event_choice__True__False",
+   "first_seen": "12:00:30",
+   "last_seen": "2026-09-07T18:29:16.178",
+   "observations": 15,
+   "layers": {
+    "raw": {
+     "observations": 4,
+     "keys": {
+      "state_type": 4,
+      "event": 4,
+      "run": 4
+     },
+     "sample": {
+      "state_type": "event",
+      "event": {
+       "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99
+       },
+       "event_id": "NEOW",
+       "event_name": "涅奥",
+       "is_ancient": true,
+       "in_dialogue": false,
+       "body": null,
+       "options": [
+        {
+         "index": 0,
+         "title": "橙型香盒",
+         "description": "升级一张牌。",
+         "is_locked": false,
+         "is_proceed": false,
+         "was_chosen": false,
+         "relic_name": "橙型香盒",
+         "relic_description": "拾起时，升级一张牌。",
+         "keywords": []
+        },
+        {
+         "index": 1,
+         "title": "金色珍珠",
+         "description": "拾起时，获得150金币。",
+         "is_locked": false,
+         "is_proceed": false,
+         "was_chosen": false,
+         "relic_name": "金色珍珠",
+         "relic_description": "拾起时，获得150金币。",
+         "keywords": []
+        },
+        {
+         "index": 2,
+         "title": "巨大扭蛋",
+         "description": "获得2件随机遗物。额外将一对打击和防御，加入你的牌组。",
+         "is_locked": false,
+         "is_proceed": false,
+         "was_chosen": false,
+         "relic_name": "巨大扭蛋",
+         "relic_description": "拾起时，获得2件随机遗物。额外将一对打击和防御，加入你的牌组。",
+         "keywords": []
+        }
+       ]
+      },
+      "run": {
+       "act": 1,
+       "floor": 1,
+       "ascension": 0
+      }
+     },
+     "sample_at": "2026-09-07T17:16:18"
+    },
+    "normalized": {
+     "observations": 4,
+     "keys": {
+      "type": 4,
+      "decision": 4,
+      "context": 4,
+      "run": 4,
+      "event_name": 4,
+      "event_id": 4,
+      "description": 4,
+      "options": 4,
+      "player": 4,
+      "in_dialogue": 4,
+      "is_ancient": 4,
+      "event": 4,
+      "top_overlay_type": 2,
+      "deck": 2,
+      "held_relics": 2,
+      "held_potions": 2,
+      "can_discard_potions": 2
+     },
+     "sample": {
+      "type": "decision",
+      "decision": "event_choice",
+      "context": {
+       "act": 1,
+       "floor": 1,
+       "ascension": 0
+      },
+      "run": {
+       "act": 1,
+       "floor": 1,
+       "ascension": 0
+      },
+      "event_name": "涅奥",
+      "event_id": "NEOW",
+      "description": null,
+      "options": [
+       {
+        "index": 0,
+        "title": "橙型香盒",
+        "description": "升级一张牌。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false,
+        "relic_name": "橙型香盒",
+        "relic_description": "拾起时，升级一张牌。",
+        "keywords": []
+       },
+       {
+        "index": 1,
+        "title": "失物盒",
+        "description": "获得1次卡牌奖励和1瓶随机药水。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false,
+        "relic_name": "失物盒",
+        "relic_description": "拾起时，获得1次卡牌奖励和1瓶随机药水。",
+        "keywords": []
+       },
+       {
+        "index": 2,
+        "title": "沉重石板",
+        "description": "从3张稀有牌中选择1张加入你的牌组。将1张受伤加入你的牌组。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false,
+        "relic_name": "沉重石板",
+        "relic_description": "拾起时，从3张稀有牌中选择1张加入你的牌组，同时将1张受伤加入你的牌组。",
+        "keywords": [
+         {
+          "name": "受伤",
+          "description": "不能被打出。"
+         },
+         {
+          "name": "不能被打出",
+          "description": "不能被打出的牌无法被打出。"
+         }
+        ]
+       }
+      ],
+      "player": {
+       "character": "铁甲战士",
+       "hp": 80,
+       "max_hp": 80,
+       "gold": 99
+      },
+      "in_dialogue": false,
+      "top_overlay_type": null,
+      "is_ancient": true,
+      "event": {
+       "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99
+       },
+       "event_id": "NEOW",
+       "event_name": "涅奥",
+       "is_ancient": true,
+       "in_dialogue": false,
+       "body": null,
+       "options": [
+        {
+         "index": 0,
+         "title": "橙型香盒",
+         "description": "升级一张牌。",
+         "is_locked": false,
+         "is_proceed": false,
+         "was_chosen": false,
+         "relic_name": "橙型香盒",
+         "relic_description": "拾起时，升级一张牌。",
+         "keywords": []
+        },
+        {
+         "index": 1,
+         "title": "失物盒",
+         "description": "获得1次卡牌奖励和1瓶随机药水。",
+         "is_locked": false,
+         "is_proceed": false,
+         "was_chosen": false,
+         "relic_name": "失物盒",
+         "relic_description": "拾起时，获得1次卡牌奖励和1瓶随机药水。",
+         "keywords": []
+        },
+        {
+         "index": 2,
+         "title": "沉重石板",
+         "description": "从3张稀有牌中选择1张加入你的牌组。将1张受伤加入你的牌组。",
+         "is_locked": false,
+         "is_proceed": false,
+         "was_chosen": false,
+         "relic_name": "沉重石板",
+         "relic_description": "拾起时，从3张稀有牌中选择1张加入你的牌组，同时将1张受伤加入你的牌组。",
+         "keywords": [
+          {
+           "name": "受伤",
+           "description": "不能被打出。"
+          },
+          {
+           "name": "不能被打出",
+           "description": "不能被打出的牌无法被打出。"
+          }
+         ]
+        }
+       ]
+      },
+      "deck": null,
+      "held_relics": null,
+      "held_potions": null,
+      "can_discard_potions": null
+     },
+     "sample_at": "2026-09-07T18:28:54.572"
+    },
+    "brief": {
+     "observations": 11,
+     "keys": {
+      "decision": 11,
+      "act": 11,
+      "floor": 11,
+      "hp": 11,
+      "max_hp": 11,
+      "gold": 11,
+      "deck": 11,
+      "held_relics": 10,
+      "event_id": 11,
+      "event": 11,
+      "text": 11,
+      "in_dialogue": 11,
+      "is_ancient": 11,
+      "options": 11,
+      "send": 11
+     },
+     "sample": {
+      "decision": "event_choice",
+      "act": 1,
+      "floor": 1,
+      "hp": 80,
+      "max_hp": 80,
+      "gold": 99,
+      "deck": {
+       "size": 10,
+       "by_type": {
+        "Attack": 6,
+        "Skill": 4
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       }
+      ],
+      "event_id": "NEOW",
+      "event": "涅奥",
+      "text": null,
+      "in_dialogue": false,
+      "is_ancient": true,
+      "options": [
+       {
+        "index": 0,
+        "title": "金色珍珠",
+        "description": "拾起时，获得150金币。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false
+       },
+       {
+        "index": 1,
+        "title": "羽翼之靴",
+        "description": "你在选择下一层的房间时有3次机会可以无视当前的路线。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false
+       },
+       {
+        "index": 2,
+        "title": "树叶药膏",
+        "description": "变化你的1张打击和1张防御，然后失去12点最大生命。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false
+       }
+      ],
+      "send": "choose_event_option(index=<position among UNLOCKED>) or advance_dialogue()"
+     },
+     "sample_at": "15:25:24"
+    }
+   }
+  },
+  "event_choice__False__False": {
+   "decision": "event_choice",
+   "variant": "event_choice__False__False",
+   "first_seen": "12:25:27",
+   "last_seen": "2026-09-07T18:37:20.539",
+   "observations": 27,
+   "layers": {
+    "raw": {
+     "observations": 3,
+     "keys": {
+      "state_type": 3,
+      "event": 3,
+      "run": 3
+     },
+     "sample": {
+      "state_type": "event",
+      "event": {
+       "player": {
+        "character": "铁甲战士",
+        "hp": 74,
+        "max_hp": 80,
+        "gold": 150
+       },
+       "event_id": "MORPHIC_GROVE",
+       "event_name": "变形灵林谷",
+       "is_ancient": false,
+       "in_dialogue": false,
+       "body": null,
+       "options": []
+      },
+      "run": {
+       "act": 1,
+       "floor": 5,
+       "ascension": 0
+      }
+     },
+     "sample_at": "2026-09-07T18:37:19"
+    },
+    "normalized": {
+     "observations": 3,
+     "keys": {
+      "type": 3,
+      "decision": 3,
+      "context": 3,
+      "run": 3,
+      "event_name": 3,
+      "event_id": 3,
+      "description": 3,
+      "options": 3,
+      "player": 3,
+      "in_dialogue": 3,
+      "is_ancient": 3,
+      "event": 3,
+      "top_overlay_type": 2,
+      "deck": 2,
+      "held_relics": 2,
+      "held_potions": 2,
+      "can_discard_potions": 2
+     },
+     "sample": {
+      "type": "decision",
+      "decision": "event_choice",
+      "context": {
+       "act": 1,
+       "floor": 5,
+       "ascension": 0
+      },
+      "run": {
+       "act": 1,
+       "floor": 5,
+       "ascension": 0
+      },
+      "event_name": "变形灵林谷",
+      "event_id": "MORPHIC_GROVE",
+      "description": null,
+      "options": [],
+      "player": {
+       "character": "铁甲战士",
+       "hp": 74,
+       "max_hp": 80,
+       "gold": 150
+      },
+      "in_dialogue": false,
+      "top_overlay_type": null,
+      "is_ancient": false,
+      "event": {
+       "player": {
+        "character": "铁甲战士",
+        "hp": 74,
+        "max_hp": 80,
+        "gold": 150
+       },
+       "event_id": "MORPHIC_GROVE",
+       "event_name": "变形灵林谷",
+       "is_ancient": false,
+       "in_dialogue": false,
+       "body": null,
+       "options": []
+      },
+      "deck": null,
+      "held_relics": null,
+      "held_potions": null,
+      "can_discard_potions": null
+     },
+     "sample_at": "2026-09-07T18:37:19.506"
+    },
+    "brief": {
+     "observations": 24,
+     "keys": {
+      "decision": 24,
+      "act": 24,
+      "floor": 24,
+      "hp": 24,
+      "max_hp": 24,
+      "gold": 24,
+      "deck": 24,
+      "held_relics": 24,
+      "held_potions": 21,
+      "event_id": 24,
+      "event": 24,
+      "text": 24,
+      "in_dialogue": 24,
+      "is_ancient": 24,
+      "options": 24,
+      "send": 24
+     },
+     "sample": {
+      "decision": "event_choice",
+      "act": 1,
+      "floor": 11,
+      "hp": 31,
+      "max_hp": 94,
+      "gold": 313,
+      "deck": {
+       "size": 17,
+       "by_type": {
+        "Attack": 10,
+        "Skill": 6,
+        "Power": 1
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1,
+        "祭品": 1,
+        "坚毅": 1,
+        "愤怒": 2,
+        "双重打击": 1,
+        "闪电霹雳": 1,
+        "撕裂": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "奥术卷轴",
+        "description": "拾起时，将一张随机稀有牌加入你的牌组。"
+       },
+       {
+        "name": "锚",
+        "description": "每场战斗开始时获得10点格挡。"
+       },
+       {
+        "name": "准备背包",
+        "description": "在每场战斗开始时，额外抽2张牌。"
+       },
+       {
+        "name": "芒果",
+        "description": "拾起时，将你的最大生命值提升14。"
+       }
+      ],
+      "held_potions": [
+       {
+        "slot": 0,
+        "name": "敏捷药水",
+        "description": "获得2点敏捷。"
+       },
+       {
+        "slot": 1,
+        "name": "明晰提取物",
+        "description": "抽1张牌。在你的下3个回合开始时，额外抽1张牌。"
+       },
+       {
+        "slot": 2,
+        "name": "再生药水",
+        "description": "获得5层再生。"
+       }
+      ],
+      "event_id": "ENDLESS_CONVEYOR",
+      "event": "无尽传送带",
+      "text": null,
+      "in_dialogue": false,
+      "is_ancient": false,
+      "options": [
+       {
+        "index": 0,
+        "title": "从传送带上拿份蚌肉卷",
+        "description": "支付40金币。回复10点生命值。接着吃！",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false
+       },
+       {
+        "index": 1,
+        "title": "观察主厨",
+        "description": "从牌组中随机升级一张牌。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false
+       }
+      ],
+      "send": "choose_event_option(index=<position among UNLOCKED>) or advance_dialogue()"
+     },
+     "sample_at": "15:48:32"
+    }
+   }
+  },
+  "map_select": {
+   "decision": "map_select",
+   "variant": "map_select",
+   "first_seen": "12:13:44",
+   "last_seen": "21:46:10",
+   "observations": 89,
+   "layers": {
+    "raw": {
+     "observations": 7,
+     "keys": {
+      "state_type": 7,
+      "map": 7,
+      "run": 7
+     },
+     "sample": {
+      "state_type": "map",
+      "map": {
+       "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99,
+        "potion_slots": 3,
+        "open_potion_slots": 3
+       },
+       "current_position": {
+        "col": 3,
+        "row": 0,
+        "type": "Ancient"
+       },
+       "visited": [
+        {
+         "col": 3,
+         "row": 0,
+         "type": "Ancient"
+        }
+       ],
+       "next_options": [
+        {
+         "index": 0,
+         "col": 1,
+         "row": 1,
+         "type": "Monster",
+         "leads_to": [
+          {
+           "col": 1,
+           "row": 2,
+           "type": "Monster"
+          }
+         ]
+        },
+        {
+         "index": 1,
+         "col": 3,
+         "row": 1,
+         "type": "Monster",
+         "leads_to": [
+          {
+           "col": 3,
+           "row": 2,
+           "type": "Monster"
+          }
+         ]
+        },
+        {
+         "index": 2,
+         "col": 5,
+         "row": 1,
+         "type": "Monster",
+         "leads_to": [
+          {
+           "col": 5,
+           "row": 2,
+           "type": "Unknown"
+          },
+          {
+           "col": 6,
+           "row": 2,
+           "type": "Monster"
+          }
+         ]
+        }
+       ],
+       "nodes": [
+        {
+         "col": 3,
+         "row": 0,
+         "type": "Ancient",
+         "children": [
+          [
+           1,
+           1
+          ],
+          [
+           3,
+           1
+          ],
+          [
+           5,
+           1
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 3,
+         "type": "Monster",
+         "children": [
+          [
+           0,
+           4
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 4,
+         "type": "Shop",
+         "children": [
+          [
+           0,
+           5
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 5,
+         "type": "Monster",
+         "children": [
+          [
+           0,
+           6
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 6,
+         "type": "Unknown",
+         "children": [
+          [
+           0,
+           7
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 7,
+         "type": "RestSite",
+         "children": [
+          [
+           0,
+           8
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 8,
+         "type": "Elite",
+         "children": [
+          [
+           1,
+           9
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 13,
+         "type": "Unknown",
+         "children": [
+          [
+           0,
+           14
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 14,
+         "type": "Unknown",
+         "children": [
+          [
+           1,
+           15
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 1,
+         "type": "Monster",
+         "children": [
+          [
+           1,
+           2
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 2,
+         "type": "Monster",
+         "children": [
+          [
+           0,
+           3
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 9,
+         "type": "Treasure",
+         "children": [
+          [
+           1,
+           10
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 10,
+         "type": "RestSite",
+         "children": [
+          [
+           2,
+           11
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 12,
+         "type": "Monster",
+         "children": [
+          [
+           0,
+           13
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 13,
+         "type": "Elite",
+         "children": [
+          [
+           0,
+           14
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 15,
+         "type": "RestSite",
+         "children": [
+          [
+           3,
+           16
+          ]
+         ]
+        },
+        {
+         "col": 2,
+         "row": 6,
+         "type": "RestSite",
+         "children": [
+          [
+           2,
+           7
+          ]
+         ]
+        },
+        {
+         "col": 2,
+         "row": 7,
+         "type": "Monster",
+         "children": [
+          [
+           2,
+           8
+          ]
+         ]
+        },
+        {
+         "col": 2,
+         "row": 8,
+         "type": "RestSite",
+         "children": [
+          [
+           2,
+           9
+          ]
+         ]
+        },
+        {
+         "col": 2,
+         "row": 9,
+         "type": "Treasure",
+         "children": [
+          [
+           1,
+           10
+          ]
+         ]
+        },
+        {
+         "col": 2,
+         "row": 11,
+         "type": "Monster",
+         "children": [
+          [
+           1,
+           12
+          ],
+          [
+           2,
+           12
+          ]
+         ]
+        },
+        {
+         "col": 2,
+         "row": 12,
+         "type": "RestSite",
+         "children": [
+          [
+           1,
+           13
+          ],
+          [
+           3,
+           13
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 1,
+         "type": "Monster",
+         "children": [
+          [
+           3,
+           2
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 2,
+         "type": "Monster",
+         "children": [
+          [
+           4,
+           3
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 5,
+         "type": "Monster",
+         "children": [
+          [
+           2,
+           6
+          ],
+          [
+           4,
+           6
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 10,
+         "type": "Monster",
+         "children": [
+          [
+           2,
+           11
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 13,
+         "type": "Unknown",
+         "children": [
+          [
+           3,
+           14
+          ],
+          [
+           4,
+           14
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 14,
+         "type": "Elite",
+         "children": [
+          [
+           3,
+           15
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 15,
+         "type": "RestSite",
+         "children": [
+          [
+           3,
+           16
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 3,
+         "type": "Unknown",
+         "children": [
+          [
+           4,
+           4
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 4,
+         "type": "Monster",
+         "children": [
+          [
+           3,
+           5
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 6,
+         "type": "Monster",
+         "children": [
+          [
+           4,
+           7
+          ],
+          [
+           5,
+           7
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 7,
+         "type": "Unknown",
+         "children": [
+          [
+           4,
+           8
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 8,
+         "type": "Unknown",
+         "children": [
+          [
+           4,
+           9
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 9,
+         "type": "Treasure",
+         "children": [
+          [
+           3,
+           10
+          ],
+          [
+           4,
+           10
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 10,
+         "type": "Monster",
+         "children": [
+          [
+           4,
+           11
+          ],
+          [
+           5,
+           11
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 11,
+         "type": "Elite",
+         "children": [
+          [
+           4,
+           12
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 12,
+         "type": "Monster",
+         "children": [
+          [
+           3,
+           13
+          ],
+          [
+           4,
+           13
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 13,
+         "type": "Monster",
+         "children": [
+          [
+           4,
+           14
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 14,
+         "type": "Unknown",
+         "children": [
+          [
+           3,
+           15
+          ]
+         ]
+        },
+        {
+         "col": 5,
+         "row": 1,
+         "type": "Monster",
+         "children": [
+          [
+           5,
+           2
+          ],
+          [
+           6,
+           2
+          ]
+         ]
+        },
+        {
+         "col": 5,
+         "row": 2,
+         "type": "Unknown",
+         "children": [
+          [
+           5,
+           3
+          ]
+         ]
+        },
+        {
+         "col": 5,
+         "row": 3,
+         "type": "Monster",
+         "children": [
+          [
+           4,
+           4
+          ]
+         ]
+        },
+        {
+         "col": 5,
+         "row": 7,
+         "type": "Shop",
+         "children": [
+          [
+           4,
+           8
+          ]
+         ]
+        },
+        {
+         "col": 5,
+         "row": 8,
+         "type": "Unknown",
+         "children": [
+          [
+           4,
+           9
+          ]
+         ]
+        },
+        {
+         "col": 5,
+         "row": 11,
+         "type": "RestSite",
+         "children": [
+          [
+           4,
+           12
+          ],
+          [
+           6,
+           12
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 2,
+         "type": "Monster",
+         "children": [
+          [
+           5,
+           3
+          ],
+          [
+           6,
+           3
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 3,
+         "type": "Shop",
+         "children": [
+          [
+           6,
+           4
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 4,
+         "type": "Monster",
+         "children": [
+          [
+           6,
+           5
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 5,
+         "type": "Monster",
+         "children": [
+          [
+           6,
+           6
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 6,
+         "type": "Unknown",
+         "children": [
+          [
+           6,
+           7
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 7,
+         "type": "Elite",
+         "children": [
+          [
+           5,
+           8
+          ],
+          [
+           6,
+           8
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 8,
+         "type": "RestSite",
+         "children": [
+          [
+           6,
+           9
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 9,
+         "type": "Treasure",
+         "children": [
+          [
+           6,
+           10
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 10,
+         "type": "Monster",
+         "children": [
+          [
+           5,
+           11
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 12,
+         "type": "Unknown",
+         "children": [
+          [
+           6,
+           13
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 13,
+         "type": "Monster",
+         "children": [
+          [
+           6,
+           14
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 14,
+         "type": "Unknown",
+         "children": [
+          [
+           6,
+           15
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 15,
+         "type": "RestSite",
+         "children": [
+          [
+           3,
+           16
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 16,
+         "type": "Boss",
+         "children": []
+        }
+       ],
+       "boss": {
+        "col": 3,
+        "row": 16
+       }
+      },
+      "run": {
+       "act": 1,
+       "floor": 1,
+       "ascension": 0
+      }
+     },
+     "sample_at": "2026-09-07T17:18:50"
+    },
+    "normalized": {
+     "observations": 7,
+     "keys": {
+      "type": 7,
+      "decision": 7,
+      "context": 7,
+      "run": 7,
+      "choices": 7,
+      "player": 7,
+      "current_position": 7,
+      "visited": 7,
+      "nodes": 7,
+      "boss": 7,
+      "map": 7,
+      "deck": 6,
+      "held_relics": 6,
+      "held_potions": 6,
+      "can_discard_potions": 6
+     },
+     "sample": {
+      "type": "decision",
+      "decision": "map_select",
+      "context": {
+       "act": 1,
+       "floor": 1,
+       "ascension": 0
+      },
+      "run": {
+       "act": 1,
+       "floor": 1,
+       "ascension": 0
+      },
+      "choices": [
+       {
+        "index": 0,
+        "col": 1,
+        "row": 1,
+        "type": "Monster",
+        "leads_to": [
+         {
+          "col": 0,
+          "row": 2,
+          "type": "Monster"
+         },
+         {
+          "col": 1,
+          "row": 2,
+          "type": "Unknown"
+         }
+        ]
+       },
+       {
+        "index": 1,
+        "col": 3,
+        "row": 1,
+        "type": "Monster",
+        "leads_to": [
+         {
+          "col": 3,
+          "row": 2,
+          "type": "Monster"
+         }
+        ]
+       },
+       {
+        "index": 2,
+        "col": 6,
+        "row": 1,
+        "type": "Monster",
+        "leads_to": [
+         {
+          "col": 6,
+          "row": 2,
+          "type": "Monster"
+         }
+        ]
+       }
+      ],
+      "player": {
+       "character": "铁甲战士",
+       "hp": 80,
+       "max_hp": 80,
+       "gold": 99,
+       "potion_slots": 3,
+       "open_potion_slots": 3
+      },
+      "current_position": {
+       "col": 3,
+       "row": 0,
+       "type": "Ancient"
+      },
+      "visited": [
+       {
+        "col": 3,
+        "row": 0,
+        "type": "Ancient"
+       }
+      ],
+      "nodes": [
+       {
+        "col": 3,
+        "row": 0,
+        "type": "Ancient",
+        "children": [
+         [
+          1,
+          1
+         ],
+         [
+          3,
+          1
+         ],
+         [
+          6,
+          1
+         ]
+        ]
+       },
+       {
+        "col": 0,
+        "row": 2,
+        "type": "Monster",
+        "children": [
+         [
+          0,
+          3
+         ]
+        ]
+       },
+       {
+        "col": 0,
+        "row": 3,
+        "type": "Monster",
+        "children": [
+         [
+          0,
+          4
+         ],
+         [
+          1,
+          4
+         ]
+        ]
+       },
+       {
+        "col": 0,
+        "row": 4,
+        "type": "Unknown",
+        "children": [
+         [
+          0,
+          5
+         ]
+        ]
+       },
+       {
+        "col": 0,
+        "row": 5,
+        "type": "Monster",
+        "children": [
+         [
+          0,
+          6
+         ],
+         [
+          1,
+          6
+         ]
+        ]
+       },
+       {
+        "col": 0,
+        "row": 6,
+        "type": "Monster",
+        "children": [
+         [
+          0,
+          7
+         ]
+        ]
+       },
+       {
+        "col": 0,
+        "row": 7,
+        "type": "Unknown",
+        "children": [
+         [
+          0,
+          8
+         ]
+        ]
+       },
+       {
+        "col": 0,
+        "row": 8,
+        "type": "Unknown",
+        "children": [
+         [
+          1,
+          9
+         ]
+        ]
+       },
+       {
+        "col": 0,
+        "row": 10,
+        "type": "RestSite",
+        "children": [
+         [
+          0,
+          11
+         ],
+         [
+          1,
+          11
+         ]
+        ]
+       },
+       {
+        "col": 0,
+        "row": 11,
+        "type": "Elite",
+        "children": [
+         [
+          0,
+          12
+         ],
+         [
+          1,
+          12
+         ]
+        ]
+       },
+       {
+        "col": 0,
+        "row": 12,
+        "type": "Unknown",
+        "children": [
+         [
+          0,
+          13
+         ]
+        ]
+       },
+       {
+        "col": 0,
+        "row": 13,
+        "type": "Monster",
+        "children": [
+         [
+          1,
+          14
+         ]
+        ]
+       },
+       {
+        "col": 1,
+        "row": 1,
+        "type": "Monster",
+        "children": [
+         [
+          0,
+          2
+         ],
+         [
+          1,
+          2
+         ]
+        ]
+       },
+       {
+        "col": 1,
+        "row": 2,
+        "type": "Unknown",
+        "children": [
+         [
+          0,
+          3
+         ]
+        ]
+       },
+       {
+        "col": 1,
+        "row": 4,
+        "type": "Monster",
+        "children": [
+         [
+          0,
+          5
+         ]
+        ]
+       },
+       {
+        "col": 1,
+        "row": 6,
+        "type": "Unknown",
+        "children": [
+         [
+          0,
+          7
+         ],
+         [
+          2,
+          7
+         ]
+        ]
+       },
+       {
+        "col": 1,
+        "row": 9,
+        "type": "Treasure",
+        "children": [
+         [
+          0,
+          10
+         ],
+         [
+          1,
+          10
+         ],
+         [
+          2,
+          10
+         ]
+        ]
+       },
+       {
+        "col": 1,
+        "row": 10,
+        "type": "Monster",
+        "children": [
+         [
+          1,
+          11
+         ]
+        ]
+       },
+       {
+        "col": 1,
+        "row": 11,
+        "type": "Monster",
+        "children": [
+         [
+          2,
+          12
+         ]
+        ]
+       },
+       {
+        "col": 1,
+        "row": 12,
+        "type": "RestSite",
+        "children": [
+         [
+          2,
+          13
+         ]
+        ]
+       },
+       {
+        "col": 1,
+        "row": 14,
+        "type": "Elite",
+        "children": [
+         [
+          1,
+          15
+         ]
+        ]
+       },
+       {
+        "col": 1,
+        "row": 15,
+        "type": "RestSite",
+        "children": [
+         [
+          3,
+          16
+         ]
+        ]
+       },
+       {
+        "col": 2,
+        "row": 5,
+        "type": "Unknown",
+        "children": [
+         [
+          1,
+          6
+         ]
+        ]
+       },
+       {
+        "col": 2,
+        "row": 7,
+        "type": "Shop",
+        "children": [
+         [
+          3,
+          8
+         ]
+        ]
+       },
+       {
+        "col": 2,
+        "row": 10,
+        "type": "Shop",
+        "children": [
+         [
+          2,
+          11
+         ]
+        ]
+       },
+       {
+        "col": 2,
+        "row": 11,
+        "type": "Elite",
+        "children": [
+         [
+          2,
+          12
+         ]
+        ]
+       },
+       {
+        "col": 2,
+        "row": 12,
+        "type": "RestSite",
+        "children": [
+         [
+          2,
+          13
+         ],
+         [
+          3,
+          13
+         ]
+        ]
+       },
+       {
+        "col": 2,
+        "row": 13,
+        "type": "Unknown",
+        "children": [
+         [
+          1,
+          14
+         ],
+         [
+          3,
+          14
+         ]
+        ]
+       },
+       {
+        "col": 3,
+        "row": 1,
+        "type": "Monster",
+        "children": [
+         [
+          3,
+          2
+         ]
+        ]
+       },
+       {
+        "col": 3,
+        "row": 2,
+        "type": "Monster",
+        "children": [
+         [
+          3,
+          3
+         ]
+        ]
+       },
+       {
+        "col": 3,
+        "row": 3,
+        "type": "Monster",
+        "children": [
+         [
+          3,
+          4
+         ]
+        ]
+       },
+       {
+        "col": 3,
+        "row": 4,
+        "type": "Unknown",
+        "children": [
+         [
+          2,
+          5
+         ]
+        ]
+       },
+       {
+        "col": 3,
+        "row": 8,
+        "type": "RestSite",
+        "children": [
+         [
+          3,
+          9
+         ]
+        ]
+       },
+       {
+        "col": 3,
+        "row": 9,
+        "type": "Treasure",
+        "children": [
+         [
+          4,
+          10
+         ]
+        ]
+       },
+       {
+        "col": 3,
+        "row": 13,
+        "type": "Shop",
+        "children": [
+         [
+          3,
+          14
+         ],
+         [
+          4,
+          14
+         ]
+        ]
+       },
+       {
+        "col": 3,
+        "row": 14,
+        "type": "Unknown",
+        "children": [
+         [
+          3,
+          15
+         ]
+        ]
+       },
+       {
+        "col": 3,
+        "row": 15,
+        "type": "RestSite",
+        "children": [
+         [
+          3,
+          16
+         ]
+        ]
+       },
+       {
+        "col": 4,
+        "row": 10,
+        "type": "Monster",
+        "children": [
+         [
+          4,
+          11
+         ]
+        ]
+       },
+       {
+        "col": 4,
+        "row": 11,
+        "type": "Unknown",
+        "children": [
+         [
+          4,
+          12
+         ]
+        ]
+       },
+       {
+        "col": 4,
+        "row": 12,
+        "type": "RestSite",
+        "children": [
+         [
+          4,
+          13
+         ]
+        ]
+       },
+       {
+        "col": 4,
+        "row": 13,
+        "type": "Elite",
+        "children": [
+         [
+          4,
+          14
+         ]
+        ]
+       },
+       {
+        "col": 4,
+        "row": 14,
+        "type": "Monster",
+        "children": [
+         [
+          3,
+          15
+         ]
+        ]
+       },
+       {
+        "col": 5,
+        "row": 15,
+        "type": "RestSite",
+        "children": [
+         [
+          3,
+          16
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 1,
+        "type": "Monster",
+        "children": [
+         [
+          6,
+          2
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 2,
+        "type": "Monster",
+        "children": [
+         [
+          6,
+          3
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 3,
+        "type": "Monster",
+        "children": [
+         [
+          6,
+          4
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 4,
+        "type": "Unknown",
+        "children": [
+         [
+          6,
+          5
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 5,
+        "type": "Monster",
+        "children": [
+         [
+          6,
+          6
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 6,
+        "type": "Monster",
+        "children": [
+         [
+          6,
+          7
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 7,
+        "type": "Monster",
+        "children": [
+         [
+          6,
+          8
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 8,
+        "type": "Monster",
+        "children": [
+         [
+          6,
+          9
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 9,
+        "type": "Treasure",
+        "children": [
+         [
+          6,
+          10
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 10,
+        "type": "Monster",
+        "children": [
+         [
+          6,
+          11
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 11,
+        "type": "RestSite",
+        "children": [
+         [
+          6,
+          12
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 12,
+        "type": "Monster",
+        "children": [
+         [
+          6,
+          13
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 13,
+        "type": "Elite",
+        "children": [
+         [
+          6,
+          14
+         ]
+        ]
+       },
+       {
+        "col": 6,
+        "row": 14,
+        "type": "Unknown",
+        "children": [
+         [
+          5,
+          15
+         ]
+        ]
+       },
+       {
+        "col": 3,
+        "row": 16,
+        "type": "Boss",
+        "children": []
+       }
+      ],
+      "boss": {
+       "col": 3,
+       "row": 16
+      },
+      "map": {
+       "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99,
+        "potion_slots": 3,
+        "open_potion_slots": 3
+       },
+       "current_position": {
+        "col": 3,
+        "row": 0,
+        "type": "Ancient"
+       },
+       "visited": [
+        {
+         "col": 3,
+         "row": 0,
+         "type": "Ancient"
+        }
+       ],
+       "next_options": [
+        {
+         "index": 0,
+         "col": 1,
+         "row": 1,
+         "type": "Monster",
+         "leads_to": [
+          {
+           "col": 0,
+           "row": 2,
+           "type": "Monster"
+          },
+          {
+           "col": 1,
+           "row": 2,
+           "type": "Unknown"
+          }
+         ]
+        },
+        {
+         "index": 1,
+         "col": 3,
+         "row": 1,
+         "type": "Monster",
+         "leads_to": [
+          {
+           "col": 3,
+           "row": 2,
+           "type": "Monster"
+          }
+         ]
+        },
+        {
+         "index": 2,
+         "col": 6,
+         "row": 1,
+         "type": "Monster",
+         "leads_to": [
+          {
+           "col": 6,
+           "row": 2,
+           "type": "Monster"
+          }
+         ]
+        }
+       ],
+       "nodes": [
+        {
+         "col": 3,
+         "row": 0,
+         "type": "Ancient",
+         "children": [
+          [
+           1,
+           1
+          ],
+          [
+           3,
+           1
+          ],
+          [
+           6,
+           1
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 2,
+         "type": "Monster",
+         "children": [
+          [
+           0,
+           3
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 3,
+         "type": "Monster",
+         "children": [
+          [
+           0,
+           4
+          ],
+          [
+           1,
+           4
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 4,
+         "type": "Unknown",
+         "children": [
+          [
+           0,
+           5
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 5,
+         "type": "Monster",
+         "children": [
+          [
+           0,
+           6
+          ],
+          [
+           1,
+           6
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 6,
+         "type": "Monster",
+         "children": [
+          [
+           0,
+           7
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 7,
+         "type": "Unknown",
+         "children": [
+          [
+           0,
+           8
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 8,
+         "type": "Unknown",
+         "children": [
+          [
+           1,
+           9
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 10,
+         "type": "RestSite",
+         "children": [
+          [
+           0,
+           11
+          ],
+          [
+           1,
+           11
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 11,
+         "type": "Elite",
+         "children": [
+          [
+           0,
+           12
+          ],
+          [
+           1,
+           12
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 12,
+         "type": "Unknown",
+         "children": [
+          [
+           0,
+           13
+          ]
+         ]
+        },
+        {
+         "col": 0,
+         "row": 13,
+         "type": "Monster",
+         "children": [
+          [
+           1,
+           14
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 1,
+         "type": "Monster",
+         "children": [
+          [
+           0,
+           2
+          ],
+          [
+           1,
+           2
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 2,
+         "type": "Unknown",
+         "children": [
+          [
+           0,
+           3
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 4,
+         "type": "Monster",
+         "children": [
+          [
+           0,
+           5
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 6,
+         "type": "Unknown",
+         "children": [
+          [
+           0,
+           7
+          ],
+          [
+           2,
+           7
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 9,
+         "type": "Treasure",
+         "children": [
+          [
+           0,
+           10
+          ],
+          [
+           1,
+           10
+          ],
+          [
+           2,
+           10
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 10,
+         "type": "Monster",
+         "children": [
+          [
+           1,
+           11
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 11,
+         "type": "Monster",
+         "children": [
+          [
+           2,
+           12
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 12,
+         "type": "RestSite",
+         "children": [
+          [
+           2,
+           13
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 14,
+         "type": "Elite",
+         "children": [
+          [
+           1,
+           15
+          ]
+         ]
+        },
+        {
+         "col": 1,
+         "row": 15,
+         "type": "RestSite",
+         "children": [
+          [
+           3,
+           16
+          ]
+         ]
+        },
+        {
+         "col": 2,
+         "row": 5,
+         "type": "Unknown",
+         "children": [
+          [
+           1,
+           6
+          ]
+         ]
+        },
+        {
+         "col": 2,
+         "row": 7,
+         "type": "Shop",
+         "children": [
+          [
+           3,
+           8
+          ]
+         ]
+        },
+        {
+         "col": 2,
+         "row": 10,
+         "type": "Shop",
+         "children": [
+          [
+           2,
+           11
+          ]
+         ]
+        },
+        {
+         "col": 2,
+         "row": 11,
+         "type": "Elite",
+         "children": [
+          [
+           2,
+           12
+          ]
+         ]
+        },
+        {
+         "col": 2,
+         "row": 12,
+         "type": "RestSite",
+         "children": [
+          [
+           2,
+           13
+          ],
+          [
+           3,
+           13
+          ]
+         ]
+        },
+        {
+         "col": 2,
+         "row": 13,
+         "type": "Unknown",
+         "children": [
+          [
+           1,
+           14
+          ],
+          [
+           3,
+           14
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 1,
+         "type": "Monster",
+         "children": [
+          [
+           3,
+           2
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 2,
+         "type": "Monster",
+         "children": [
+          [
+           3,
+           3
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 3,
+         "type": "Monster",
+         "children": [
+          [
+           3,
+           4
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 4,
+         "type": "Unknown",
+         "children": [
+          [
+           2,
+           5
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 8,
+         "type": "RestSite",
+         "children": [
+          [
+           3,
+           9
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 9,
+         "type": "Treasure",
+         "children": [
+          [
+           4,
+           10
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 13,
+         "type": "Shop",
+         "children": [
+          [
+           3,
+           14
+          ],
+          [
+           4,
+           14
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 14,
+         "type": "Unknown",
+         "children": [
+          [
+           3,
+           15
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 15,
+         "type": "RestSite",
+         "children": [
+          [
+           3,
+           16
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 10,
+         "type": "Monster",
+         "children": [
+          [
+           4,
+           11
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 11,
+         "type": "Unknown",
+         "children": [
+          [
+           4,
+           12
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 12,
+         "type": "RestSite",
+         "children": [
+          [
+           4,
+           13
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 13,
+         "type": "Elite",
+         "children": [
+          [
+           4,
+           14
+          ]
+         ]
+        },
+        {
+         "col": 4,
+         "row": 14,
+         "type": "Monster",
+         "children": [
+          [
+           3,
+           15
+          ]
+         ]
+        },
+        {
+         "col": 5,
+         "row": 15,
+         "type": "RestSite",
+         "children": [
+          [
+           3,
+           16
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 1,
+         "type": "Monster",
+         "children": [
+          [
+           6,
+           2
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 2,
+         "type": "Monster",
+         "children": [
+          [
+           6,
+           3
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 3,
+         "type": "Monster",
+         "children": [
+          [
+           6,
+           4
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 4,
+         "type": "Unknown",
+         "children": [
+          [
+           6,
+           5
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 5,
+         "type": "Monster",
+         "children": [
+          [
+           6,
+           6
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 6,
+         "type": "Monster",
+         "children": [
+          [
+           6,
+           7
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 7,
+         "type": "Monster",
+         "children": [
+          [
+           6,
+           8
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 8,
+         "type": "Monster",
+         "children": [
+          [
+           6,
+           9
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 9,
+         "type": "Treasure",
+         "children": [
+          [
+           6,
+           10
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 10,
+         "type": "Monster",
+         "children": [
+          [
+           6,
+           11
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 11,
+         "type": "RestSite",
+         "children": [
+          [
+           6,
+           12
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 12,
+         "type": "Monster",
+         "children": [
+          [
+           6,
+           13
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 13,
+         "type": "Elite",
+         "children": [
+          [
+           6,
+           14
+          ]
+         ]
+        },
+        {
+         "col": 6,
+         "row": 14,
+         "type": "Unknown",
+         "children": [
+          [
+           5,
+           15
+          ]
+         ]
+        },
+        {
+         "col": 3,
+         "row": 16,
+         "type": "Boss",
+         "children": []
+        }
+       ],
+       "boss": {
+        "col": 3,
+        "row": 16
+       }
+      },
+      "deck": null,
+      "held_relics": null,
+      "held_potions": null,
+      "can_discard_potions": null
+     },
+     "sample_at": "2026-09-07T18:29:17.227"
+    },
+    "brief": {
+     "observations": 82,
+     "keys": {
+      "decision": 82,
+      "act": 82,
+      "floor": 82,
+      "hp": 82,
+      "max_hp": 82,
+      "gold": 82,
+      "deck": 82,
+      "held_relics": 56,
+      "options": 82,
+      "full_map_available": 82,
+      "boss": 82,
+      "send": 82,
+      "held_potions": 40
+     },
+     "sample": {
+      "decision": "map_select",
+      "act": 1,
+      "floor": 2,
+      "hp": 79,
+      "max_hp": 80,
+      "gold": 269,
+      "deck": {
+       "size": 11,
+       "by_type": {
+        "Attack": 7,
+        "Skill": 4
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1,
+        "全身撞击": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "金色珍珠",
+        "description": "拾起时，获得150金币。"
+       }
+      ],
+      "held_potions": [
+       {
+        "slot": 0,
+        "name": "火焰药水",
+        "description": "造成20点伤害。"
+       }
+      ],
+      "options": [
+       {
+        "index": 0,
+        "type": "Shop",
+        "col": 0,
+        "row": 2,
+        "leads_to": [
+         {
+          "col": 0,
+          "row": 3,
+          "type": "Monster"
+         }
+        ]
+       }
+      ],
+      "full_map_available": true,
+      "boss": {
+       "col": 3,
+       "row": 16
+      },
+      "send": "choose_map_node(index=<list position>)"
+     },
+     "sample_at": "15:26:05"
+    }
+   }
+  },
+  "menu__character_select": {
+   "decision": "menu",
+   "variant": "menu__character_select",
+   "first_seen": "2026-09-07T17:10:01",
+   "last_seen": "2026-09-07T18:28:50.425",
+   "observations": 3,
+   "layers": {
+    "raw": {
+     "observations": 3,
+     "keys": {
+      "state_type": 3,
+      "message": 3,
+      "menu": 3
+     },
+     "sample": {
+      "state_type": "menu",
+      "message": "No run in progress. Player is in the main menu.",
+      "menu": {
+       "screen": "character_select",
+       "characters": [
+        {
+         "id": "IRONCLAD",
+         "name": "铁甲战士"
+        },
+        {
+         "id": "SILENT",
+         "name": "静默猎手"
+        },
+        {
+         "id": "REGENT",
+         "name": "储君"
+        },
+        {
+         "id": "NECROBINDER",
+         "name": "亡灵契约师"
+        },
+        {
+         "id": "DEFECT",
+         "name": "故障机器人"
+        },
+        {
+         "id": "RANDOM_CHARACTER",
+         "name": "随机"
+        }
+       ],
+       "ascension": 0,
+       "can_start_new_game": true,
+       "can_continue_game": false,
+       "can_abandon_game": false
+      }
+     },
+     "sample_at": "2026-09-07T17:10:01"
+    },
+    "normalized": {
+     "observations": 3,
+     "keys": {
+      "type": 3,
+      "decision": 3,
+      "context": 3,
+      "run": 3,
+      "message": 3,
+      "screen": 3,
+      "can_continue_game": 3,
+      "can_start_new_game": 3,
+      "can_abandon_game": 3,
+      "characters": 3,
+      "ascension": 3,
+      "menu": 3,
+      "deck": 2,
+      "held_relics": 2,
+      "held_potions": 2,
+      "can_discard_potions": 2
+     },
+     "sample": {
+      "type": "status",
+      "decision": "menu",
+      "context": {
+       "act": null,
+       "floor": null,
+       "ascension": null
+      },
+      "run": {},
+      "message": "No run in progress. Player is in the main menu.",
+      "screen": "character_select",
+      "can_continue_game": false,
+      "can_start_new_game": true,
+      "can_abandon_game": false,
+      "characters": [
+       {
+        "id": "IRONCLAD",
+        "name": "铁甲战士"
+       },
+       {
+        "id": "SILENT",
+        "name": "静默猎手"
+       },
+       {
+        "id": "REGENT",
+        "name": "储君"
+       },
+       {
+        "id": "NECROBINDER",
+        "name": "亡灵契约师"
+       },
+       {
+        "id": "DEFECT",
+        "name": "故障机器人"
+       },
+       {
+        "id": "RANDOM_CHARACTER",
+        "name": "随机"
+       }
+      ],
+      "ascension": 0,
+      "menu": {
+       "screen": "character_select",
+       "characters": [
+        {
+         "id": "IRONCLAD",
+         "name": "铁甲战士"
+        },
+        {
+         "id": "SILENT",
+         "name": "静默猎手"
+        },
+        {
+         "id": "REGENT",
+         "name": "储君"
+        },
+        {
+         "id": "NECROBINDER",
+         "name": "亡灵契约师"
+        },
+        {
+         "id": "DEFECT",
+         "name": "故障机器人"
+        },
+        {
+         "id": "RANDOM_CHARACTER",
+         "name": "随机"
+        }
+       ],
+       "ascension": 0,
+       "can_start_new_game": true,
+       "can_continue_game": false,
+       "can_abandon_game": false
+      },
+      "deck": null,
+      "held_relics": null,
+      "held_potions": null,
+      "can_discard_potions": null
+     },
+     "sample_at": "2026-09-07T18:28:48.389"
+    }
+   }
+  },
+  "menu__main_menu": {
+   "decision": "menu",
+   "variant": "menu__main_menu",
+   "first_seen": "2026-09-07T18:28:44",
+   "last_seen": "2026-09-07T18:37:37.093",
+   "observations": 3,
+   "layers": {
+    "raw": {
+     "observations": 3,
+     "keys": {
+      "state_type": 3,
+      "message": 3,
+      "menu": 3
+     },
+     "sample": {
+      "state_type": "menu",
+      "message": "No run in progress. Player is in the main menu.",
+      "menu": {
+       "screen": "main_menu",
+       "can_continue_game": false,
+       "can_abandon_game": false,
+       "can_start_new_game": true
+      }
+     },
+     "sample_at": "2026-09-07T18:28:44"
+    },
+    "normalized": {
+     "observations": 3,
+     "keys": {
+      "type": 3,
+      "decision": 3,
+      "context": 3,
+      "run": 3,
+      "message": 3,
+      "screen": 3,
+      "can_continue_game": 3,
+      "can_start_new_game": 3,
+      "can_abandon_game": 3,
+      "characters": 3,
+      "ascension": 3,
+      "menu": 3,
+      "deck": 2,
+      "held_relics": 2,
+      "held_potions": 2,
+      "can_discard_potions": 2
+     },
+     "sample": {
+      "type": "status",
+      "decision": "menu",
+      "context": {
+       "act": null,
+       "floor": null,
+       "ascension": null
+      },
+      "run": {},
+      "message": "No run in progress. Player is in the main menu.",
+      "screen": "main_menu",
+      "can_continue_game": false,
+      "can_start_new_game": true,
+      "can_abandon_game": false,
+      "characters": [],
+      "ascension": null,
+      "menu": {
+       "screen": "main_menu",
+       "can_continue_game": false,
+       "can_abandon_game": false,
+       "can_start_new_game": true
+      },
+      "deck": null,
+      "held_relics": null,
+      "held_potions": null,
+      "can_discard_potions": null
+     },
+     "sample_at": "2026-09-07T18:28:44.292"
+    }
+   }
+  },
+  "menu__unknown": {
+   "decision": "menu",
+   "variant": "menu__unknown",
+   "first_seen": "2026-09-07T18:28:38",
+   "last_seen": "2026-09-07T18:28:38.219",
+   "observations": 2,
+   "layers": {
+    "raw": {
+     "observations": 2,
+     "keys": {
+      "state_type": 2,
+      "message": 2,
+      "menu": 2
+     },
+     "sample": {
+      "state_type": "menu",
+      "message": "No run in progress. Player is in the main menu.",
+      "menu": {
+       "screen": "unknown",
+       "can_continue_game": false,
+       "can_abandon_game": false,
+       "can_start_new_game": false
+      }
+     },
+     "sample_at": "2026-09-07T18:28:38"
+    },
+    "normalized": {
+     "observations": 2,
+     "keys": {
+      "type": 2,
+      "decision": 2,
+      "context": 2,
+      "run": 2,
+      "message": 2,
+      "screen": 2,
+      "can_continue_game": 2,
+      "can_start_new_game": 2,
+      "can_abandon_game": 2,
+      "characters": 2,
+      "ascension": 2,
+      "menu": 2,
+      "deck": 1,
+      "held_relics": 1,
+      "held_potions": 1,
+      "can_discard_potions": 1
+     },
+     "sample": {
+      "type": "status",
+      "decision": "menu",
+      "context": {
+       "act": null,
+       "floor": null,
+       "ascension": null
+      },
+      "run": {},
+      "message": "No run in progress. Player is in the main menu.",
+      "screen": "unknown",
+      "can_continue_game": false,
+      "can_start_new_game": false,
+      "can_abandon_game": false,
+      "characters": [],
+      "ascension": null,
+      "menu": {
+       "screen": "unknown",
+       "can_continue_game": false,
+       "can_abandon_game": false,
+       "can_start_new_game": false
+      },
+      "deck": null,
+      "held_relics": null,
+      "held_potions": null,
+      "can_discard_potions": null
+     },
+     "sample_at": "2026-09-07T18:28:38.219"
+    }
+   }
+  },
+  "unknown": {
+   "decision": "unknown",
+   "variant": "unknown",
+   "first_seen": "2026-09-07T17:15:10",
+   "last_seen": "2026-09-07T18:28:51.429",
+   "observations": 2,
+   "layers": {
+    "raw": {
+     "observations": 2,
+     "keys": {
+      "state_type": 2,
+      "room_type": 2,
+      "run": 2
+     },
+     "sample": {
+      "state_type": "unknown",
+      "room_type": null,
+      "run": {
+       "act": 1,
+       "floor": 0,
+       "ascension": 0
+      }
+     },
+     "sample_at": "2026-09-07T17:15:10"
+    },
+    "normalized": {
+     "observations": 2,
+     "keys": {
+      "type": 2,
+      "decision": 2,
+      "context": 2,
+      "run": 2,
+      "raw_state_type": 2,
+      "message": 2,
+      "raw": 2,
+      "deck": 1,
+      "held_relics": 1,
+      "held_potions": 1,
+      "can_discard_potions": 1
+     },
+     "sample": {
+      "type": "status",
+      "decision": "unknown",
+      "context": {
+       "act": 1,
+       "floor": 0,
+       "ascension": 0
+      },
+      "run": {
+       "act": 1,
+       "floor": 0,
+       "ascension": 0
+      },
+      "raw_state_type": "unknown",
+      "message": null,
+      "raw": {
+       "state_type": "unknown",
+       "room_type": null,
+       "run": {
+        "act": 1,
+        "floor": 0,
+        "ascension": 0
+       }
+      },
+      "deck": null,
+      "held_relics": null,
+      "held_potions": null,
+      "can_discard_potions": null
+     },
+     "sample_at": "2026-09-07T18:28:51.429"
+    }
+   }
+  },
+  "card_select__choose": {
+   "decision": "card_select",
+   "variant": "card_select__choose",
+   "first_seen": "12:20:09",
+   "last_seen": "2026-09-07T18:29:10.072",
+   "observations": 2,
+   "layers": {
+    "raw": {
+     "observations": 1,
+     "keys": {
+      "state_type": 1,
+      "card_select": 1,
+      "run": 1
+     },
+     "sample": {
+      "state_type": "card_select",
+      "card_select": {
+       "screen_type": "choose",
+       "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99
+       },
+       "prompt": "Choose a card.",
+       "cards": [
+        {
+         "index": 0,
+         "id": "UNMOVABLE",
+         "name": "坚定不移",
+         "type": "Power",
+         "cost": "2",
+         "description": "翻倍你每回合第一次从卡牌中获得的格挡。",
+         "rarity": "Rare",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 1,
+         "id": "AGGRESSION",
+         "name": "好勇斗狠",
+         "type": "Power",
+         "cost": "1",
+         "description": "在你的回合开始时，将你弃牌堆的一张随机攻击牌放入你的手牌并将其升级。",
+         "rarity": "Rare",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 2,
+         "id": "IMPERVIOUS",
+         "name": "岿然不动",
+         "type": "Skill",
+         "cost": "2",
+         "description": "获得30点格挡。 消耗。",
+         "rarity": "Rare",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          },
+          {
+           "name": "消耗",
+           "description": "在战斗结束前移除。"
+          }
+         ]
+        }
+       ],
+       "can_skip": true,
+       "preview_showing": false,
+       "can_confirm": false,
+       "can_cancel": true
+      },
+      "run": {
+       "act": 1,
+       "floor": 1,
+       "ascension": 0
+      }
+     },
+     "sample_at": "2026-09-07T18:29:10.072"
+    },
+    "normalized": {
+     "observations": 1,
+     "keys": {
+      "type": 1,
+      "decision": 1,
+      "context": 1,
+      "run": 1,
+      "screen_type": 1,
+      "prompt": 1,
+      "cards": 1,
+      "player": 1,
+      "preview_showing": 1,
+      "can_skip": 1,
+      "can_confirm": 1,
+      "can_cancel": 1,
+      "card_select": 1,
+      "deck": 1,
+      "held_relics": 1,
+      "held_potions": 1,
+      "can_discard_potions": 1
+     },
+     "sample": {
+      "type": "decision",
+      "decision": "card_select",
+      "context": {
+       "act": 1,
+       "floor": 1,
+       "ascension": 0
+      },
+      "run": {
+       "act": 1,
+       "floor": 1,
+       "ascension": 0
+      },
+      "screen_type": "choose",
+      "prompt": "Choose a card.",
+      "cards": [
+       {
+        "index": 0,
+        "id": "UNMOVABLE",
+        "name": "坚定不移",
+        "type": "Power",
+        "cost": "2",
+        "description": "翻倍你每回合第一次从卡牌中获得的格挡。",
+        "rarity": "Rare",
+        "is_upgraded": false,
+        "keywords": [
+         {
+          "name": "格挡",
+          "description": "在下个回合前，阻挡伤害。"
+         }
+        ]
+       },
+       {
+        "index": 1,
+        "id": "AGGRESSION",
+        "name": "好勇斗狠",
+        "type": "Power",
+        "cost": "1",
+        "description": "在你的回合开始时，将你弃牌堆的一张随机攻击牌放入你的手牌并将其升级。",
+        "rarity": "Rare",
+        "is_upgraded": false,
+        "keywords": []
+       },
+       {
+        "index": 2,
+        "id": "IMPERVIOUS",
+        "name": "岿然不动",
+        "type": "Skill",
+        "cost": "2",
+        "description": "获得30点格挡。 消耗。",
+        "rarity": "Rare",
+        "is_upgraded": false,
+        "keywords": [
+         {
+          "name": "格挡",
+          "description": "在下个回合前，阻挡伤害。"
+         },
+         {
+          "name": "消耗",
+          "description": "在战斗结束前移除。"
+         }
+        ]
+       }
+      ],
+      "player": {
+       "character": "铁甲战士",
+       "hp": 80,
+       "max_hp": 80,
+       "gold": 99
+      },
+      "preview_showing": false,
+      "can_skip": true,
+      "can_confirm": false,
+      "can_cancel": true,
+      "card_select": {
+       "screen_type": "choose",
+       "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99
+       },
+       "prompt": "Choose a card.",
+       "cards": [
+        {
+         "index": 0,
+         "id": "UNMOVABLE",
+         "name": "坚定不移",
+         "type": "Power",
+         "cost": "2",
+         "description": "翻倍你每回合第一次从卡牌中获得的格挡。",
+         "rarity": "Rare",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 1,
+         "id": "AGGRESSION",
+         "name": "好勇斗狠",
+         "type": "Power",
+         "cost": "1",
+         "description": "在你的回合开始时，将你弃牌堆的一张随机攻击牌放入你的手牌并将其升级。",
+         "rarity": "Rare",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 2,
+         "id": "IMPERVIOUS",
+         "name": "岿然不动",
+         "type": "Skill",
+         "cost": "2",
+         "description": "获得30点格挡。 消耗。",
+         "rarity": "Rare",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          },
+          {
+           "name": "消耗",
+           "description": "在战斗结束前移除。"
+          }
+         ]
+        }
+       ],
+       "can_skip": true,
+       "preview_showing": false,
+       "can_confirm": false,
+       "can_cancel": true
+      },
+      "deck": null,
+      "held_relics": null,
+      "held_potions": null,
+      "can_discard_potions": null
+     },
+     "sample_at": "2026-09-07T18:29:10.072"
+    },
+    "brief": {
+     "observations": 1,
+     "keys": {
+      "decision": 1,
+      "act": 1,
+      "floor": 1,
+      "hp": 1,
+      "max_hp": 1,
+      "gold": 1,
+      "deck": 1,
+      "held_relics": 1,
+      "screen_type": 1,
+      "prompt": 1,
+      "can_confirm": 1,
+      "can_skip": 1,
+      "options": 1,
+      "send": 1
+     },
+     "sample": {
+      "decision": "card_select",
+      "act": 1,
+      "floor": 5,
+      "hp": 65,
+      "max_hp": 80,
+      "gold": 24,
+      "deck": {
+       "size": 15,
+       "by_type": {
+        "Attack": 10,
+        "Skill": 4,
+        "Power": 1
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1,
+        "愤怒": 1,
+        "闪电霹雳": 1,
+        "惊逃": 1,
+        "御血术": 1,
+        "突破": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "涅奥骨骰",
+        "description": "拾起时，获得2件随机涅奥遗物。将1张随机诅咒加入你的牌组。"
+       },
+       {
+        "name": "卷轴箱",
+        "description": "拾起时，从2个卡牌包中选择1包加入你的牌组。"
+       },
+       {
+        "name": "石炉加湿器",
+        "description": "每当你在休息处休息时，将你的最大生命值提升5点。"
+       }
+      ],
+      "screen_type": "choose",
+      "prompt": "Choose a card.",
+      "can_confirm": false,
+      "can_skip": true,
+      "options": [
+       {
+        "index": 0,
+        "name": "势不可当",
+        "type": "Power",
+        "cost": "2",
+        "is_upgraded": false
+       },
+       {
+        "index": 1,
+        "name": "撕裂",
+        "type": "Power",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 2,
+        "name": "惊逃",
+        "type": "Power",
+        "cost": "2",
+        "is_upgraded": false
+       }
+      ],
+      "send": "select_card(index=) then confirm_selection(); cancel_selection() to skip"
+     },
+     "sample_at": "12:20:09"
+    }
+   }
+  },
+  "card_select__NCombatPileCardSelectScreen": {
+   "decision": "card_select",
+   "variant": "card_select__NCombatPileCardSelectScreen",
+   "first_seen": "2026-09-07T18:32:34.023",
+   "last_seen": "21:43:33",
+   "observations": 6,
+   "layers": {
+    "raw": {
+     "observations": 2,
+     "keys": {
+      "state_type": 2,
+      "card_select": 2,
+      "run": 2
+     },
+     "sample": {
+      "state_type": "card_select",
+      "card_select": {
+       "screen_type": "NCombatPileCardSelectScreen",
+       "player": {
+        "character": "铁甲战士",
+        "hp": 75,
+        "max_hp": 80,
+        "gold": 119
+       },
+       "prompt": "选择一张牌放到你的抽牌堆顶。",
+       "cards": [
+        {
+         "index": 0,
+         "id": "DEFEND_IRONCLAD",
+         "name": "防御",
+         "type": "Skill",
+         "cost": "1",
+         "description": "获得5点格挡。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 1,
+         "id": "DEFEND_IRONCLAD",
+         "name": "防御",
+         "type": "Skill",
+         "cost": "1",
+         "description": "获得5点格挡。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 2,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 3,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 4,
+         "id": "BASH",
+         "name": "痛击",
+         "type": "Attack",
+         "cost": "2",
+         "description": "造成8点伤害。 给予2层易伤。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "易伤",
+           "description": "易伤的生物从攻击中受到的伤害增加50%。"
+          }
+         ]
+        }
+       ],
+       "preview_showing": false,
+       "can_cancel": false,
+       "can_confirm": false
+      },
+      "run": {
+       "act": 1,
+       "floor": 3,
+       "ascension": 0
+      }
+     },
+     "sample_at": "2026-09-07T18:32:34.023"
+    },
+    "normalized": {
+     "observations": 2,
+     "keys": {
+      "type": 2,
+      "decision": 2,
+      "context": 2,
+      "run": 2,
+      "screen_type": 2,
+      "prompt": 2,
+      "cards": 2,
+      "player": 2,
+      "preview_showing": 2,
+      "can_skip": 2,
+      "can_confirm": 2,
+      "can_cancel": 2,
+      "card_select": 2,
+      "deck": 2,
+      "held_relics": 2,
+      "held_potions": 2,
+      "can_discard_potions": 2
+     },
+     "sample": {
+      "type": "decision",
+      "decision": "card_select",
+      "context": {
+       "act": 1,
+       "floor": 3,
+       "ascension": 0
+      },
+      "run": {
+       "act": 1,
+       "floor": 3,
+       "ascension": 0
+      },
+      "screen_type": "NCombatPileCardSelectScreen",
+      "prompt": "选择一张牌放到你的抽牌堆顶。",
+      "cards": [
+       {
+        "index": 0,
+        "id": "DEFEND_IRONCLAD",
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "description": "获得5点格挡。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+         {
+          "name": "格挡",
+          "description": "在下个回合前，阻挡伤害。"
+         }
+        ]
+       },
+       {
+        "index": 1,
+        "id": "DEFEND_IRONCLAD",
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "description": "获得5点格挡。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+         {
+          "name": "格挡",
+          "description": "在下个回合前，阻挡伤害。"
+         }
+        ]
+       },
+       {
+        "index": 2,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "description": "造成6点伤害。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+       },
+       {
+        "index": 3,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "description": "造成6点伤害。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+       },
+       {
+        "index": 4,
+        "id": "BASH",
+        "name": "痛击",
+        "type": "Attack",
+        "cost": "2",
+        "description": "造成8点伤害。 给予2层易伤。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+         {
+          "name": "易伤",
+          "description": "易伤的生物从攻击中受到的伤害增加50%。"
+         }
+        ]
+       }
+      ],
+      "player": {
+       "character": "铁甲战士",
+       "hp": 75,
+       "max_hp": 80,
+       "gold": 119
+      },
+      "preview_showing": false,
+      "can_skip": false,
+      "can_confirm": false,
+      "can_cancel": false,
+      "card_select": {
+       "screen_type": "NCombatPileCardSelectScreen",
+       "player": {
+        "character": "铁甲战士",
+        "hp": 75,
+        "max_hp": 80,
+        "gold": 119
+       },
+       "prompt": "选择一张牌放到你的抽牌堆顶。",
+       "cards": [
+        {
+         "index": 0,
+         "id": "DEFEND_IRONCLAD",
+         "name": "防御",
+         "type": "Skill",
+         "cost": "1",
+         "description": "获得5点格挡。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 1,
+         "id": "DEFEND_IRONCLAD",
+         "name": "防御",
+         "type": "Skill",
+         "cost": "1",
+         "description": "获得5点格挡。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "格挡",
+           "description": "在下个回合前，阻挡伤害。"
+          }
+         ]
+        },
+        {
+         "index": 2,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 3,
+         "id": "STRIKE_IRONCLAD",
+         "name": "打击",
+         "type": "Attack",
+         "cost": "1",
+         "description": "造成6点伤害。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": []
+        },
+        {
+         "index": 4,
+         "id": "BASH",
+         "name": "痛击",
+         "type": "Attack",
+         "cost": "2",
+         "description": "造成8点伤害。 给予2层易伤。",
+         "rarity": "Basic",
+         "is_upgraded": false,
+         "keywords": [
+          {
+           "name": "易伤",
+           "description": "易伤的生物从攻击中受到的伤害增加50%。"
+          }
+         ]
+        }
+       ],
+       "preview_showing": false,
+       "can_cancel": false,
+       "can_confirm": false
+      },
+      "deck": null,
+      "held_relics": null,
+      "held_potions": null,
+      "can_discard_potions": null
+     },
+     "sample_at": "2026-09-07T18:32:34.023"
+    },
+    "brief": {
+     "observations": 4,
+     "keys": {
+      "decision": 4,
+      "act": 4,
+      "floor": 4,
+      "hp": 4,
+      "max_hp": 4,
+      "gold": 4,
+      "deck": 4,
+      "screen_type": 4,
+      "prompt": 4,
+      "can_confirm": 4,
+      "options": 4,
+      "send": 4
+     },
+     "sample": {
+      "decision": "card_select",
+      "act": 1,
+      "floor": 2,
+      "hp": 71,
+      "max_hp": 80,
+      "gold": 99,
+      "deck": {
+       "size": 11,
+       "by_type": {
+        "Attack": 7,
+        "Skill": 4
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1,
+        "涅奥之怒": 1
+       },
+       "upgraded": 0
+      },
+      "screen_type": "NCombatPileCardSelectScreen",
+      "prompt": "选择至多2张牌放入你的手牌。",
+      "can_confirm": true,
+      "options": [
+       {
+        "index": 0,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 1,
+        "name": "痛击",
+        "type": "Attack",
+        "cost": "2",
+        "is_upgraded": false
+       },
+       {
+        "index": 2,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 3,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 4,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 5,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 6,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       }
+      ],
+      "send": "select_card(index=) then confirm_selection()"
+     },
+     "sample_at": "21:16:08"
+    }
+   }
+  },
+  "combat_play__?": {
+   "decision": "combat_play",
+   "variant": "combat_play__?",
+   "first_seen": "12:13:54",
+   "last_seen": "21:50:26",
+   "observations": 632,
+   "layers": {
+    "brief": {
+     "observations": 632,
+     "keys": {
+      "decision": 632,
+      "act": 632,
+      "floor": 632,
+      "hp": 632,
+      "max_hp": 632,
+      "gold": 632,
+      "deck": 632,
+      "held_relics": 631,
+      "round": 632,
+      "energy": 632,
+      "max_energy": 632,
+      "block": 632,
+      "hand": 632,
+      "enemies": 632,
+      "piles": 632,
+      "potions": 632,
+      "status": 632,
+      "relics": 632,
+      "send": 632,
+      "held_potions": 372
+     },
+     "sample": {
+      "decision": "combat_play",
+      "act": 1,
+      "floor": 4,
+      "hp": 79,
+      "max_hp": 80,
+      "gold": 269,
+      "deck": {
+       "size": 11,
+       "by_type": {
+        "Attack": 7,
+        "Skill": 4
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1,
+        "全身撞击": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "金色珍珠",
+        "description": "拾起时，获得150金币。"
+       }
+      ],
+      "held_potions": [
+       {
+        "slot": 0,
+        "name": "火焰药水",
+        "description": "造成20点伤害。"
+       }
+      ],
+      "round": 1,
+      "energy": 3,
+      "max_energy": 3,
+      "block": 0,
+      "hand": [
+       {
+        "index": 0,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "can_play": true,
+        "target_type": "AnyEnemy",
+        "description": "造成6点伤害。"
+       },
+       {
+        "index": 1,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "can_play": true,
+        "target_type": "AnyEnemy",
+        "description": "造成6点伤害。"
+       },
+       {
+        "index": 2,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "can_play": true,
+        "target_type": "Self",
+        "description": "获得5点格挡。"
+       }
+      ],
+      "enemies": [
+       {
+        "entity_id": "SHRINKER_BEETLE_0",
+        "hp": 38,
+        "max_hp": 38,
+        "block": 0,
+        "intents": [
+         {
+          "type": "DebuffStrong",
+          "label": "",
+          "title": "策略",
+          "description": "这个敌人将要对你施加一个负面效果。"
+         }
+        ],
+        "status": []
+       }
+      ],
+      "piles": {
+       "draw": 8,
+       "discard": 0,
+       "exhaust": 0
+      },
+      "potions": [
+       {
+        "slot": 0,
+        "id": "FIRE_POTION",
+        "name": "火焰药水",
+        "description": "造成20点伤害。",
+        "can_use_in_combat": true,
+        "target_type": "AnyEnemy"
+       }
+      ],
+      "status": [],
+      "relics": [
+       {
+        "id": "BURNING_BLOOD",
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "id": "GOLDEN_PEARL",
+        "name": "金色珍珠",
+        "description": "拾起时，获得150金币。"
+       }
+      ],
+      "send": "play_card(card_index=<the card's index field>, target=<an entity_id STRING from enemies, only when target_type is AnyEnemy>), use_potion(slot=<the potion's slot field>, target=<entity_id if its target_type is AnyEnemy>), or end_turn()"
+     },
+     "sample_at": "15:26:09"
+    }
+   }
+  },
+  "shop": {
+   "decision": "shop",
+   "variant": "shop",
+   "first_seen": "12:16:31",
+   "last_seen": "21:42:08",
+   "observations": 14,
+   "layers": {
+    "brief": {
+     "observations": 14,
+     "keys": {
+      "decision": 14,
+      "act": 14,
+      "floor": 14,
+      "hp": 14,
+      "max_hp": 14,
+      "gold": 14,
+      "deck": 14,
+      "held_relics": 12,
+      "held_potions": 10,
+      "options": 14,
+      "send": 14
+     },
+     "sample": {
+      "decision": "shop",
+      "act": 1,
+      "floor": 3,
+      "hp": 79,
+      "max_hp": 80,
+      "gold": 269,
+      "deck": {
+       "size": 11,
+       "by_type": {
+        "Attack": 7,
+        "Skill": 4
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1,
+        "全身撞击": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "金色珍珠",
+        "description": "拾起时，获得150金币。"
+       }
+      ],
+      "held_potions": [
+       {
+        "slot": 0,
+        "name": "火焰药水",
+        "description": "造成20点伤害。"
+       }
+      ],
+      "options": [
+       {
+        "index": 0,
+        "category": "card",
+        "cost": 38,
+        "can_afford": true,
+        "is_stocked": true,
+        "on_sale": true,
+        "card_name": "怨恨",
+        "card_type": "Attack",
+        "card_rarity": "Uncommon"
+       },
+       {
+        "index": 1,
+        "category": "card",
+        "cost": 144,
+        "can_afford": true,
+        "is_stocked": true,
+        "on_sale": false,
+        "card_name": "狂宴",
+        "card_type": "Attack",
+        "card_rarity": "Rare"
+       },
+       {
+        "index": 2,
+        "category": "card",
+        "cost": 50,
+        "can_afford": true,
+        "is_stocked": true,
+        "on_sale": false,
+        "card_name": "放血",
+        "card_type": "Skill",
+        "card_rarity": "Common"
+       },
+       {
+        "index": 3,
+        "category": "card",
+        "cost": 50,
+        "can_afford": true,
+        "is_stocked": true,
+        "on_sale": false,
+        "card_name": "血墙",
+        "card_type": "Skill",
+        "card_rarity": "Common"
+       },
+       {
+        "index": 4,
+        "category": "card",
+        "cost": 74,
+        "can_afford": true,
+        "is_stocked": true,
+        "on_sale": false,
+        "card_name": "惊逃",
+        "card_type": "Power",
+        "card_rarity": "Uncommon"
+       },
+       {
+        "index": 5,
+        "category": "card",
+        "cost": 85,
+        "can_afford": true,
+        "is_stocked": true,
+        "on_sale": false,
+        "card_name": "万向斩",
+        "card_type": "Attack",
+        "card_rarity": "Uncommon"
+       },
+       {
+        "index": 6,
+        "category": "card",
+        "cost": 165,
+        "can_afford": true,
+        "is_stocked": true,
+        "on_sale": false,
+        "card_name": "怀旧",
+        "card_type": "Power",
+        "card_rarity": "Rare"
+       },
+       {
+        "index": 7,
+        "category": "relic",
+        "cost": 186,
+        "can_afford": true,
+        "is_stocked": true,
+        "relic_name": "古茶具套装"
+       },
+       {
+        "index": 8,
+        "category": "relic",
+        "cost": 235,
+        "can_afford": true,
+        "is_stocked": true,
+        "relic_name": "船夹板"
+       },
+       {
+        "index": 9,
+        "category": "relic",
+        "cost": 173,
+        "can_afford": true,
+        "is_stocked": true,
+        "relic_name": "工具箱"
+       },
+       {
+        "index": 10,
+        "category": "potion",
+        "cost": 102,
+        "can_afford": true,
+        "is_stocked": true,
+        "potion_name": "异蛇之油"
+       },
+       {
+        "index": 11,
+        "category": "potion",
+        "cost": 72,
+        "can_afford": true,
+        "is_stocked": true,
+        "potion_name": "铁心药水"
+       },
+       {
+        "index": 12,
+        "category": "potion",
+        "cost": 50,
+        "can_afford": true,
+        "is_stocked": true,
+        "potion_name": "无色药水"
+       },
+       {
+        "index": 13,
+        "category": "card_removal",
+        "cost": 75,
+        "can_afford": true,
+        "is_stocked": true
+       }
+      ],
+      "send": "shop_purchase(index=<index>) where the entry is is_stocked and can_afford, or proceed()"
+     },
+     "sample_at": "15:26:06"
+    }
+   }
+  },
+  "treasure": {
+   "decision": "treasure",
+   "variant": "treasure",
+   "first_seen": "12:26:07",
+   "last_seen": "21:38:48",
+   "observations": 15,
+   "layers": {
+    "brief": {
+     "observations": 15,
+     "keys": {
+      "decision": 15,
+      "act": 15,
+      "floor": 15,
+      "hp": 15,
+      "max_hp": 15,
+      "gold": 15,
+      "deck": 15,
+      "held_relics": 12,
+      "options": 15,
+      "message": 15,
+      "send": 15,
+      "held_potions": 9
+     },
+     "sample": {
+      "decision": "treasure",
+      "act": 1,
+      "floor": 10,
+      "hp": 17,
+      "max_hp": 80,
+      "gold": 262,
+      "deck": {
+       "size": 17,
+       "by_type": {
+        "Attack": 10,
+        "Skill": 6,
+        "Power": 1
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1,
+        "祭品": 1,
+        "坚毅": 1,
+        "愤怒": 2,
+        "双重打击": 1,
+        "闪电霹雳": 1,
+        "撕裂": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "奥术卷轴",
+        "description": "拾起时，将一张随机稀有牌加入你的牌组。"
+       },
+       {
+        "name": "锚",
+        "description": "每场战斗开始时获得10点格挡。"
+       },
+       {
+        "name": "准备背包",
+        "description": "在每场战斗开始时，额外抽2张牌。"
+       }
+      ],
+      "held_potions": [
+       {
+        "slot": 0,
+        "name": "敏捷药水",
+        "description": "获得2点敏捷。"
+       },
+       {
+        "slot": 1,
+        "name": "明晰提取物",
+        "description": "抽1张牌。在你的下3个回合开始时，额外抽1张牌。"
+       },
+       {
+        "slot": 2,
+        "name": "再生药水",
+        "description": "获得5层再生。"
+       }
+      ],
+      "options": [],
+      "message": "Opening chest...",
+      "send": "claim_treasure_relic(index=) / select_relic(index=) / proceed()"
+     },
+     "sample_at": "15:48:29"
+    }
+   }
+  },
+  "card_select__transform": {
+   "decision": "card_select",
+   "variant": "card_select__transform",
+   "first_seen": "12:25:32",
+   "last_seen": "15:48:41",
+   "observations": 5,
+   "layers": {
+    "brief": {
+     "observations": 5,
+     "keys": {
+      "decision": 5,
+      "act": 5,
+      "floor": 5,
+      "hp": 5,
+      "max_hp": 5,
+      "gold": 5,
+      "deck": 5,
+      "held_relics": 5,
+      "held_potions": 5,
+      "screen_type": 5,
+      "prompt": 5,
+      "can_confirm": 5,
+      "can_skip": 5,
+      "options": 5,
+      "send": 5
+     },
+     "sample": {
+      "decision": "card_select",
+      "act": 1,
+      "floor": 11,
+      "hp": 45,
+      "max_hp": 98,
+      "gold": 193,
+      "deck": {
+       "size": 17,
+       "by_type": {
+        "Attack": 10,
+        "Skill": 6,
+        "Power": 1
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1,
+        "祭品": 1,
+        "坚毅": 1,
+        "愤怒": 2,
+        "双重打击": 1,
+        "闪电霹雳": 1,
+        "撕裂": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "奥术卷轴",
+        "description": "拾起时，将一张随机稀有牌加入你的牌组。"
+       },
+       {
+        "name": "锚",
+        "description": "每场战斗开始时获得10点格挡。"
+       },
+       {
+        "name": "准备背包",
+        "description": "在每场战斗开始时，额外抽2张牌。"
+       },
+       {
+        "name": "芒果",
+        "description": "拾起时，将你的最大生命值提升14。"
+       }
+      ],
+      "held_potions": [
+       {
+        "slot": 0,
+        "name": "敏捷药水",
+        "description": "获得2点敏捷。"
+       },
+       {
+        "slot": 1,
+        "name": "明晰提取物",
+        "description": "抽1张牌。在你的下3个回合开始时，额外抽1张牌。"
+       },
+       {
+        "slot": 2,
+        "name": "再生药水",
+        "description": "获得5层再生。"
+       }
+      ],
+      "screen_type": "transform",
+      "prompt": "选择1张牌来变化。",
+      "can_confirm": false,
+      "can_skip": false,
+      "options": [
+       {
+        "index": 0,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 1,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 2,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 3,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 4,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 5,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 6,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 7,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 8,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 9,
+        "name": "痛击",
+        "type": "Attack",
+        "cost": "2",
+        "is_upgraded": false
+       },
+       {
+        "index": 10,
+        "name": "祭品",
+        "type": "Skill",
+        "cost": "0",
+        "is_upgraded": false
+       },
+       {
+        "index": 11,
+        "name": "坚毅",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 12,
+        "name": "愤怒",
+        "type": "Attack",
+        "cost": "0",
+        "is_upgraded": false
+       },
+       {
+        "index": 13,
+        "name": "双重打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 14,
+        "name": "愤怒",
+        "type": "Attack",
+        "cost": "0",
+        "is_upgraded": false
+       },
+       {
+        "index": 15,
+        "name": "闪电霹雳",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 16,
+        "name": "撕裂",
+        "type": "Power",
+        "cost": "1",
+        "is_upgraded": false
+       }
+      ],
+      "send": "select_card(index=) then confirm_selection(); cancel_selection() to skip"
+     },
+     "sample_at": "15:48:36"
+    }
+   }
+  },
+  "event_choice__?__False": {
+   "decision": "event_choice",
+   "variant": "event_choice__?__False",
+   "first_seen": "20:44:03",
+   "last_seen": "21:45:42",
+   "observations": 20,
+   "layers": {
+    "brief": {
+     "observations": 20,
+     "keys": {
+      "decision": 20,
+      "act": 20,
+      "floor": 20,
+      "hp": 20,
+      "max_hp": 20,
+      "gold": 20,
+      "deck": 20,
+      "event": 20,
+      "text": 20,
+      "in_dialogue": 20,
+      "options": 20,
+      "send": 20
+     },
+     "sample": {
+      "decision": "event_choice",
+      "act": 1,
+      "floor": 1,
+      "hp": 80,
+      "max_hp": 80,
+      "gold": 99,
+      "deck": {
+       "size": 10,
+       "by_type": {
+        "Attack": 6,
+        "Skill": 4
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1
+       },
+       "upgraded": 0
+      },
+      "event": "涅奥",
+      "text": null,
+      "in_dialogue": false,
+      "options": [
+       {
+        "index": 0,
+        "title": "奥术卷轴",
+        "description": "获得一张随机稀有牌。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false
+       },
+       {
+        "index": 1,
+        "title": "钓鱼竿",
+        "description": "每3场普通战斗，随机升级你牌组中的一张牌。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false
+       },
+       {
+        "index": 2,
+        "title": "诅咒珍珠",
+        "description": "获得一张贪婪，获得333金币。",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false
+       }
+      ],
+      "send": "choose_event_option(index=<position among UNLOCKED>) or advance_dialogue()"
+     },
+     "sample_at": "20:56:14"
+    }
+   }
+  },
+  "rest_site": {
+   "decision": "rest_site",
+   "variant": "rest_site",
+   "first_seen": "12:25:59",
+   "last_seen": "21:46:07",
+   "observations": 32,
+   "layers": {
+    "brief": {
+     "observations": 32,
+     "keys": {
+      "decision": 32,
+      "act": 32,
+      "floor": 32,
+      "hp": 32,
+      "max_hp": 32,
+      "gold": 32,
+      "deck": 32,
+      "options": 32,
+      "send": 32,
+      "held_relics": 20,
+      "held_potions": 16
+     },
+     "sample": {
+      "decision": "rest_site",
+      "act": 1,
+      "floor": 9,
+      "hp": 28,
+      "max_hp": 80,
+      "gold": 91,
+      "deck": {
+       "size": 17,
+       "by_type": {
+        "Attack": 11,
+        "Skill": 5,
+        "Power": 1
+       },
+       "cards": {
+        "打击": 4,
+        "防御": 4,
+        "痛击": 1,
+        "愤怒": 1,
+        "闪电霹雳": 2,
+        "惊逃": 1,
+        "御血术": 1,
+        "突破": 1,
+        "耸肩无视": 1,
+        "恶魔之焰": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "涅奥骨骰",
+        "description": "拾起时，获得2件随机涅奥遗物。将1张随机诅咒加入你的牌组。"
+       },
+       {
+        "name": "卷轴箱",
+        "description": "拾起时，从2个卡牌包中选择1包加入你的牌组。"
+       },
+       {
+        "name": "石炉加湿器",
+        "description": "每当你在休息处休息时，将你的最大生命值提升5点。"
+       }
+      ],
+      "held_potions": [
+       {
+        "slot": 0,
+        "name": "缚魂药水",
+        "description": "给予所有敌人1层虚弱和1层易伤。"
+       }
+      ],
+      "options": [
+       {
+        "index": 0,
+        "id": "HEAL",
+        "name": "休息",
+        "is_enabled": true
+       },
+       {
+        "index": 1,
+        "id": "SMITH",
+        "name": "锻造",
+        "is_enabled": true
+       }
+      ],
+      "send": "choose_rest_option(index=<position among ENABLED>) or proceed()"
+     },
+     "sample_at": "12:25:59"
+    }
+   }
+  },
+  "card_select__NDeckEnchantSelectScreen": {
+   "decision": "card_select",
+   "variant": "card_select__NDeckEnchantSelectScreen",
+   "first_seen": "13:45:56",
+   "last_seen": "21:41:57",
+   "observations": 4,
+   "layers": {
+    "brief": {
+     "observations": 4,
+     "keys": {
+      "decision": 4,
+      "act": 4,
+      "floor": 4,
+      "hp": 4,
+      "max_hp": 4,
+      "gold": 4,
+      "deck": 4,
+      "screen_type": 4,
+      "prompt": 4,
+      "can_confirm": 4,
+      "options": 4,
+      "send": 4,
+      "held_relics": 2,
+      "held_potions": 2,
+      "can_skip": 2
+     },
+     "sample": {
+      "decision": "card_select",
+      "act": 2,
+      "floor": 21,
+      "hp": 53,
+      "max_hp": 80,
+      "gold": 306,
+      "deck": {
+       "size": 17,
+       "by_type": {
+        "Attack": 7,
+        "Skill": 7,
+        "Quest": 1,
+        "Power": 2
+       },
+       "cards": {
+        "打击": 3,
+        "防御": 4,
+        "痛击+": 1,
+        "欺凌": 1,
+        "藏宝图": 1,
+        "挑衅": 1,
+        "坚毅": 1,
+        "狂怒": 1,
+        "双重打击+": 1,
+        "剑柄打击+": 1,
+        "薪火之源": 1,
+        "狱火": 1
+       },
+       "upgraded": 3
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "精准剪刀",
+        "description": "拾起时，从你的牌组中移除1张牌。"
+       },
+       {
+        "name": "药水腰带",
+        "description": "拾起时，获得2个药水栏位。"
+       },
+       {
+        "name": "佩尔之翼",
+        "description": "你可以将你的卡牌奖励献祭给佩尔。每献祭2次，就能获得一件遗物。"
+       }
+      ],
+      "held_potions": [
+       {
+        "slot": 0,
+        "name": "异鱼之油",
+        "description": "获得1点力量和1点敏捷。"
+       }
+      ],
+      "screen_type": "NDeckEnchantSelectScreen",
+      "prompt": "选择1张牌来附魔。",
+      "can_confirm": false,
+      "can_skip": false,
+      "options": [
+       {
+        "index": 0,
+        "name": "薪火之源",
+        "type": "Power",
+        "cost": "2",
+        "is_upgraded": false
+       },
+       {
+        "index": 1,
+        "name": "狱火",
+        "type": "Power",
+        "cost": "1",
+        "is_upgraded": false
+       }
+      ],
+      "send": "select_card(index=) then confirm_selection(); cancel_selection() to skip"
+     },
+     "sample_at": "13:45:56"
+    }
+   }
+  },
+  "overlay__?": {
+   "decision": "overlay",
+   "variant": "overlay__?",
+   "first_seen": "12:00:48",
+   "last_seen": "12:00:51",
+   "observations": 8,
+   "layers": {
+    "brief": {
+     "observations": 8,
+     "keys": {
+      "decision": 8,
+      "act": 8,
+      "floor": 8,
+      "hp": 8,
+      "max_hp": 8,
+      "gold": 8,
+      "deck": 8,
+      "raw_keys": 8,
+      "send": 8
+     },
+     "sample": {
+      "decision": "overlay",
+      "act": 1,
+      "floor": 1,
+      "hp": null,
+      "max_hp": null,
+      "gold": null,
+      "deck": {
+       "size": 10,
+       "by_type": {
+        "Attack": 6,
+        "Skill": 4
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1
+       },
+       "upgraded": 0
+      },
+      "raw_keys": [
+       "context",
+       "decision",
+       "deck",
+       "overlay",
+       "run",
+       "type"
+      ],
+      "send": "no template for this decision - see action_adapter"
+     },
+     "sample_at": "12:00:48"
+    }
+   }
+  },
+  "card_select__bundle": {
+   "decision": "card_select",
+   "variant": "card_select__bundle",
+   "first_seen": "12:12:15",
+   "last_seen": "12:13:40",
+   "observations": 8,
+   "layers": {
+    "brief": {
+     "observations": 8,
+     "keys": {
+      "decision": 8,
+      "act": 8,
+      "floor": 8,
+      "hp": 8,
+      "max_hp": 8,
+      "gold": 8,
+      "deck": 8,
+      "held_relics": 8,
+      "screen_type": 8,
+      "prompt": 8,
+      "can_confirm": 8,
+      "can_skip": 8,
+      "options": 8,
+      "send": 8
+     },
+     "sample": {
+      "decision": "card_select",
+      "act": 1,
+      "floor": 1,
+      "hp": 80,
+      "max_hp": 80,
+      "gold": 99,
+      "deck": {
+       "size": 10,
+       "by_type": {
+        "Attack": 6,
+        "Skill": 4
+       },
+       "cards": {
+        "打击": 5,
+        "防御": 4,
+        "痛击": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "涅奥骨骰",
+        "description": "拾起时，获得2件随机涅奥遗物。将1张随机诅咒加入你的牌组。"
+       },
+       {
+        "name": "卷轴箱",
+        "description": "拾起时，从2个卡牌包中选择1包加入你的牌组。"
+       }
+      ],
+      "screen_type": "bundle",
+      "prompt": "Choose one bundle.",
+      "can_confirm": false,
+      "can_skip": false,
+      "options": [
+       {
+        "index": 0,
+        "name": "愤怒 + 闪电霹雳 + 惊逃"
+       },
+       {
+        "index": 1,
+        "name": "血墙 + 全身撞击 + 狂怒"
+       }
+      ],
+      "send": "select_card(index=) then confirm_selection(); cancel_selection() to skip"
+     },
+     "sample_at": "12:12:15"
+    }
+   }
+  },
+  "card_select__select": {
+   "decision": "card_select",
+   "variant": "card_select__select",
+   "first_seen": "12:16:36",
+   "last_seen": "13:51:13",
+   "observations": 8,
+   "layers": {
+    "brief": {
+     "observations": 8,
+     "keys": {
+      "decision": 8,
+      "act": 8,
+      "floor": 8,
+      "hp": 8,
+      "max_hp": 8,
+      "gold": 8,
+      "deck": 8,
+      "held_relics": 8,
+      "screen_type": 8,
+      "prompt": 8,
+      "can_confirm": 8,
+      "can_skip": 8,
+      "options": 8,
+      "send": 8,
+      "held_potions": 4
+     },
+     "sample": {
+      "decision": "card_select",
+      "act": 1,
+      "floor": 7,
+      "hp": 53,
+      "max_hp": 80,
+      "gold": 167,
+      "deck": {
+       "size": 14,
+       "by_type": {
+        "Attack": 7,
+        "Skill": 6,
+        "Quest": 1
+       },
+       "cards": {
+        "打击": 4,
+        "防御": 4,
+        "痛击": 1,
+        "欺凌": 1,
+        "藏宝图": 1,
+        "拆卸": 1,
+        "挑衅": 1,
+        "坚毅": 1
+       },
+       "upgraded": 0
+      },
+      "held_relics": [
+       {
+        "name": "燃烧之血",
+        "description": "在战斗结束时，回复6点生命。"
+       },
+       {
+        "name": "精准剪刀",
+        "description": "拾起时，从你的牌组中移除1张牌。"
+       }
+      ],
+      "held_potions": [
+       {
+        "slot": 0,
+        "name": "再生药水",
+        "description": "获得5层再生。"
+       }
+      ],
+      "screen_type": "select",
+      "prompt": "选择1张牌来移除。",
+      "can_confirm": false,
+      "can_skip": false,
+      "options": [
+       {
+        "index": 0,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 1,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 2,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 3,
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 4,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 5,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 6,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 7,
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 8,
+        "name": "痛击",
+        "type": "Attack",
+        "cost": "2",
+        "is_upgraded": false
+       },
+       {
+        "index": 9,
+        "name": "欺凌",
+        "type": "Attack",
+        "cost": "0",
+        "is_upgraded": false
+       },
+       {
+        "index": 10,
+        "name": "藏宝图",
+        "type": "Quest",
+        "cost": "0",
+        "is_upgraded": false
+       },
+       {
+        "index": 11,
+        "name": "拆卸",
+        "type": "Attack",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 12,
+        "name": "挑衅",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       },
+       {
+        "index": 13,
+        "name": "坚毅",
+        "type": "Skill",
+        "cost": "1",
+        "is_upgraded": false
+       }
+      ],
+      "send": "select_card(index=) then confirm_selection(); cancel_selection() to skip"
+     },
+     "sample_at": "13:11:03"
+    }
+   }
+  }
+ }
+}

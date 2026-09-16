@@ -1,0 +1,48 @@
+{
+ "id": "BASH",
+ "name": "痛击",
+ "type": "Attack",
+ "rarity": "Basic",
+ "cost": "2",
+ "target_type": "AnyEnemy",
+ "gains_block": false,
+ "is_upgraded": false,
+ "description": "造成8点伤害。 给予2层易伤。",
+ "keywords": [
+  {
+   "name": "易伤",
+   "description": "易伤的生物从攻击中受到的伤害增加50%。"
+  }
+ ]
+}
+
+{
+ "id": "DEFEND_IRONCLAD",
+ "name": "防御",
+ "type": "Skill",
+ "rarity": "Basic",
+ "cost": "1",
+ "target_type": "Self",
+ "gains_block": true,
+ "is_upgraded": false,
+ "description": "获得5点格挡。",
+ "keywords": [
+  {
+   "name": "格挡",
+   "description": "在下个回合前，阻挡伤害。"
+  }
+ ]
+}
+
+{
+ "id": "STRIKE_IRONCLAD",
+ "name": "打击",
+ "type": "Attack",
+ "rarity": "Basic",
+ "cost": "1",
+ "target_type": "AnyEnemy",
+ "gains_block": false,
+ "is_upgraded": false,
+ "description": "造成6点伤害。",
+ "keywords": []
+}

@@ -1,0 +1,476 @@
+{
+  "captured_at": "2026-09-07T17:18:47",
+  "decision": "card_select",
+  "raw_state_type": "card_select",
+  "raw": {
+    "state_type": "card_select",
+    "card_select": {
+      "screen_type": "upgrade",
+      "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99
+      },
+      "prompt": "选择1张牌来升级。",
+      "cards": [
+        {
+          "index": 0,
+          "id": "STRIKE_IRONCLAD",
+          "name": "打击",
+          "type": "Attack",
+          "cost": "1",
+          "description": "造成6点伤害。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 1,
+          "id": "STRIKE_IRONCLAD",
+          "name": "打击",
+          "type": "Attack",
+          "cost": "1",
+          "description": "造成6点伤害。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 2,
+          "id": "STRIKE_IRONCLAD",
+          "name": "打击",
+          "type": "Attack",
+          "cost": "1",
+          "description": "造成6点伤害。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 3,
+          "id": "STRIKE_IRONCLAD",
+          "name": "打击",
+          "type": "Attack",
+          "cost": "1",
+          "description": "造成6点伤害。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 4,
+          "id": "STRIKE_IRONCLAD",
+          "name": "打击",
+          "type": "Attack",
+          "cost": "1",
+          "description": "造成6点伤害。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 5,
+          "id": "DEFEND_IRONCLAD",
+          "name": "防御",
+          "type": "Skill",
+          "cost": "1",
+          "description": "获得5点格挡。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "格挡",
+              "description": "在下个回合前，阻挡伤害。"
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "id": "DEFEND_IRONCLAD",
+          "name": "防御",
+          "type": "Skill",
+          "cost": "1",
+          "description": "获得5点格挡。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "格挡",
+              "description": "在下个回合前，阻挡伤害。"
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "id": "DEFEND_IRONCLAD",
+          "name": "防御",
+          "type": "Skill",
+          "cost": "1",
+          "description": "获得5点格挡。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "格挡",
+              "description": "在下个回合前，阻挡伤害。"
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "id": "DEFEND_IRONCLAD",
+          "name": "防御",
+          "type": "Skill",
+          "cost": "1",
+          "description": "获得5点格挡。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "格挡",
+              "description": "在下个回合前，阻挡伤害。"
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "id": "BASH",
+          "name": "痛击",
+          "type": "Attack",
+          "cost": "2",
+          "description": "造成8点伤害。 给予2层易伤。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "易伤",
+              "description": "易伤的生物从攻击中受到的伤害增加50%。"
+            }
+          ]
+        }
+      ],
+      "preview_showing": false,
+      "can_cancel": false,
+      "can_confirm": false
+    },
+    "run": {
+      "act": 1,
+      "floor": 1,
+      "ascension": 0
+    }
+  },
+  "normalized": {
+    "type": "decision",
+    "decision": "card_select",
+    "context": {
+      "act": 1,
+      "floor": 1,
+      "ascension": 0
+    },
+    "run": {
+      "act": 1,
+      "floor": 1,
+      "ascension": 0
+    },
+    "screen_type": "upgrade",
+    "prompt": "选择1张牌来升级。",
+    "cards": [
+      {
+        "index": 0,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "description": "造成6点伤害。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "index": 1,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "description": "造成6点伤害。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "index": 2,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "description": "造成6点伤害。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "index": 3,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "description": "造成6点伤害。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "index": 4,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "description": "造成6点伤害。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "index": 5,
+        "id": "DEFEND_IRONCLAD",
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "description": "获得5点格挡。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "格挡",
+            "description": "在下个回合前，阻挡伤害。"
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "id": "DEFEND_IRONCLAD",
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "description": "获得5点格挡。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "格挡",
+            "description": "在下个回合前，阻挡伤害。"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "id": "DEFEND_IRONCLAD",
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "description": "获得5点格挡。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "格挡",
+            "description": "在下个回合前，阻挡伤害。"
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "id": "DEFEND_IRONCLAD",
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "description": "获得5点格挡。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "格挡",
+            "description": "在下个回合前，阻挡伤害。"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "id": "BASH",
+        "name": "痛击",
+        "type": "Attack",
+        "cost": "2",
+        "description": "造成8点伤害。 给予2层易伤。",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "易伤",
+            "description": "易伤的生物从攻击中受到的伤害增加50%。"
+          }
+        ]
+      }
+    ],
+    "player": {
+      "character": "铁甲战士",
+      "hp": 80,
+      "max_hp": 80,
+      "gold": 99
+    },
+    "preview_showing": false,
+    "can_skip": false,
+    "can_confirm": false,
+    "can_cancel": false,
+    "card_select": {
+      "screen_type": "upgrade",
+      "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "gold": 99
+      },
+      "prompt": "选择1张牌来升级。",
+      "cards": [
+        {
+          "index": 0,
+          "id": "STRIKE_IRONCLAD",
+          "name": "打击",
+          "type": "Attack",
+          "cost": "1",
+          "description": "造成6点伤害。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 1,
+          "id": "STRIKE_IRONCLAD",
+          "name": "打击",
+          "type": "Attack",
+          "cost": "1",
+          "description": "造成6点伤害。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 2,
+          "id": "STRIKE_IRONCLAD",
+          "name": "打击",
+          "type": "Attack",
+          "cost": "1",
+          "description": "造成6点伤害。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 3,
+          "id": "STRIKE_IRONCLAD",
+          "name": "打击",
+          "type": "Attack",
+          "cost": "1",
+          "description": "造成6点伤害。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 4,
+          "id": "STRIKE_IRONCLAD",
+          "name": "打击",
+          "type": "Attack",
+          "cost": "1",
+          "description": "造成6点伤害。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 5,
+          "id": "DEFEND_IRONCLAD",
+          "name": "防御",
+          "type": "Skill",
+          "cost": "1",
+          "description": "获得5点格挡。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "格挡",
+              "description": "在下个回合前，阻挡伤害。"
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "id": "DEFEND_IRONCLAD",
+          "name": "防御",
+          "type": "Skill",
+          "cost": "1",
+          "description": "获得5点格挡。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "格挡",
+              "description": "在下个回合前，阻挡伤害。"
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "id": "DEFEND_IRONCLAD",
+          "name": "防御",
+          "type": "Skill",
+          "cost": "1",
+          "description": "获得5点格挡。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "格挡",
+              "description": "在下个回合前，阻挡伤害。"
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "id": "DEFEND_IRONCLAD",
+          "name": "防御",
+          "type": "Skill",
+          "cost": "1",
+          "description": "获得5点格挡。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "格挡",
+              "description": "在下个回合前，阻挡伤害。"
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "id": "BASH",
+          "name": "痛击",
+          "type": "Attack",
+          "cost": "2",
+          "description": "造成8点伤害。 给予2层易伤。",
+          "rarity": "Basic",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "易伤",
+              "description": "易伤的生物从攻击中受到的伤害增加50%。"
+            }
+          ]
+        }
+      ],
+      "preview_showing": false,
+      "can_cancel": false,
+      "can_confirm": false
+    }
+  }
+}

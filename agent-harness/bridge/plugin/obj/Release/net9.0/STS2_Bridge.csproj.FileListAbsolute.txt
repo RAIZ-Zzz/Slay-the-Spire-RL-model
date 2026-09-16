@@ -1,0 +1,12 @@
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\STS2_Bridge.csproj.AssemblyReference.cache
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\STS2_Bridge.GeneratedMSBuildEditorConfig.editorconfig
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\STS2_Bridge.AssemblyInfoInputs.cache
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\STS2_Bridge.AssemblyInfo.cs
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\STS2_Bridge.csproj.CoreCompileInputs.cache
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\bin\Release\net9.0\STS2_Bridge.deps.json
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\bin\Release\net9.0\STS2_Bridge.dll
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\bin\Release\net9.0\STS2_Bridge.pdb
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\STS2_Bridge.dll
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\refint\STS2_Bridge.dll
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\STS2_Bridge.pdb
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\ref\STS2_Bridge.dll

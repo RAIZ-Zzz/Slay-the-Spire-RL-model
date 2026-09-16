@@ -1,0 +1,117 @@
+{
+  "captured_at": "2026-09-07T17:10:01",
+  "decision": "menu",
+  "raw_state_type": "menu",
+  "raw": {
+    "state_type": "menu",
+    "message": "No run in progress. Player is in the main menu.",
+    "menu": {
+      "screen": "character_select",
+      "characters": [
+        {
+          "id": "IRONCLAD",
+          "name": "铁甲战士"
+        },
+        {
+          "id": "SILENT",
+          "name": "静默猎手"
+        },
+        {
+          "id": "REGENT",
+          "name": "储君"
+        },
+        {
+          "id": "NECROBINDER",
+          "name": "亡灵契约师"
+        },
+        {
+          "id": "DEFECT",
+          "name": "故障机器人"
+        },
+        {
+          "id": "RANDOM_CHARACTER",
+          "name": "随机"
+        }
+      ],
+      "ascension": 0,
+      "can_start_new_game": true,
+      "can_continue_game": false,
+      "can_abandon_game": false
+    }
+  },
+  "normalized": {
+    "type": "status",
+    "decision": "menu",
+    "context": {
+      "act": null,
+      "floor": null,
+      "ascension": null
+    },
+    "run": {},
+    "message": "No run in progress. Player is in the main menu.",
+    "screen": "character_select",
+    "can_continue_game": false,
+    "can_start_new_game": true,
+    "can_abandon_game": false,
+    "characters": [
+      {
+        "id": "IRONCLAD",
+        "name": "铁甲战士"
+      },
+      {
+        "id": "SILENT",
+        "name": "静默猎手"
+      },
+      {
+        "id": "REGENT",
+        "name": "储君"
+      },
+      {
+        "id": "NECROBINDER",
+        "name": "亡灵契约师"
+      },
+      {
+        "id": "DEFECT",
+        "name": "故障机器人"
+      },
+      {
+        "id": "RANDOM_CHARACTER",
+        "name": "随机"
+      }
+    ],
+    "ascension": 0,
+    "menu": {
+      "screen": "character_select",
+      "characters": [
+        {
+          "id": "IRONCLAD",
+          "name": "铁甲战士"
+        },
+        {
+          "id": "SILENT",
+          "name": "静默猎手"
+        },
+        {
+          "id": "REGENT",
+          "name": "储君"
+        },
+        {
+          "id": "NECROBINDER",
+          "name": "亡灵契约师"
+        },
+        {
+          "id": "DEFECT",
+          "name": "故障机器人"
+        },
+        {
+          "id": "RANDOM_CHARACTER",
+          "name": "随机"
+        }
+      ],
+      "ascension": 0,
+      "can_start_new_game": true,
+      "can_continue_game": false,
+      "can_abandon_game": false
+    }
+  }
+}

@@ -1,0 +1,737 @@
+{
+  "captured_at": "2026-09-07T18:30:58",
+  "decision": "combat_play",
+  "raw_state_type": "monster",
+  "raw": {
+    "state_type": "monster",
+    "battle": {
+      "round": 1,
+      "turn": "player",
+      "is_play_phase": true,
+      "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "block": 0,
+        "energy": 3,
+        "max_energy": 3,
+        "hand": [
+          {
+            "index": 0,
+            "id": "HEADBUTT",
+            "name": "头槌",
+            "type": "Attack",
+            "cost": "1",
+            "star_cost": null,
+            "description": "造成9点伤害。 将你弃牌堆中的一张牌放到抽牌堆顶部。",
+            "target_type": "AnyEnemy",
+            "can_play": true,
+            "unplayable_reason": null,
+            "is_upgraded": false,
+            "keywords": []
+          },
+          {
+            "index": 1,
+            "id": "INJURY",
+            "name": "受伤",
+            "type": "Curse",
+            "cost": "0",
+            "star_cost": null,
+            "description": "不能被打出。",
+            "target_type": "None",
+            "can_play": false,
+            "unplayable_reason": "HasUnplayableKeyword",
+            "is_upgraded": false,
+            "keywords": [
+              {
+                "name": "不能被打出",
+                "description": "不能被打出的牌无法被打出。"
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "id": "IMPERVIOUS",
+            "name": "岿然不动",
+            "type": "Skill",
+            "cost": "2",
+            "star_cost": null,
+            "description": "获得30点格挡。 消耗。",
+            "target_type": "Self",
+            "can_play": true,
+            "unplayable_reason": null,
+            "is_upgraded": false,
+            "keywords": [
+              {
+                "name": "格挡",
+                "description": "在下个回合前，阻挡伤害。"
+              },
+              {
+                "name": "消耗",
+                "description": "在战斗结束前移除。"
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "id": "STRIKE_IRONCLAD",
+            "name": "打击",
+            "type": "Attack",
+            "cost": "1",
+            "star_cost": null,
+            "description": "造成6点伤害。",
+            "target_type": "AnyEnemy",
+            "can_play": true,
+            "unplayable_reason": null,
+            "is_upgraded": false,
+            "keywords": []
+          },
+          {
+            "index": 4,
+            "id": "DEFEND_IRONCLAD",
+            "name": "防御",
+            "type": "Skill",
+            "cost": "1",
+            "star_cost": null,
+            "description": "获得5点格挡。",
+            "target_type": "Self",
+            "can_play": true,
+            "unplayable_reason": null,
+            "is_upgraded": false,
+            "keywords": [
+              {
+                "name": "格挡",
+                "description": "在下个回合前，阻挡伤害。"
+              }
+            ]
+          }
+        ],
+        "draw_pile_count": 8,
+        "discard_pile_count": 0,
+        "exhaust_pile_count": 0,
+        "draw_pile": [
+          {
+            "name": "痛击",
+            "description": "造成8点伤害。 给予2层易伤。"
+          },
+          {
+            "name": "防御",
+            "description": "获得5点格挡。"
+          },
+          {
+            "name": "打击",
+            "description": "造成6点伤害。"
+          },
+          {
+            "name": "打击",
+            "description": "造成6点伤害。"
+          },
+          {
+            "name": "防御",
+            "description": "获得5点格挡。"
+          },
+          {
+            "name": "打击",
+            "description": "造成6点伤害。"
+          },
+          {
+            "name": "打击",
+            "description": "造成6点伤害。"
+          },
+          {
+            "name": "防御",
+            "description": "获得5点格挡。"
+          }
+        ],
+        "discard_pile": [],
+        "exhaust_pile": [],
+        "gold": 119,
+        "status": [],
+        "relics": [
+          {
+            "id": "BURNING_BLOOD",
+            "name": "燃烧之血",
+            "description": "在战斗结束时，回复6点生命。",
+            "counter": null,
+            "keywords": []
+          },
+          {
+            "id": "HEFTY_TABLET",
+            "name": "沉重石板",
+            "description": "拾起时，从3张稀有牌中选择1张加入你的牌组，同时将1张受伤加入你的牌组。",
+            "counter": null,
+            "keywords": [
+              {
+                "name": "受伤",
+                "description": "不能被打出。"
+              },
+              {
+                "name": "不能被打出",
+                "description": "不能被打出的牌无法被打出。"
+              }
+            ]
+          }
+        ],
+        "potions": [
+          {
+            "id": "VULNERABLE_POTION",
+            "name": "易伤药水",
+            "description": "给予3层易伤。",
+            "slot": 0,
+            "can_use_in_combat": true,
+            "target_type": "AnyEnemy",
+            "keywords": [
+              {
+                "name": "易伤",
+                "description": "易伤的生物从攻击中受到的伤害增加50%。"
+              }
+            ]
+          }
+        ]
+      },
+      "enemies": [
+        {
+          "entity_id": "SHRINKER_BEETLE_0",
+          "combat_id": 1,
+          "name": "缩小甲虫",
+          "hp": 40,
+          "max_hp": 40,
+          "block": 0,
+          "status": [],
+          "intents": [
+            {
+              "type": "DebuffStrong",
+              "label": "",
+              "title": "策略",
+              "description": "这个敌人将要对你施加一个负面效果。"
+            }
+          ]
+        }
+      ]
+    },
+    "run": {
+      "act": 1,
+      "floor": 3,
+      "ascension": 0
+    }
+  },
+  "normalized": {
+    "type": "decision",
+    "decision": "combat_play",
+    "room_type": "monster",
+    "context": {
+      "act": 1,
+      "floor": 3,
+      "ascension": 0
+    },
+    "run": {
+      "act": 1,
+      "floor": 3,
+      "ascension": 0
+    },
+    "round": 1,
+    "turn": "player",
+    "is_play_phase": true,
+    "energy": 3,
+    "max_energy": 3,
+    "hand": [
+      {
+        "index": 0,
+        "id": "HEADBUTT",
+        "name": "头槌",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "造成9点伤害。 将你弃牌堆中的一张牌放到抽牌堆顶部。",
+        "target_type": "AnyEnemy",
+        "can_play": true,
+        "unplayable_reason": null,
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "index": 1,
+        "id": "INJURY",
+        "name": "受伤",
+        "type": "Curse",
+        "cost": "0",
+        "star_cost": null,
+        "description": "不能被打出。",
+        "target_type": "None",
+        "can_play": false,
+        "unplayable_reason": "HasUnplayableKeyword",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "不能被打出",
+            "description": "不能被打出的牌无法被打出。"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "id": "IMPERVIOUS",
+        "name": "岿然不动",
+        "type": "Skill",
+        "cost": "2",
+        "star_cost": null,
+        "description": "获得30点格挡。 消耗。",
+        "target_type": "Self",
+        "can_play": true,
+        "unplayable_reason": null,
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "格挡",
+            "description": "在下个回合前，阻挡伤害。"
+          },
+          {
+            "name": "消耗",
+            "description": "在战斗结束前移除。"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "id": "STRIKE_IRONCLAD",
+        "name": "打击",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "造成6点伤害。",
+        "target_type": "AnyEnemy",
+        "can_play": true,
+        "unplayable_reason": null,
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "index": 4,
+        "id": "DEFEND_IRONCLAD",
+        "name": "防御",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "获得5点格挡。",
+        "target_type": "Self",
+        "can_play": true,
+        "unplayable_reason": null,
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "格挡",
+            "description": "在下个回合前，阻挡伤害。"
+          }
+        ]
+      }
+    ],
+    "enemies": [
+      {
+        "entity_id": "SHRINKER_BEETLE_0",
+        "combat_id": 1,
+        "name": "缩小甲虫",
+        "hp": 40,
+        "max_hp": 40,
+        "block": 0,
+        "status": [],
+        "intents": [
+          {
+            "type": "DebuffStrong",
+            "label": "",
+            "title": "策略",
+            "description": "这个敌人将要对你施加一个负面效果。"
+          }
+        ]
+      }
+    ],
+    "player": {
+      "character": "铁甲战士",
+      "hp": 80,
+      "max_hp": 80,
+      "block": 0,
+      "energy": 3,
+      "max_energy": 3,
+      "hand": [
+        {
+          "index": 0,
+          "id": "HEADBUTT",
+          "name": "头槌",
+          "type": "Attack",
+          "cost": "1",
+          "star_cost": null,
+          "description": "造成9点伤害。 将你弃牌堆中的一张牌放到抽牌堆顶部。",
+          "target_type": "AnyEnemy",
+          "can_play": true,
+          "unplayable_reason": null,
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 1,
+          "id": "INJURY",
+          "name": "受伤",
+          "type": "Curse",
+          "cost": "0",
+          "star_cost": null,
+          "description": "不能被打出。",
+          "target_type": "None",
+          "can_play": false,
+          "unplayable_reason": "HasUnplayableKeyword",
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "不能被打出",
+              "description": "不能被打出的牌无法被打出。"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "id": "IMPERVIOUS",
+          "name": "岿然不动",
+          "type": "Skill",
+          "cost": "2",
+          "star_cost": null,
+          "description": "获得30点格挡。 消耗。",
+          "target_type": "Self",
+          "can_play": true,
+          "unplayable_reason": null,
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "格挡",
+              "description": "在下个回合前，阻挡伤害。"
+            },
+            {
+              "name": "消耗",
+              "description": "在战斗结束前移除。"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "id": "STRIKE_IRONCLAD",
+          "name": "打击",
+          "type": "Attack",
+          "cost": "1",
+          "star_cost": null,
+          "description": "造成6点伤害。",
+          "target_type": "AnyEnemy",
+          "can_play": true,
+          "unplayable_reason": null,
+          "is_upgraded": false,
+          "keywords": []
+        },
+        {
+          "index": 4,
+          "id": "DEFEND_IRONCLAD",
+          "name": "防御",
+          "type": "Skill",
+          "cost": "1",
+          "star_cost": null,
+          "description": "获得5点格挡。",
+          "target_type": "Self",
+          "can_play": true,
+          "unplayable_reason": null,
+          "is_upgraded": false,
+          "keywords": [
+            {
+              "name": "格挡",
+              "description": "在下个回合前，阻挡伤害。"
+            }
+          ]
+        }
+      ],
+      "draw_pile_count": 8,
+      "discard_pile_count": 0,
+      "exhaust_pile_count": 0,
+      "draw_pile": [
+        {
+          "name": "痛击",
+          "description": "造成8点伤害。 给予2层易伤。"
+        },
+        {
+          "name": "防御",
+          "description": "获得5点格挡。"
+        },
+        {
+          "name": "打击",
+          "description": "造成6点伤害。"
+        },
+        {
+          "name": "打击",
+          "description": "造成6点伤害。"
+        },
+        {
+          "name": "防御",
+          "description": "获得5点格挡。"
+        },
+        {
+          "name": "打击",
+          "description": "造成6点伤害。"
+        },
+        {
+          "name": "打击",
+          "description": "造成6点伤害。"
+        },
+        {
+          "name": "防御",
+          "description": "获得5点格挡。"
+        }
+      ],
+      "discard_pile": [],
+      "exhaust_pile": [],
+      "gold": 119,
+      "status": [],
+      "relics": [
+        {
+          "id": "BURNING_BLOOD",
+          "name": "燃烧之血",
+          "description": "在战斗结束时，回复6点生命。",
+          "counter": null,
+          "keywords": []
+        },
+        {
+          "id": "HEFTY_TABLET",
+          "name": "沉重石板",
+          "description": "拾起时，从3张稀有牌中选择1张加入你的牌组，同时将1张受伤加入你的牌组。",
+          "counter": null,
+          "keywords": [
+            {
+              "name": "受伤",
+              "description": "不能被打出。"
+            },
+            {
+              "name": "不能被打出",
+              "description": "不能被打出的牌无法被打出。"
+            }
+          ]
+        }
+      ],
+      "potions": [
+        {
+          "id": "VULNERABLE_POTION",
+          "name": "易伤药水",
+          "description": "给予3层易伤。",
+          "slot": 0,
+          "can_use_in_combat": true,
+          "target_type": "AnyEnemy",
+          "keywords": [
+            {
+              "name": "易伤",
+              "description": "易伤的生物从攻击中受到的伤害增加50%。"
+            }
+          ]
+        }
+      ]
+    },
+    "draw_pile_count": 8,
+    "discard_pile_count": 0,
+    "exhaust_pile_count": 0,
+    "battle": {
+      "round": 1,
+      "turn": "player",
+      "is_play_phase": true,
+      "player": {
+        "character": "铁甲战士",
+        "hp": 80,
+        "max_hp": 80,
+        "block": 0,
+        "energy": 3,
+        "max_energy": 3,
+        "hand": [
+          {
+            "index": 0,
+            "id": "HEADBUTT",
+            "name": "头槌",
+            "type": "Attack",
+            "cost": "1",
+            "star_cost": null,
+            "description": "造成9点伤害。 将你弃牌堆中的一张牌放到抽牌堆顶部。",
+            "target_type": "AnyEnemy",
+            "can_play": true,
+            "unplayable_reason": null,
+            "is_upgraded": false,
+            "keywords": []
+          },
+          {
+            "index": 1,
+            "id": "INJURY",
+            "name": "受伤",
+            "type": "Curse",
+            "cost": "0",
+            "star_cost": null,
+            "description": "不能被打出。",
+            "target_type": "None",
+            "can_play": false,
+            "unplayable_reason": "HasUnplayableKeyword",
+            "is_upgraded": false,
+            "keywords": [
+              {
+                "name": "不能被打出",
+                "description": "不能被打出的牌无法被打出。"
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "id": "IMPERVIOUS",
+            "name": "岿然不动",
+            "type": "Skill",
+            "cost": "2",
+            "star_cost": null,
+            "description": "获得30点格挡。 消耗。",
+            "target_type": "Self",
+            "can_play": true,
+            "unplayable_reason": null,
+            "is_upgraded": false,
+            "keywords": [
+              {
+                "name": "格挡",
+                "description": "在下个回合前，阻挡伤害。"
+              },
+              {
+                "name": "消耗",
+                "description": "在战斗结束前移除。"
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "id": "STRIKE_IRONCLAD",
+            "name": "打击",
+            "type": "Attack",
+            "cost": "1",
+            "star_cost": null,
+            "description": "造成6点伤害。",
+            "target_type": "AnyEnemy",
+            "can_play": true,
+            "unplayable_reason": null,
+            "is_upgraded": false,
+            "keywords": []
+          },
+          {
+            "index": 4,
+            "id": "DEFEND_IRONCLAD",
+            "name": "防御",
+            "type": "Skill",
+            "cost": "1",
+            "star_cost": null,
+            "description": "获得5点格挡。",
+            "target_type": "Self",
+            "can_play": true,
+            "unplayable_reason": null,
+            "is_upgraded": false,
+            "keywords": [
+              {
+                "name": "格挡",
+                "description": "在下个回合前，阻挡伤害。"
+              }
+            ]
+          }
+        ],
+        "draw_pile_count": 8,
+        "discard_pile_count": 0,
+        "exhaust_pile_count": 0,
+        "draw_pile": [
+          {
+            "name": "痛击",
+            "description": "造成8点伤害。 给予2层易伤。"
+          },
+          {
+            "name": "防御",
+            "description": "获得5点格挡。"
+          },
+          {
+            "name": "打击",
+            "description": "造成6点伤害。"
+          },
+          {
+            "name": "打击",
+            "description": "造成6点伤害。"
+          },
+          {
+            "name": "防御",
+            "description": "获得5点格挡。"
+          },
+          {
+            "name": "打击",
+            "description": "造成6点伤害。"
+          },
+          {
+            "name": "打击",
+            "description": "造成6点伤害。"
+          },
+          {
+            "name": "防御",
+            "description": "获得5点格挡。"
+          }
+        ],
+        "discard_pile": [],
+        "exhaust_pile": [],
+        "gold": 119,
+        "status": [],
+        "relics": [
+          {
+            "id": "BURNING_BLOOD",
+            "name": "燃烧之血",
+            "description": "在战斗结束时，回复6点生命。",
+            "counter": null,
+            "keywords": []
+          },
+          {
+            "id": "HEFTY_TABLET",
+            "name": "沉重石板",
+            "description": "拾起时，从3张稀有牌中选择1张加入你的牌组，同时将1张受伤加入你的牌组。",
+            "counter": null,
+            "keywords": [
+              {
+                "name": "受伤",
+                "description": "不能被打出。"
+              },
+              {
+                "name": "不能被打出",
+                "description": "不能被打出的牌无法被打出。"
+              }
+            ]
+          }
+        ],
+        "potions": [
+          {
+            "id": "VULNERABLE_POTION",
+            "name": "易伤药水",
+            "description": "给予3层易伤。",
+            "slot": 0,
+            "can_use_in_combat": true,
+            "target_type": "AnyEnemy",
+            "keywords": [
+              {
+                "name": "易伤",
+                "description": "易伤的生物从攻击中受到的伤害增加50%。"
+              }
+            ]
+          }
+        ]
+      },
+      "enemies": [
+        {
+          "entity_id": "SHRINKER_BEETLE_0",
+          "combat_id": 1,
+          "name": "缩小甲虫",
+          "hp": 40,
+          "max_hp": 40,
+          "block": 0,
+          "status": [],
+          "intents": [
+            {
+              "type": "DebuffStrong",
+              "label": "",
+              "title": "策略",
+              "description": "这个敌人将要对你施加一个负面效果。"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

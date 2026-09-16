@@ -1,0 +1,38 @@
+{
+  "captured_at": "2026-09-07T18:28:44",
+  "decision": "menu",
+  "raw_state_type": "menu",
+  "raw": {
+    "state_type": "menu",
+    "message": "No run in progress. Player is in the main menu.",
+    "menu": {
+      "screen": "main_menu",
+      "can_continue_game": false,
+      "can_abandon_game": false,
+      "can_start_new_game": true
+    }
+  },
+  "normalized": {
+    "type": "status",
+    "decision": "menu",
+    "context": {
+      "act": null,
+      "floor": null,
+      "ascension": null
+    },
+    "run": {},
+    "message": "No run in progress. Player is in the main menu.",
+    "screen": "main_menu",
+    "can_continue_game": false,
+    "can_start_new_game": true,
+    "can_abandon_game": false,
+    "characters": [],
+    "ascension": null,
+    "menu": {
+      "screen": "main_menu",
+      "can_continue_game": false,
+      "can_abandon_game": false,
+      "can_start_new_game": true
+    }
+  }
+}
