@@ -707,5 +707,25 @@ check("combat_rewards is deliberately NOT randomised",
 check("seed_choices(None) returns a usable seed", isinstance(autoplay.seed_choices(), int), True)
 check("two automatic seeds differ", autoplay.seed_choices() == autoplay.seed_choices(), False)
 
+
+# --- WAIT must survive every wrapper (2026-09-17) ------------------------------
+#
+# `autoplay.WAIT` is a bare `object()` meaning "mid-animation, poll again", and
+# treasure and hand_select both return it. Two wrappers tested it with `if
+# payload` / `is None` and then called `.get` - which crashed the run on a
+# treasure chest the moment --frozen-deck was unblocked. It had been unreachable
+# for as long as that flag refused to start, which is why nothing caught it.
+
+wtally = {"skipped_rewards": 0, "refused": 0, "declined": 0, "walked_past": 0,
+          "exit_tries": {}}
+TREASURE = {"decision": "treasure", "context": {"act": 1, "floor": 9},
+            "message": "Opening chest..."}
+for name, wrap in (("frozen deck", play.with_frozen_deck),
+                   ("declined rewards", play.with_declined_rewards)):
+    f = wrap(lambda s, g=0: (autoplay.WAIT, "waiting for the chest"), wtally)
+    got, why = f(TREASURE)
+    check(f"{name} passes WAIT through", got is autoplay.WAIT, True)
+    check(f"...{name} keeps the reason", why, "waiting for the chest")
+
 print(f"\n{PASS} passed, {FAIL} failed")
 sys.exit(1 if FAIL else 0)

@@ -699,7 +699,7 @@ def with_declined_rewards(inner, tally: dict):
         payload, reason = inner(state, grid_picks)
 
         # Record the decision the moment it is made, whoever made it.
-        if (decision == "card_reward" and payload
+        if (decision == "card_reward" and isinstance(payload, dict)
                 and payload.get("action") == "skip_card_reward"):
             DECLINED.add(key)
             tally["declined"] += 1
@@ -708,7 +708,8 @@ def with_declined_rewards(inner, tally: dict):
         # Veto a claim on a card we already declined - the heuristic and the
         # fixed policy do not consult `legal_verbs`.
         if (decision == "combat_rewards" and key in DECLINED
-                and payload and payload.get("action") == "claim_reward"):
+                and isinstance(payload, dict)
+                and payload.get("action") == "claim_reward"):
             items = state.get("items") or []
             index = payload.get("index")
             item = next((i for i in items if i.get("index") == index), None)
@@ -861,7 +862,12 @@ def with_frozen_deck(inner, tally: dict):
             return skip_this_reward(state)
 
         payload, reason = inner(state, grid_picks)
-        if payload is None:
+        # `None` means "no branch"; `autoplay.WAIT` is a bare sentinel object
+        # meaning "this screen is mid-animation, poll again". Neither is an
+        # action and neither has `.get`. Only `None` was checked, because until
+        # 2026-09-17 `--frozen-deck` refused to start and this line had never run
+        # against a treasure or hand_select screen - the two that return WAIT.
+        if not isinstance(payload, dict):
             return payload, reason
 
         why = deck_change_reason(payload, state)
