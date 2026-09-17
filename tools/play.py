@@ -1792,16 +1792,26 @@ def main() -> int:
         # Without that, --frozen-deck does not freeze the deck; it stalls on the
         # first card reward and takes ten tries to say so. An error here costs a
         # message, a stall costs a run.
-        print("--frozen-deck / --qtable are disabled: declining a combat card "
-              "reward has no working path in the bridge.")
-        print("  Four methods were tried and measured on 2026-09-16; all were "
-              "accepted and changed nothing. See action_adapter.py.")
-        print("  Next attempt: dump the live control tree under the rewards "
-              "screen and find the button a human presses.")
-        print("  For now run without them - the deck grows, which changes the "
-              "question from 'how far does the starting deck go' to 'how far "
-              "does this agent go'.")
-        return 1
+        # 2026-09-17: downgraded from a hard stop to a warning. The block was
+        # written before `DECLINED`, and `DECLINED` is the answer to it: the four
+        # dead ends were all attempts to make the *game* acknowledge a refusal,
+        # and the fix was to stop asking and remember on our side instead. The
+        # two wrappers compose exactly for this - `with_frozen_deck` answers
+        # card_reward with `skip_this_reward`, `with_declined_rewards` latches it
+        # per floor so the screen stops re-offering.
+        #
+        # Still unmeasured, and this is the run that measures it: whether the
+        # rewards room lets go while a card entry sits unclaimed. `read_loop`'s
+        # stuck detector fires on a single repeated decision, so the failure
+        # costs one stalled run and says so loudly - which is a fair price for
+        # the answer, and cheaper than never finding out.
+        print("--frozen-deck: declining a card reward has no bridge-side path; "
+              "this relies on the DECLINED latch instead.")
+        print("  Four bridge targets were built and measured on 2026-09-16; all "
+              "were accepted and changed nothing. See action_adapter.py.")
+        print("  🔴 UNVERIFIED: whether the rewards room releases with a card "
+              "entry outstanding. Watch for a repeated combat_rewards decision - "
+              "read_loop's stuck detector will call it.")
     global FROZEN_DECK
     FROZEN_DECK = frozen
     frozen_tally = {"skipped_rewards": 0, "refused": 0, "declined": 0}
