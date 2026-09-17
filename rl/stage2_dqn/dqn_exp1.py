@@ -4,8 +4,9 @@
 
     python rl/stage2_dqn/dqn_exp1.py --check                   # no training: does the wiring hold up
     python rl/stage2_dqn/dqn_exp1.py --variant naive           # no replay, no target net - watch it thrash
-    python rl/stage2_dqn/dqn_exp1.py --variant replay          # + replay buffer
-    python rl/stage2_dqn/dqn_exp1.py --variant dqn             # + target network
+    python rl/stage2_dqn/dqn_exp1.py --variant replay          # replay only
+    python rl/stage2_dqn/dqn_exp1.py --variant target          # target net only
+    python rl/stage2_dqn/dqn_exp1.py --variant dqn             # both
     python rl/stage2_dqn/dqn_exp1.py --variant dqn --raw-obs   # the observation-scale pit, on purpose
     python rl/stage2_dqn/dqn_exp1.py --plot                    # every saved curve on one figure
 
@@ -222,6 +223,12 @@ VARIANTS = {
     # most valuable.
     "naive": (False, False),
     "replay": (True, False),
+    # Added 2026-09-17: with only three of them the ablation is not a 2x2 and
+    # replay's own contribution cannot be separated from the target net's. The
+    # first three measured 59.2 / 53.1 / 80.0 - replay *alone* made it worse, so
+    # "how much is replay worth once the target net is there" is open, and this
+    # is the cell that answers it.
+    "target": (False, True),
     "dqn": (True, True),
 }
 
@@ -394,8 +401,8 @@ def save_curve(args, curve, measured=None) -> Path:
 # Colour is assigned by entity, in this fixed order, so that a missing run never
 # repaints the others. Three validated categorical slots; a fourth variant would
 # have to fold in rather than invent a hue.
-VARIANT_ORDER = ("naive", "replay", "dqn")
-SERIES_COLOURS = ("#2a78d6", "#eb6834", "#1baf7a")
+VARIANT_ORDER = ("naive", "replay", "target", "dqn")
+SERIES_COLOURS = ("#2a78d6", "#eb6834", "#1baf7a", "#eda100")
 INK, MUTED, GRID, AXIS, SURFACE = "#0b0b0b", "#898781", "#e1e0d9", "#c3c2b7", "#fcfcfb"
 
 
@@ -463,8 +470,10 @@ def plot_all() -> None:
                 transform=ax.get_yaxis_transform(), zorder=1)
 
     labelled_reference = False
-    for i, (_, stem, d) in enumerate(runs):
-        colour = SERIES_COLOURS[min(i, len(SERIES_COLOURS) - 1)]
+    for rank, stem, d in runs:
+        # Keyed on the variant, never on how many files happen to be on disk -
+        # otherwise adding a fourth run repaints the three already published.
+        colour = SERIES_COLOURS[min(rank, len(SERIES_COLOURS) - 1)]
         block = max(1, d["episodes"] // 40)
         xs = [(j + 1) * block for j in range(len(d["curve"]))]
 
