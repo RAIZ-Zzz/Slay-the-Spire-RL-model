@@ -51,6 +51,7 @@ import argparse
 import json
 import random
 import sys
+import time
 from collections import deque
 from pathlib import Path
 
@@ -240,6 +241,10 @@ def train(args) -> tuple[list[float], object]:
     replay = Replay(args.replay_size) if use_replay else None
     curve, wins, block = [], 0, max(1, args.episodes // 40)
     updates = 0
+    # A 20k-episode `replay` run is ~12 minutes with no output at all, and
+    # silence is indistinguishable from a hang - the first long run had to be
+    # checked with Get-Process to find out whether it was still alive.
+    started = time.perf_counter()
 
     def obs_of(s):
         return encode_vector(s, normalize=not args.raw_obs)
@@ -302,7 +307,14 @@ def train(args) -> tuple[list[float], object]:
         if (ep + 1) % block == 0:
             curve.append(wins / block)
             wins = 0
+            frac = (ep + 1) / args.episodes
+            spent = time.perf_counter() - started
+            print(f"\r  {ep + 1:>7}/{args.episodes} ({frac:4.0%})  "
+                  f"win {curve[-1]:.2f}  eps {epsilon:.2f}  "
+                  f"{spent / 60:5.1f}m 已用, 约 {(spent / frac - spent) / 60:5.1f}m 剩余",
+                  end="", flush=True)
 
+    print()
     return curve, net
 
 
