@@ -671,17 +671,30 @@ def with_declined_rewards(inner, tally: dict):
             items = state.get("items") or []
             others = [i for i in items if i.get("type") != "card"]
             if not others:
-                if state.get("can_proceed"):
+                # proceed, then the map. Not a condition on `can_proceed` and not
+                # a condition on anything else: this branch sent `proceed` on
+                # every poll and the run sat on floor 5 doing it, because the
+                # early return never reached the frozen-deck wrapper where the
+                # fallback lived. Counting the tries here is what makes the
+                # second exit reachable at all.
+                #
+                # proceed opens the map. `choose_map_node` only works once it is
+                # open - it answers "Map screen is not open" otherwise - so the
+                # order is fixed, and one of the two always applies.
+                n = tally.setdefault("exit_tries", {}).get(key, 0)
+                tally["exit_tries"][key] = n + 1
+                if n == 0:
                     return action_adapter.proceed(), (
                         f"declined the card on floor {key[1]}; nothing else to "
-                        f"claim, leaving the room")
-                # Loud, not a retry. If this is what the room does, then a card
-                # reward genuinely cannot be declined and the premise has to
-                # change - which is worth stopping to learn.
-                return None, (
-                    f"declined the card on floor {key[1]}, but the room offers no "
-                    f"proceed. If this repeats, the rewards screen cannot be left "
-                    f"with a card entry outstanding and declining is impossible.")
+                        f"claim, leaving via proceed")
+                # ⚠️ Blind: an overlay hides the map, so there is no `choices`
+                # list to read and node 0 is the only index sure to resolve.
+                # Route choice was measured as the main lever on 2026-09-16, so
+                # this spends it - the fix is bridge-side.
+                tally["walked_past"] = tally.get("walked_past", 0) + 1
+                return action_adapter.choose_map_node(0), (
+                    f"declined the card on floor {key[1]}; proceed left the "
+                    f"screen up, walking to the map - node 0, chosen blind")
 
         payload, reason = inner(state, grid_picks)
 
@@ -887,7 +900,7 @@ def with_frozen_deck(inner, tally: dict):
         # there is no `choices` list and no way to know how many branches exist.
         # Node 0 is the one index guaranteed to resolve. 2026-09-16 measured
         # route choice as *the* lever in this fight, so every walk-past spends it.
-        tally["walked_past"] += 1
+        tally["walked_past"] = tally.get("walked_past", 0) + 1
         return action_adapter.choose_map_node(0), (
             f"frozen deck: REFUSED {refused} because {why}; proceed left the "
             f"screen up, walking to the map - node 0, chosen blind "
