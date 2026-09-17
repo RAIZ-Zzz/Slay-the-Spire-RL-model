@@ -858,19 +858,39 @@ def with_frozen_deck(inner, tally: dict):
         tally["refused"] += 1
         refused = f"{payload.get('action')}({payload})"
 
-        # ⚠️ Blind: with a rewards overlay on top the state reports no map, so
-        # there is no `choices` list to pick from and no way to know how many
-        # branches exist. Node 0 is the one index guaranteed to resolve.
+        # Two exits, tried in order, because which one works depends on state
+        # nobody can read from here.
         #
-        # The cost is real and worth naming: 2026-09-16 measured that route
-        # choice is *the* lever in this fight ("敌血 90 以下随便赢, 120 以上怎么
-        # 打都输"), and this throws it away every time a card is refused. The fix
-        # is bridge-side - report the map's choices while an overlay is up - and
-        # until then a frozen-deck run's routing is only as good as node 0.
+        #   proceed          dismisses the screen so the map opens underneath.
+        #                    This is the ordinary route and the one a human uses.
+        #   choose_map_node  works *only once the map is already open* - which is
+        #                    why it rescued a stuck screen on 2026-09-17 (every
+        #                    reward claimed, map behind) and answers "Map screen
+        #                    is not open" with a card still outstanding. It was
+        #                    written in as the primary exit on the strength of
+        #                    that one success; that was the wrong generalisation
+        #                    from a single observation.
+        #
+        # proceed first. If it worked, the next poll is a map and this branch is
+        # not reached again; if the screen is still here, the map is open behind
+        # it and node 0 resolves.
+        key = _floor_key(state)
+        n = tally.setdefault("exit_tries", {}).get(key, 0)
+        tally["exit_tries"][key] = n + 1
+
+        if n == 0:
+            return action_adapter.proceed(), (
+                f"frozen deck: REFUSED {refused} because {why}; leaving via "
+                f"proceed (policy wanted: {reason})")
+
+        # ⚠️ Blind: with a rewards overlay on top the state reports no map, so
+        # there is no `choices` list and no way to know how many branches exist.
+        # Node 0 is the one index guaranteed to resolve. 2026-09-16 measured
+        # route choice as *the* lever in this fight, so every walk-past spends it.
         tally["walked_past"] += 1
         return action_adapter.choose_map_node(0), (
-            f"frozen deck: REFUSED {refused} because {why}; walking to the map "
-            f"instead and leaving the reward on screen - node 0, chosen blind "
+            f"frozen deck: REFUSED {refused} because {why}; proceed left the "
+            f"screen up, walking to the map - node 0, chosen blind "
             f"(policy wanted: {reason})")
     return choose
 
@@ -1843,7 +1863,7 @@ def main() -> int:
     global FROZEN_DECK
     FROZEN_DECK = frozen
     frozen_tally = {"skipped_rewards": 0, "refused": 0, "declined": 0,
-                    "walked_past": 0}
+                    "walked_past": 0, "exit_tries": {}}
     qstats = {"hit": 0, "miss": 0, "reasons": {}}
     dstats = {"seen": 0, "agree": 0, "disagree": 0, "miss": 0, "error": 0,
               "out_of_range": 0, "margin": 0.0, "margin_n": 0, "reasons": {}}
