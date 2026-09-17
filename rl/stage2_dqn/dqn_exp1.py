@@ -126,9 +126,35 @@ OBS_NAMES = (
 OBS_DIM = len(OBS_NAMES)
 N_ACTIONS = len(env.CARDS) + 1
 
+# The six components `qtable_combat.to_toy_state` cannot supply: it fills draw and
+# discard with `(0, 0, 0)` markers because `encode_coarse` provably ignores them
+# (dropping them merged zero rows out of 244,539). The network does not ignore
+# them - measured 2026-09-17 on target.pt, zeroing these six moves the argmax in
+# **26.1%** of states, so a net trained with them cannot be driven from the real
+# game through that adapter. `--no-piles` trains one that can.
+#
+# Redundant is not the same as unused: a table can drop a key, a network can only
+# learn a zero weight, and it has no reason to when the inputs correlate with the
+# signal. Measured mean |w| on these six is 0.18 against 0.38 for the rest.
+PILE_IDX = tuple(i for i, n in enumerate(OBS_NAMES)
+                 if n.startswith(("draw_", "discard_")))
+
+
+def obs_names(piles: bool = True) -> tuple[str, ...]:
+    if piles:
+        return OBS_NAMES
+    return tuple(n for i, n in enumerate(OBS_NAMES) if i not in PILE_IDX)
+
+
+def _drop_piles(vec: list[float], piles: bool) -> list[float]:
+    """Filter after building all 19, so the scales assert below still lines up."""
+    if piles:
+        return vec
+    return [x for i, x in enumerate(vec) if i not in PILE_IDX]
+
 
 def encode_vector(state: env.State, normalize: bool = True,
-                  cap: bool = True) -> list[float]:
+                  cap: bool = True, piles: bool = True) -> list[float]:
     """The State as a fixed-length vector of floats.
 
     `draw` and `discard` are included even though the tabular version measured
@@ -157,7 +183,7 @@ def encode_vector(state: env.State, normalize: bool = True,
         state.turn,
     ]
     if not normalize:
-        return [float(x) for x in raw]
+        return _drop_piles([float(x) for x in raw], piles)
 
     scales = [hp_max, hp_max, 1.0, e_max, env.ENEMY_HP_RANGE[1], 3.0, 3.0,
               env.TIERS[-1][1], 1.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0,
@@ -167,8 +193,8 @@ def encode_vector(state: env.State, normalize: bool = True,
     # component would have gone over 1 - a capped value and a value that happens
     # to land on 1.0 are indistinguishable afterwards.
     if not cap:
-        return [x / s for x, s in zip(raw, scales)]
-    return [min(1.0, x / s) for x, s in zip(raw, scales)]
+        return _drop_piles([x / s for x, s in zip(raw, scales)], piles)
+    return _drop_piles([min(1.0, x / s) for x, s in zip(raw, scales)], piles)
 
 
 # --- replay --------------------------------------------------------------------
@@ -239,8 +265,9 @@ def train(args) -> tuple[list[float], object]:
     rng = random.Random(args.seed)
     torch.manual_seed(args.seed)
 
-    net = build_net(torch, OBS_DIM, N_ACTIONS, args.hidden)
-    target_net = build_net(torch, OBS_DIM, N_ACTIONS, args.hidden) if use_target else net
+    dim = len(obs_names(args.piles))
+    net = build_net(torch, dim, N_ACTIONS, args.hidden)
+    target_net = build_net(torch, dim, N_ACTIONS, args.hidden) if use_target else net
     if use_target:
         target_net.load_state_dict(net.state_dict())
     opt = torch.optim.Adam(net.parameters(), lr=args.lr)
@@ -254,7 +281,7 @@ def train(args) -> tuple[list[float], object]:
     started = time.perf_counter()
 
     def obs_of(s):
-        return encode_vector(s, normalize=not args.raw_obs)
+        return encode_vector(s, normalize=not args.raw_obs, piles=args.piles)
 
     for ep in range(args.episodes):
         epsilon = args.eps_start + (args.eps_end - args.eps_start) * (ep / args.episodes)
@@ -328,7 +355,7 @@ def train(args) -> tuple[list[float], object]:
 # --- measuring -----------------------------------------------------------------
 
 
-def greedy_of(torch, net, raw_obs: bool):
+def greedy_of(torch, net, raw_obs: bool, piles: bool = True):
     """Wrap the net as the `(state, rng) -> (action, hit)` shape `evaluate` wants.
 
     `hit` is always None, not True. A table can miss - that was the number that
@@ -340,7 +367,7 @@ def greedy_of(torch, net, raw_obs: bool):
     def choose(state, rng):
         legal = env.legal_actions(state)
         with torch.no_grad():
-            row = net(torch.tensor([encode_vector(state, not raw_obs)],
+            row = net(torch.tensor([encode_vector(state, not raw_obs, piles=piles)],
                                    dtype=torch.float32))[0]
         best = max(row[a].item() for a in legal)
         return rng.choice([a for a in legal if row[a].item() == best]), None
@@ -370,7 +397,7 @@ def report(args, curve, net) -> dict:
         print(f"{name:>12} {s['win']:8.1%} {s['reward']:10.3f} {s['hp']:10.1f} "
               f"{s['turns']:7.1f}")
 
-    s = tabular.evaluate(greedy_of(torch, net, args.raw_obs), args.fights)
+    s = tabular.evaluate(greedy_of(torch, net, args.raw_obs, args.piles), args.fights)
     measured["DQN"] = s["win"]
     print(f"{'DQN':>12} {s['win']:8.1%} {s['reward']:10.3f} {s['hp']:10.1f} "
           f"{s['turns']:7.1f}")
@@ -400,11 +427,11 @@ def save_net(net, args, curve, measured, path: str) -> Path:
     out.parent.mkdir(parents=True, exist_ok=True)
     torch.save({
         "state_dict": net.state_dict(),
-        "obs_dim": OBS_DIM, "n_actions": N_ACTIONS,
-        "hidden": args.hidden, "raw_obs": args.raw_obs,
+        "obs_dim": len(obs_names(args.piles)), "n_actions": N_ACTIONS,
+        "hidden": args.hidden, "raw_obs": args.raw_obs, "piles": args.piles,
         "variant": args.variant, "episodes": args.episodes,
         "lr": args.lr, "gamma": args.gamma, "seed": args.seed,
-        "obs_names": list(OBS_NAMES),
+        "obs_names": list(obs_names(args.piles)),
         "curve": curve, "measured": measured or {},
     }, out)
     return out
@@ -421,10 +448,11 @@ def load_net(path: str):
     torch = _require_torch()
     meta = torch.load(path, weights_only=False)
     saved = meta.get("obs_names")
-    if saved is not None and list(saved) != list(OBS_NAMES):
+    expected = list(obs_names(meta.get("piles", True)))
+    if saved is not None and list(saved) != expected:
         raise SystemExit(
             f"{path} was trained on a different observation.\n"
-            f"  saved: {saved}\n  now:   {list(OBS_NAMES)}\n"
+            f"  saved: {saved}\n  now:   {expected}\n"
             "The vector would still be the right length, so nothing would fail "
             "- it would just be wrong. Retrain, or check out the code it came from."
         )
@@ -436,10 +464,12 @@ def load_net(path: str):
 
 def save_curve(args, curve, measured=None) -> Path:
     CURVE_DIR.mkdir(exist_ok=True)
-    tag = args.variant + ("_rawobs" if args.raw_obs else "")
+    tag = (args.variant + ("_rawobs" if args.raw_obs else "")
+           + ("" if args.piles else "_nopiles"))
     path = CURVE_DIR / f"{tag}.json"
     path.write_text(json.dumps({
-        "variant": args.variant, "raw_obs": args.raw_obs, "episodes": args.episodes,
+        "variant": args.variant, "raw_obs": args.raw_obs, "piles": args.piles,
+        "episodes": args.episodes,
         "lr": args.lr, "hidden": args.hidden, "batch": args.batch,
         "replay_size": args.replay_size, "target_sync": args.target_sync,
         "seed": args.seed,
@@ -671,6 +701,10 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--raw-obs", action="store_true",
                     help="skip normalisation, on purpose, to watch hp dominate")
+    ap.add_argument("--no-piles", dest="piles", action="store_false",
+                    help="砍掉 draw_*/discard_* 六维，练一个 13 维的网络。"
+                         "to_toy_state 供不出这六维（填的是 (0,0,0) 标记），而 19 维"
+                         "的网络被清零后 26.1%% 的决策会变 —— 要让模型打真游戏就用它")
     ap.add_argument("--save", help="训练完把网络存到这个路径（含 hidden / raw_obs / 曲线 / 实测胜率）")
     ap.add_argument("--load", help="读一个训练好的网络，跳过训练，直接评估")
     ap.add_argument("--check", action="store_true", help="wiring checks, no training")
@@ -692,6 +726,7 @@ def main() -> None:
         # exists, and `--hidden 32 --load a-64-wide-net` should not silently
         # report numbers for something that was never trained.
         args.hidden, args.raw_obs = meta["hidden"], meta["raw_obs"]
+        args.piles = meta.get("piles", True)
         curve = meta.get("curve") or []
         print(f"（读的是 {args.load}，variant {meta.get('variant')}，"
               f"{meta.get('episodes', 0):,} 局，没有重新训练）")
