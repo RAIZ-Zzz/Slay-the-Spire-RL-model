@@ -852,6 +852,76 @@ def with_frozen_deck(inner, tally: dict):
     return choose
 
 
+def with_dqn_watch(inner, path: str, stats: dict):
+    """Run the Stage 2 network alongside whatever policy is playing. Changes nothing.
+
+    Deliberately not a policy. In the one environment where both have been
+    measured the network loses to four lines of `if` (79.6% / 72.8% against
+    82.2%), and `greedy_combat` has a rule the toy fight cannot express at all -
+    finish off a killable enemy - because that fight has one enemy. Swapping it
+    in would most likely be a downgrade and nothing measured says otherwise.
+
+    What is missing is a different number. A table reports a miss rate: it can
+    say "I have never seen this". A network cannot - it returns the same
+    confident four values for a state from its training distribution and for one
+    three acts deep with relics the toy has never heard of. Whether Stage 2
+    transfers at all turns on that gap, so this counts it:
+
+      * **agree** - the net would have played the same card as the policy that
+        actually ran. Free to collect, needs no ground truth, and it is the only
+        direct evidence about behaviour rather than about inputs.
+      * **margin** - best Q minus second best. The analogue of a table hit: near
+        zero is the net shrugging, and averaged over a run it says how often the
+        policy was really a coin flip.
+      * **out-of-range** - components the real state pushes past the [0, 1] the
+        encoder normalises into. `encode_vector` caps them, so afterwards a
+        capped value and a genuine 1.0 are the same number; `cap=False` is the
+        only place the distinction survives.
+    """
+    import dqn_combat
+    import dqn_exp1
+
+    torch = dqn_exp1._require_torch()
+    net, meta = dqn_combat.load(path)
+    rng = random.Random(0)
+    print(f"dqn watch: {path} (obs_dim {meta['obs_dim']}, "
+          f"scored {meta.get('measured', {}).get('DQN')} in the toy fight) "
+          "- observing only, it plays nothing")
+
+    def watched(state: dict, grid_picks: int = 0):
+        payload, reason = inner(state, grid_picks)
+        if state.get("decision") != "combat_play":
+            return payload, reason
+        try:
+            mine, why = dqn_combat.choose(state, net, rng, action_adapter, torch)
+        except Exception as exc:  # an instrument must never break the run
+            stats["error"] += 1
+            stats["reasons"][f"{type(exc).__name__}: {exc}"[:60]] =                 stats["reasons"].get(f"{type(exc).__name__}: {exc}"[:60], 0) + 1
+            return payload, reason
+        if mine is None:
+            stats["miss"] += 1
+            stats["reasons"][why.split(" (")[0]] =                 stats["reasons"].get(why.split(" (")[0], 0) + 1
+            return payload, reason
+
+        stats["seen"] += 1
+        if "margin " in why:
+            m = why.split("margin ")[1].split()[0].rstrip(")")
+            if m != "inf":
+                stats["margin"] += float(m)
+                stats["margin_n"] += 1
+        if "OUT-OF-RANGE" in why:
+            stats["out_of_range"] += 1
+        # Compare the action, not the reason: two policies phrase themselves
+        # differently and the payload is what the game would actually receive.
+        if mine == payload:
+            stats["agree"] += 1
+        else:
+            stats["disagree"] += 1
+        return payload, reason
+
+    return watched
+
+
 def with_qtable_combat(inner, path: str, stats: dict):
     """Wrap a policy so combat comes from a trained Q-table, with a fallback.
 
@@ -1638,6 +1708,9 @@ def main() -> int:
                          "a card, and tell the model why. The premise of the "
                          "2026-09-16 experiment: how far does the starting deck "
                          "go on its own, with the route as the only lever")
+    ap.add_argument("--dqn-watch", metavar="PATH", dest="dqn_watch",
+                    help="跑一个 Stage 2 网络在旁边旁观，报告它和实际策略的分歧率、"
+                         "Q 值差距、观测越界次数。**它不出牌**，只测量。需要 --no-piles 训的网络")
     ap.add_argument("--qtable", metavar="PATH",
                     help="play combat from a Q-table trained by rl/stage1_tabular/qlearn_exp1.py "
                          "(implies --frozen-deck: the table's keys assume the "
@@ -1733,6 +1806,8 @@ def main() -> int:
     FROZEN_DECK = frozen
     frozen_tally = {"skipped_rewards": 0, "refused": 0, "declined": 0}
     qstats = {"hit": 0, "miss": 0, "reasons": {}}
+    dstats = {"seen": 0, "agree": 0, "disagree": 0, "miss": 0, "error": 0,
+              "out_of_range": 0, "margin": 0.0, "margin_n": 0, "reasons": {}}
 
     # One string, used for both the routing and the prompt, so the two cannot
     # disagree - which they did for a day and a half in 2026-09-14.
@@ -1780,6 +1855,9 @@ def main() -> int:
         print(f"api: {api_base} (from {base_src})   model: {model} (from {model_src})")
         inner = make_llm_choose(client, model, combat_mode, args.dry_run,
                                 usage, frozen)
+
+    if args.dqn_watch:
+        inner = with_dqn_watch(inner, args.dqn_watch, dstats)
 
     if args.qtable:
         inner = with_qtable_combat(inner, args.qtable, qstats)
@@ -1857,6 +1935,24 @@ def main() -> int:
             if frozen:
                 print(f"frozen deck: skipped {frozen_tally['skipped_rewards']} "
                       f"card rewards, refused {frozen_tally['refused']} actions")
+            if args.dqn_watch:
+                d = dstats
+                decided = d["agree"] + d["disagree"]
+                print(f"dqn watch: saw {d['seen']} combat states, "
+                      f"{d['miss']} untranslatable, {d['error']} errors")
+                if decided:
+                    print(f"   agreed with the running policy "
+                          f"{d['agree']}/{decided} ({100 * d['agree'] / decided:.1f}%)")
+                if d["margin_n"]:
+                    print(f"   mean margin {d['margin'] / d['margin_n']:.3f}"
+                          "  (near 0 = the net had no opinion)")
+                if d["seen"]:
+                    print(f"   observation out of range in {d['out_of_range']}"
+                          f"/{d['seen']} states "
+                          f"({100 * d['out_of_range'] / d['seen']:.1f}%)")
+                for kind, n in sorted(d["reasons"].items(), key=lambda kv: -kv[1])[:6]:
+                    print(f"   x{n}: {kind}")
+
             if args.qtable:
                 looked = qstats["hit"] + qstats["miss"]
                 # The number this whole line of work exists to produce. Printed
