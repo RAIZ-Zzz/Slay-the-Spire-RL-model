@@ -42,6 +42,7 @@ Two things learned the hard way that are worth knowing before you start:
 from __future__ import annotations
 
 import argparse
+import random
 import shutil
 import subprocess
 import sys
@@ -53,6 +54,39 @@ from typing import NamedTuple
 from cli_anything.slay_the_spire_ii.core import action_adapter
 from cli_anything.slay_the_spire_ii.core.state_adapter import normalize_state
 from cli_anything.slay_the_spire_ii.utils.sts2_backend import ApiError, Sts2RawClient
+
+# --- A3 step 6: randomised choices ---------------------------------------------
+#
+# A fixed `index=0` is not a neutral default - it is one specific route walked
+# over and over, so a hundred runs are one sample repeated. The value this agent
+# has that a human does not is the ability to *randomise the treatment*: pick
+# cards and routes by dice and the result is a clean causal estimate rather than
+# the selection bias the 2026-09-08 card table ran into.
+#
+# A named `Random` rather than the `random` module, because the module's global
+# stream is shared with anything else that imports `random` - one library call
+# and the sequence shifts, so "step 37 did something stupid" stops reproducing.
+#
+# ⚠️ This is module state, and module state is what A5 exists to remove: the
+# policy should carry its own rng. It is here rather than in the signature
+# because `(state, grid_picks) -> (payload, reason)` is a contract with six
+# implementations across two files, and widening it during a step whose whole
+# point is "change one thing" is the wrong trade. `choose` takes an explicit
+# `rng=` so A5 can hand one in without this ever being read.
+RNG = random.Random()
+
+
+def seed_choices(seed: int | None = None) -> int:
+    """Seed the chooser. Returns the seed actually used - print it or lose it.
+
+    `None` draws a fresh seed from the OS rather than leaving the rng unseeded,
+    so that every run is both different *and* replayable. An unseeded rng gives
+    the first of those and not the second, which is the worse half.
+    """
+    if seed is None:
+        seed = random.SystemRandom().randrange(2 ** 31)
+    RNG.seed(seed)
+    return seed
 
 # --- A1 -----------------------------------------------------------------------
 
@@ -84,6 +118,7 @@ def read_loop(
     stall_polls: int = 400,
     poll: float = 0.3,
     give_up_after: int = 8,
+    seed: int | None = None,
 ) -> str:
     """Poll and print until the run ends. Returns why it stopped.
 
@@ -106,6 +141,10 @@ def read_loop(
     nothing is sent - so a new branch can be checked against the live game
     before it is allowed to touch it.
     """
+    # Printed, not just used. A run whose seed was never written down is a run
+    # that cannot be replayed, which is most of what seeding was for.
+    print(f"  seed {seed_choices(seed)}")
+
     # The round our last combat action went out in. The only piece of history the
     # loop keeps, and it exists to tell an undealt hand apart from an emptied one
     # - see guard 3. None means "no action yet this combat", which correctly makes
@@ -397,17 +436,22 @@ ENEMY_TARGET = {"AnyEnemy"}
 # indexes into that. So when option 0 is locked, passing the state's index 1
 # selects the *second unlocked* option, not the one that was looked at - and the
 # game accepts it without complaint, exactly like the card_index bug.
-def legal_position(items, flag: str, want=True):
-    """(position-within-legal, item) for the first legal entry, or (None, None).
+def legal_position(items, flag: str, want=True, rng: random.Random | None = None):
+    """(position-within-legal, item) for a legal entry, or (None, None).
 
     The position is deliberately the index *into the filtered list*, because
     that is what these handlers take. Note this is the opposite convention from
     play_card, which wants the item's own `index`; there is no single rule, only
     what each handler was written to expect.
+
+    With no `rng` this returns the first legal entry, which is what every caller
+    did before A3 step 6 and what the offline tests still assert. With one it
+    draws uniformly from all of them.
     """
-    for position, item in enumerate(i for i in items if i.get(flag) == want):
-        return position, item
-    return None, None
+    legal = list(enumerate(i for i in items if i.get(flag) == want))
+    if not legal:
+        return None, None
+    return rng.choice(legal) if rng is not None else legal[0]
 
 
 def pick_potion(state) -> tuple[int, str | None] | None:
@@ -454,7 +498,7 @@ def pick_potion(state) -> tuple[int, str | None] | None:
     return None
 
 
-def choose(state, grid_picks: int = 0):
+def choose(state, grid_picks: int = 0, rng: random.Random | None = None):
     """Pick an action for this state. Return (payload, reason).
 
     `grid_picks` is how many cards have already been picked on the current
@@ -467,10 +511,18 @@ def choose(state, grid_picks: int = 0):
     to None so the human keeps playing it. Adding one decision at a time keeps
     the blame narrow: if the game stops moving, it is the branch just added.
 
-    First legal option every time, never a random one - while a write path is
-    unproven a reproducible choice is worth more than variety. Randomising is
-    A3's last step, and it has to come *after* a real combat has been played
-    through, or a stall cannot be told apart from an unlucky draw.
+    **A3 step 6 (2026-09-17): the fixed picks are now random.** Until a real
+    combat had been played through, first-legal-every-time was worth more than
+    variety: a stall and an unlucky draw look identical, and a fixed choice
+    leaves one suspect instead of two. That gate was passed on 2026-09-12, so
+    the picks below draw from `rng` - which is `RNG` unless a caller hands one
+    in, and which `read_loop` seeds and prints.
+
+    Nine sites are randomised: the map node, which playable card, which enemy,
+    which card reward, the event option, the rest option, the treasure and
+    select relics, and the hand-select card. `combat_rewards` is deliberately
+    **not** - it claims one item at a time until the screen is empty, so the
+    order carries no information and randomising it only adds noise.
 
     Still missing: the loop cannot yet tell an action that was accepted and
     ignored from one that simply takes a moment, so it would resend forever.
@@ -479,6 +531,7 @@ def choose(state, grid_picks: int = 0):
     look identical on screen. The reason strings below are the only record of
     which one happened, so they have to describe what really occurred.
     """
+    rng = RNG if rng is None else rng
     decision = state.get("decision")
 
     if decision == "map_select":
@@ -486,7 +539,7 @@ def choose(state, grid_picks: int = 0):
         if not choices:
             return None, "map with no choices"
 
-        index = 0
+        index = rng.randrange(len(choices))
         node = choices[index]
         return (action_adapter.choose_map_node(index), f"node {index}: {node['type']}")
 
@@ -532,7 +585,12 @@ def choose(state, grid_picks: int = 0):
             )
 
         skipped = []
-        for card in playable:
+        # A copy: `playable` is used again below to build the reason string, and
+        # shuffling it in place would make the message describe an order that is
+        # not the one the loop walked.
+        order = list(playable)
+        rng.shuffle(order)
+        for card in order:
             # The card's index in `hand`, not its position in `playable`.
             # Filtering shifted everything: once hand[0] is unplayable,
             # playable[0] *is* hand[2]. play_card takes the hand index, so
@@ -557,8 +615,7 @@ def choose(state, grid_picks: int = 0):
                 if not alive:
                     skipped.append(f"[{card_index}] {name}: no living enemy")
                     continue
-                # First living enemy, for the same reason as node 0.
-                target = alive[0]["entity_id"]
+                target = rng.choice(alive)["entity_id"]
                 return (
                     action_adapter.play_card(card_index, target=target),
                     f"play [{card_index}] {name} -> {target}",
@@ -584,7 +641,7 @@ def choose(state, grid_picks: int = 0):
     if decision == "card_reward":
         cards = state.get("cards") or []
         if cards:
-            card = cards[0]
+            card = rng.choice(cards)
             return (
                 action_adapter.select_card_reward(card["index"]),
                 f"take card [{card['index']}] {card.get('name')} "
@@ -693,7 +750,7 @@ def choose(state, grid_picks: int = 0):
         if state.get("in_dialogue"):
             return action_adapter.advance_dialogue(), "advance event dialogue"
         options = state.get("options") or []
-        position, option = legal_position(options, "is_locked", want=False)
+        position, option = legal_position(options, "is_locked", want=False, rng=rng)
         if option is None:
             # Name the widget the bridge could not read. An event with no options
             # and no dialogue means something is on screen that BuildEventState
@@ -717,7 +774,7 @@ def choose(state, grid_picks: int = 0):
 
     if decision == "rest_site":
         options = state.get("options") or []
-        position, option = legal_position(options, "is_enabled")
+        position, option = legal_position(options, "is_enabled", rng=rng)
         if option is not None:
             return (
                 action_adapter.choose_rest_option(position),
@@ -770,7 +827,7 @@ def choose(state, grid_picks: int = 0):
     if decision == "treasure":
         relics = state.get("relics") or []
         if relics:
-            relic = relics[0]
+            relic = rng.choice(relics)
             return (
                 action_adapter.claim_treasure_relic(relic["index"]),
                 f"take relic [{relic['index']}] {relic.get('name')}",
@@ -789,7 +846,7 @@ def choose(state, grid_picks: int = 0):
     if decision == "relic_select":
         relics = state.get("relics") or []
         if relics:
-            relic = relics[0]
+            relic = rng.choice(relics)
             return (
                 action_adapter.select_relic(relic["index"]),
                 f"select relic [{relic['index']}] {relic.get('name')} of {len(relics)}",
@@ -895,7 +952,7 @@ def choose(state, grid_picks: int = 0):
             return action_adapter.combat_confirm_selection(), "confirm hand selection"
         cards = state.get("cards") or []
         if cards:
-            card = cards[0]
+            card = rng.choice(cards)
             return (
                 action_adapter.combat_select_card(card["index"]),
                 f"hand-select [{card['index']}] {card.get('name')} "
@@ -1077,6 +1134,8 @@ def main() -> int:
         action="store_true",
         help="with --act, do not open the watch_resolving.py console",
     )
+    ap.add_argument("--seed", type=int, default=None,
+                    help="seed for the agent's own random choices (map node, card reward, ...). Omitted = a fresh one, printed either way. Note this does NOT seed the game itself, so it replays the decision sequence, not the run.")
     ap.add_argument("--base-url", default="http://localhost:15526")
     args = ap.parse_args()
 
@@ -1097,7 +1156,8 @@ def main() -> int:
     # its console orphaned, still polling a game nobody was driving.
     try:
         try:
-            reason = read_loop(client, args.max_steps, args.act)
+            reason = read_loop(client, args.max_steps, args.act,
+                               seed=args.seed)
         except ApiError as e:
             print(f"bridge unreachable: {e}")
             return 1

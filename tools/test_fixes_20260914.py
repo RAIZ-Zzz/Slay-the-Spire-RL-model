@@ -624,5 +624,68 @@ for mode in ("llm", "greedy", "fixed", "qtable"):
           ("Potions are worth buying" in txt) != ("Do **not** buy potions" in txt), True)
     check(f"{mode}: no placeholder left", "{{" in txt, False)
 
+
+# --- A3 step 6: the randomised choices (2026-09-17) ---------------------------
+#
+# The 119 checks above passed unchanged when the fixed picks became random, which
+# sounds reassuring and is not: almost every state they hand `choose` has exactly
+# one option, and `rng.choice` of a one-item list is the item. A suite that
+# cannot fail when the behaviour changes is not testing that behaviour.
+#
+# So these go the other way: each one needs *more than one* option and asserts
+# that the pick moves. The counterpart matters as much - `combat_rewards` is
+# deliberately still first-come, and pinning that down is what stops a later
+# "randomise everything" from quietly undoing the reasoning.
+
+import random as _random  # noqa: E402
+from collections import Counter  # noqa: E402
+
+THREE_NODES = {"decision": "map_select",
+               "choices": [{"type": "monster"}, {"type": "shop"}, {"type": "rest"}]}
+THREE_CARDS = {"decision": "card_reward",
+               "cards": [{"index": 0, "name": "a"}, {"index": 1, "name": "b"},
+                         {"index": 2, "name": "c"}]}
+
+
+def picks(state, seed, n=40):
+    autoplay.seed_choices(seed)
+    out = []
+    for _ in range(n):
+        payload = autoplay.choose(state)[0]
+        out.append(next(v for k, v in payload.items() if k != "action"))
+    return out
+
+
+check("same seed replays the same choices", picks(THREE_NODES, 7), picks(THREE_NODES, 7))
+check("different seeds diverge", picks(THREE_NODES, 7) == picks(THREE_NODES, 99), False)
+check("all three map nodes get chosen", sorted(set(picks(THREE_NODES, 0, 200))), [0, 1, 2])
+check("all three card rewards get chosen", sorted(set(picks(THREE_CARDS, 0, 200))), [0, 1, 2])
+
+# Wide band on purpose: a smoke test for "is it actually rolling", not a test of
+# the Mersenne Twister. It catches a stuck index or an off-by-one in the range.
+_c = Counter(picks(THREE_NODES, 3, 3000))
+check("map nodes are roughly uniform", all(850 < _c[i] < 1150 for i in (0, 1, 2)), True)
+
+# An explicitly passed rng must be the one used, or A5 cannot take this over.
+autoplay.seed_choices(1)
+_a = [autoplay.choose(THREE_NODES, rng=_random.Random(5))[0]["index"] for _ in range(6)]
+autoplay.seed_choices(999)
+_b = [autoplay.choose(THREE_NODES, rng=_random.Random(5))[0]["index"] for _ in range(6)]
+check("an explicit rng overrides the module one", _a, _b)
+
+# The deliberate exception, recorded as a test so it cannot be "fixed" by
+# accident: rewards are claimed one at a time until the screen is empty, so the
+# order carries no information and randomising it would only add noise.
+TWO_REWARDS = {"decision": "combat_rewards",
+               "player": {"open_potion_slots": 2},
+               "items": [{"index": 0, "type": "gold", "gold_amount": 30},
+                         {"index": 1, "type": "card"}]}
+autoplay.seed_choices(0)
+check("combat_rewards is deliberately NOT randomised",
+      {autoplay.choose(TWO_REWARDS)[0].get("index") for _ in range(50)}, {0})
+
+check("seed_choices(None) returns a usable seed", isinstance(autoplay.seed_choices(), int), True)
+check("two automatic seeds differ", autoplay.seed_choices() == autoplay.seed_choices(), False)
+
 print(f"\n{PASS} passed, {FAIL} failed")
 sys.exit(1 if FAIL else 0)

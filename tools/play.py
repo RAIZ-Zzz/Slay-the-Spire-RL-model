@@ -1608,6 +1608,8 @@ def main() -> int:
     ap.add_argument("--policy", choices=("fixed", "heuristic", "llm"),
                     default="heuristic")
     ap.add_argument("--act", action="store_true")
+    ap.add_argument("--seed", type=int, default=None,
+                    help="seed for the agent's own random choices (map node, card reward, ...). Omitted = a fresh one, printed either way. Note this does NOT seed the game itself, so it replays the decision sequence, not the run.")
     ap.add_argument("--max-steps", type=int, default=150)
     ap.add_argument("--bridge-url", default="http://localhost:15526",
                     help="the game bridge, not the model endpoint")
@@ -1835,7 +1837,8 @@ def main() -> int:
         reason = None
         try:
             reason = autoplay.read_loop(game, args.max_steps, args.act,
-                                        give_up_after=args.give_up_after)
+                                        give_up_after=args.give_up_after,
+                                        seed=args.seed)
             print(f"stopped: {reason}")
         except ApiError as e:
             # The game bridge, not the model. One line rather than forty of
