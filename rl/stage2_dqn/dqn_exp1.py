@@ -2,12 +2,12 @@
 
     pip install torch --index-url https://download.pytorch.org/whl/cpu
 
-    python rl/dqn_exp1.py --check                   # no training: does the wiring hold up
-    python rl/dqn_exp1.py --variant naive           # no replay, no target net - watch it thrash
-    python rl/dqn_exp1.py --variant replay          # + replay buffer
-    python rl/dqn_exp1.py --variant dqn             # + target network
-    python rl/dqn_exp1.py --variant dqn --raw-obs   # the observation-scale pit, on purpose
-    python rl/dqn_exp1.py --plot                    # every saved curve on one figure
+    python rl/stage2_dqn/dqn_exp1.py --check                   # no training: does the wiring hold up
+    python rl/stage2_dqn/dqn_exp1.py --variant naive           # no replay, no target net - watch it thrash
+    python rl/stage2_dqn/dqn_exp1.py --variant replay          # + replay buffer
+    python rl/stage2_dqn/dqn_exp1.py --variant dqn             # + target network
+    python rl/stage2_dqn/dqn_exp1.py --variant dqn --raw-obs   # the observation-scale pit, on purpose
+    python rl/stage2_dqn/dqn_exp1.py --plot                    # every saved curve on one figure
 
 **The environment does not change.** That is the whole design of this stage: the
 fight, the reward, the baselines and the evaluation loop are imported from Stage
@@ -50,11 +50,19 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import sys
 from collections import deque
 from pathlib import Path
 
-import exp1_combat as env
-import qlearn_exp1 as tabular
+# Both of these live outside this folder since the 2026-09-17 reshuffle:
+#   exp1_combat  -> rl/                 the shared environment, unchanged from Stage 1
+#   qlearn_exp1  -> rl/stage1_tabular/  the five baselines this run is measured against
+_RL = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_RL))
+sys.path.insert(0, str(_RL / "stage1_tabular"))
+
+import exp1_combat as env  # noqa: E402
+import qlearn_exp1 as tabular  # noqa: E402
 
 CURVE_DIR = Path(__file__).resolve().parent / "curves"
 STEP_CAP = tabular.STEP_CAP

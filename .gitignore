@@ -17,3 +17,6 @@ tools/api_probe/obj/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+
+#Claude prompts
+CLAUDE.md

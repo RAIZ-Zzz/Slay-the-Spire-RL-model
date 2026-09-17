@@ -15,7 +15,7 @@ the state directly.
 
 Run it and play a fight yourself:
 
-    python rl/toy_combat.py
+    python rl/stage1_tabular/toy_combat.py
 
 Play two or three before writing any learning code. The numbers below are the
 ones from the roadmap and they are **degenerate** - see the note on them.

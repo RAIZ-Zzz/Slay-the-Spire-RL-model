@@ -1637,7 +1637,7 @@ def main() -> int:
                          "2026-09-16 experiment: how far does the starting deck "
                          "go on its own, with the route as the only lever")
     ap.add_argument("--qtable", metavar="PATH",
-                    help="play combat from a Q-table trained by rl/qlearn_exp1.py "
+                    help="play combat from a Q-table trained by rl/stage1_tabular/qlearn_exp1.py "
                          "(implies --frozen-deck: the table's keys assume the "
                          "starting deck). Falls back to the greedy policy on a "
                          "miss, and reports the miss rate at the end")

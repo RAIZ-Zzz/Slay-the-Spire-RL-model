@@ -1,8 +1,8 @@
 """Tabular Q-learning on experiment 1's fight. The same algorithm as `qlearn.py`.
 
-    python rl/qlearn_exp1.py                          # the pre-registered run
-    python rl/qlearn_exp1.py --reward sparse          # the ablation: only the reward changes
-    python rl/qlearn_exp1.py --encode coarse          # once `encode_coarse` is written
+    python rl/stage1_tabular/qlearn_exp1.py                          # the pre-registered run
+    python rl/stage1_tabular/qlearn_exp1.py --reward sparse          # the ablation: only the reward changes
+    python rl/stage1_tabular/qlearn_exp1.py --encode coarse          # once `encode_coarse` is written
 
 The learning rule is one line and it is the same one, copied from `qlearn.py:91`.
 Everything else here exists because Stage 1 taught us that **Q-learning never
@@ -39,9 +39,15 @@ from __future__ import annotations
 import argparse
 import pickle
 import random
+import sys
 from collections import defaultdict
+from pathlib import Path
 
-import exp1_combat as env
+# `exp1_combat` is the shared environment and stays in `rl/`. This file moved into
+# `rl/stage1_tabular/` on 2026-09-17, so the parent has to go on the path first.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+import exp1_combat as env  # noqa: E402
 
 STEP_CAP = 400  # a fight that has not ended by here is a bug, not a long fight
 

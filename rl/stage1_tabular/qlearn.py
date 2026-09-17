@@ -1,7 +1,7 @@
 """Tabular Q-learning on the toy fight. Stage 1's actual content.
 
-    python rl/qlearn.py                 # train, print the curve and the table
-    python rl/qlearn.py --gamma 1.0     # watch the values blow up
+    python rl/stage1_tabular/qlearn.py                 # train, print the curve and the table
+    python rl/stage1_tabular/qlearn.py --gamma 1.0     # watch the values blow up
 
 Everything here is scaffolding except one line in `train`, marked TODO. That line
 is Q-learning; the rest is bookkeeping around it.
