@@ -379,6 +379,61 @@ def report(args, curve, net) -> dict:
     return measured
 
 
+def save_net(net, args, curve, measured, path: str) -> Path:
+    """Write the trained weights plus everything needed to use them again.
+
+    A bare `state_dict` is a trap. Two things outside it decide whether the
+    numbers coming out mean anything:
+
+      * `hidden` - the architecture has to be rebuilt before the weights fit at
+        all. This one fails loudly, which is the harmless kind.
+      * `raw_obs` - a net trained on unnormalised input, fed normalised input,
+        returns confident nonsense and **raises nothing**. hp arrives as 0.6
+        where it learned 48. That is the same silent-wrong-input family as the
+        `card_index` bug and the frozen `state_brief` whitelist.
+
+    `curve` and `measured` ride along so a saved net can still say what it scored
+    without the terminal it was trained in.
+    """
+    torch = _require_torch()
+    out = Path(path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    torch.save({
+        "state_dict": net.state_dict(),
+        "obs_dim": OBS_DIM, "n_actions": N_ACTIONS,
+        "hidden": args.hidden, "raw_obs": args.raw_obs,
+        "variant": args.variant, "episodes": args.episodes,
+        "lr": args.lr, "gamma": args.gamma, "seed": args.seed,
+        "obs_names": list(OBS_NAMES),
+        "curve": curve, "measured": measured or {},
+    }, out)
+    return out
+
+
+def load_net(path: str):
+    """Rebuild a saved net. Returns (net, meta).
+
+    `OBS_NAMES` is checked rather than just `obs_dim`, because a rename or a
+    reordering of the observation keeps the length and changes the meaning -
+    and a net fed the right number of wrong floats is the failure that does not
+    announce itself.
+    """
+    torch = _require_torch()
+    meta = torch.load(path, weights_only=False)
+    saved = meta.get("obs_names")
+    if saved is not None and list(saved) != list(OBS_NAMES):
+        raise SystemExit(
+            f"{path} was trained on a different observation.\n"
+            f"  saved: {saved}\n  now:   {list(OBS_NAMES)}\n"
+            "The vector would still be the right length, so nothing would fail "
+            "- it would just be wrong. Retrain, or check out the code it came from."
+        )
+    net = build_net(torch, meta["obs_dim"], meta["n_actions"], meta["hidden"])
+    net.load_state_dict(meta["state_dict"])
+    net.eval()
+    return net, meta
+
+
 def save_curve(args, curve, measured=None) -> Path:
     CURVE_DIR.mkdir(exist_ok=True)
     tag = args.variant + ("_rawobs" if args.raw_obs else "")
@@ -616,6 +671,8 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--raw-obs", action="store_true",
                     help="skip normalisation, on purpose, to watch hp dominate")
+    ap.add_argument("--save", help="训练完把网络存到这个路径（含 hidden / raw_obs / 曲线 / 实测胜率）")
+    ap.add_argument("--load", help="读一个训练好的网络，跳过训练，直接评估")
     ap.add_argument("--check", action="store_true", help="wiring checks, no training")
     ap.add_argument("--plot", action="store_true", help="draw every saved curve")
     args = ap.parse_args()
@@ -629,9 +686,23 @@ def main() -> None:
           f"{' (未归一化)' if args.raw_obs else ''}  "
           f"episodes {args.episodes:,}  lr {args.lr}  hidden {args.hidden}  "
           f"batch {args.batch}  gamma {args.gamma}")
+    if args.load:
+        net, meta = load_net(args.load)
+        # The saved flags win over the command line: they describe the net that
+        # exists, and `--hidden 32 --load a-64-wide-net` should not silently
+        # report numbers for something that was never trained.
+        args.hidden, args.raw_obs = meta["hidden"], meta["raw_obs"]
+        curve = meta.get("curve") or []
+        print(f"（读的是 {args.load}，variant {meta.get('variant')}，"
+              f"{meta.get('episodes', 0):,} 局，没有重新训练）")
+        report(args, curve, net)
+        return
+
     curve, net = train(args)
     measured = report(args, curve, net)
     print(f"curve -> {save_curve(args, curve, measured)}")
+    if args.save:
+        print(f"net   -> {save_net(net, args, curve, measured, args.save)}")
 
 
 if __name__ == "__main__":
