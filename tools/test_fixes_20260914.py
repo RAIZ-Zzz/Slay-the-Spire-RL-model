@@ -532,13 +532,33 @@ check("another floor is unaffected", play.legal_verbs(OTHER), ["claim_reward"])
 check("...and is claimed normally", wrapped(OTHER)[0],
       {"action": "claim_reward", "index": 0})
 
-# The one thing still unmeasured: whether the room lets go with a card entry
-# outstanding. If it does not, this returns None and read_loop stops loudly on a
-# single repeated decision - which is the answer, not a bug.
+# 2026-09-17: measured, and the answer changed this branch. It used to return
+# None here so read_loop would stall loudly, on the reasoning that a room with no
+# proceed meant declining was impossible and that was worth stopping to learn.
+# It is learned: the way out is the map, not the rewards screen. `proceed` opens
+# it, `choose_map_node` only works once it is open, so both are sent in that
+# order and neither is conditional. The old assertion is gone rather than
+# relaxed - keeping a check that a wedge is "correct" would outlive the belief.
+#
+# The run that forced this sat on floor 5 sending `proceed` every poll: this
+# branch returns early, so the fallback added to `with_frozen_deck` was never
+# reached. Counting tries *here* is the whole fix, and this checks the sequence
+# rather than one call - one call cannot tell "proceed first" from "proceed only".
 NOPE = dict(CARD_ONLY, can_proceed=False)
-payload, why = wrapped(NOPE)
-check("no proceed -> stop loudly, never loop", payload, None)
-check("...and names the consequence", "cannot be left" in why, True)
+# Reset first: an earlier check in this file already put this floor's key in
+# `exit_tries`, so without it the sequence starts mid-way and "first attempt is
+# proceed" reads as a failure of the code rather than of the fixture.
+dtally["exit_tries"] = {}
+dtally["walked_past"] = 0
+first, why1 = wrapped(NOPE)
+second, why2 = wrapped(NOPE)
+third, _ = wrapped(NOPE)
+check("first exit attempt is proceed", first, {"action": "proceed"})
+check("...even with can_proceed false", NOPE["can_proceed"], False)
+check("second falls through to the map", second, {"action": "choose_map_node", "index": 0})
+check("and stays there", third, {"action": "choose_map_node", "index": 0})
+check("the walk-past is counted", dtally.get("walked_past"), 2)
+check("...and says the route was blind", "blind" in why2, True)
 check("declined count is reported", dtally["declined"], 1)
 play.DECLINED.clear()
 
