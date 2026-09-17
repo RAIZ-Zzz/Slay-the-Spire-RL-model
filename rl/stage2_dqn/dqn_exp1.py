@@ -456,8 +456,10 @@ def plot_all() -> None:
     for y, text, style in ((0.788, "tabular Q  78.8%", (0, (5, 3))),
                            (0.822, "four lines of `if`  82.2%", (0, (1, 2)))):
         ax.axhline(y, ls=style, lw=1, color=MUTED, zorder=1)
-        # Right-aligned: the legend lives top-left and the two collided there.
-        ax.text(0.996, y + 0.008, text, fontsize=8, color=MUTED, ha="right",
+        # Top-left, with the legend moved to the bottom: right-aligned captions
+        # collided with the direct label of whichever series finished near a
+        # benchmark - which is exactly the comparison the reader came for.
+        ax.text(0.004, y + 0.008, text, fontsize=8, color=MUTED, ha="left",
                 transform=ax.get_yaxis_transform(), zorder=1)
 
     labelled_reference = False
@@ -492,13 +494,16 @@ def plot_all() -> None:
         ax.spines[side].set_visible(False)
     for side in ("left", "bottom"):
         ax.spines[side].set_color(AXIS)
-    ax.set_ylim(0.25, 0.88)
+    # Data-driven, because a fixed floor once clipped the most interesting part
+    # of the run: `replay` collapsed to 0.14 near the end and the chart hid it.
+    low = min(min(d["curve"]) for _, _, d in runs)
+    ax.set_ylim(min(0.25, low - 0.04), 0.88)
     ax.margins(x=0.13)
 
     handles, labels = ax.get_legend_handles_labels()
     if len(handles) > 1:
         leg = ax.legend(handles, labels, fontsize=8, frameon=False,
-                        loc="upper left", labelcolor=INK)
+                        loc="lower left", labelcolor=INK)
         leg.set_zorder(5)
 
     fig.tight_layout()
