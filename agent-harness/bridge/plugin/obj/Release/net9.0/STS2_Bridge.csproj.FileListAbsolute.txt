@@ -10,3 +10,4 @@ A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release
 A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\refint\STS2_Bridge.dll
 A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\STS2_Bridge.pdb
 A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\ref\STS2_Bridge.dll
+A:\NTUstudy\CourseWork\slay_the_spire_ii\agent-harness\bridge\plugin\obj\Release\net9.0\STS2_Bridge.sourcelink.json

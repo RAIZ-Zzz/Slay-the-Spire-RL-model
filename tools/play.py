@@ -825,6 +825,22 @@ def with_frozen_deck(inner, tally: dict):
     nothing to decide, and asking an LLM costs a call to be told the one answer
     it is allowed to give. Everything else is passed through and then checked, so
     a refusal is logged with what was refused rather than quietly rewritten.
+
+    **The way out of a rewards screen is the map, not `proceed`** (2026-09-17).
+    A day and a half went into trying to make the rewards screen release: four
+    bridge targets on 2026-09-16, the DECLINED latch, then OnSkipped,
+    RewardSkippedFrom, DebugPress and GrabClickFocus. None of it moved the
+    screen - and with every reward claimed and `is_complete` true, `proceed` did
+    not move it either, so "the card cannot be declined" was never the problem.
+
+    The answer was already in StateBuilder.cs, measured on 2026-09-13 and
+    written down: *"whatever is underneath cannot be interacted with" - it can.
+    Actions are direct calls, not mouse events, and a map node was selected
+    successfully with this screen sitting on top.* Verified again on 2026-09-17:
+    `choose_map_node` on a stuck rewards screen answered "Traveling to Unknown
+    at (4,2)" and the run advanced a floor.
+
+    So the unclaimed card is simply left on screen and the run walks past it.
     """
     def choose(state: dict, grid_picks: int = 0):
         if state.get("decision") == "card_reward":
@@ -841,14 +857,21 @@ def with_frozen_deck(inner, tally: dict):
 
         tally["refused"] += 1
         refused = f"{payload.get('action')}({payload})"
-        if state.get("can_proceed"):
-            return action_adapter.proceed(), (
-                f"frozen deck: REFUSED {refused} because {why}; leaving instead "
-                f"(policy wanted: {reason})")
-        # Nothing safe to substitute. Returning None hands the screen back to
-        # `read_loop`, which stalls loudly rather than picking something.
-        return None, (f"frozen deck: REFUSED {refused} because {why}, and there "
-                      f"is no proceed to fall back on (policy wanted: {reason})")
+
+        # ⚠️ Blind: with a rewards overlay on top the state reports no map, so
+        # there is no `choices` list to pick from and no way to know how many
+        # branches exist. Node 0 is the one index guaranteed to resolve.
+        #
+        # The cost is real and worth naming: 2026-09-16 measured that route
+        # choice is *the* lever in this fight ("敌血 90 以下随便赢, 120 以上怎么
+        # 打都输"), and this throws it away every time a card is refused. The fix
+        # is bridge-side - report the map's choices while an overlay is up - and
+        # until then a frozen-deck run's routing is only as good as node 0.
+        tally["walked_past"] += 1
+        return action_adapter.choose_map_node(0), (
+            f"frozen deck: REFUSED {refused} because {why}; walking to the map "
+            f"instead and leaving the reward on screen - node 0, chosen blind "
+            f"(policy wanted: {reason})")
     return choose
 
 
@@ -1805,24 +1828,22 @@ def main() -> int:
         # stuck detector fires on a single repeated decision, so the failure
         # costs one stalled run and says so loudly - which is a fair price for
         # the answer, and cheaper than never finding out.
-        print("--frozen-deck / --qtable are disabled: declining a combat card "
-              "reward has no working path in the bridge.")
-        print("  Four bridge targets were built and measured on 2026-09-16; all "
-              "were accepted and changed nothing. See action_adapter.py.")
-        print("  2026-09-17: the DECLINED latch does not rescue it either. Run "
-              "live, `can_proceed` was true, `proceed` was accepted with "
-              "'Proceeding from rewards', and the screen did not move - four "
-              "times running. The rewards room really does not release with a "
-              "card entry outstanding. Measured now, not assumed.")
-        print("  Next attempt: dump the live control tree under the rewards "
-              "screen and find the button a human presses.")
-        print("  For now run without them - the deck grows, which changes the "
-              "question from 'how far does the starting deck go' to 'how far "
-              "does this agent go'.")
-        return 1
+        # Unblocked 2026-09-17. The screen was never the obstacle: with every
+        # reward claimed and `is_complete` true, `proceed` still did not move it,
+        # so "the card cannot be declined" was measuring the wrong thing. The run
+        # leaves by selecting a map node with the overlay still up - see
+        # `with_frozen_deck`, and StateBuilder.cs, which wrote this down on
+        # 2026-09-13 and was read past for a day and a half.
+        print("--frozen-deck: refused card rewards are left on screen and the "
+              "run walks to the map (proceed does not move that screen).")
+        print("  ⚠️ Routing goes blind while doing it: an overlay hides the map's "
+              "choices, so the walk-past always takes node 0. Route choice is the "
+              "main lever in this fight (2026-09-16), so a frozen run's routing "
+              "is only as good as that.")
     global FROZEN_DECK
     FROZEN_DECK = frozen
-    frozen_tally = {"skipped_rewards": 0, "refused": 0, "declined": 0}
+    frozen_tally = {"skipped_rewards": 0, "refused": 0, "declined": 0,
+                    "walked_past": 0}
     qstats = {"hit": 0, "miss": 0, "reasons": {}}
     dstats = {"seen": 0, "agree": 0, "disagree": 0, "miss": 0, "error": 0,
               "out_of_range": 0, "margin": 0.0, "margin_n": 0, "reasons": {}}
@@ -1952,7 +1973,9 @@ def main() -> int:
                       f"(latched per floor, never re-claimed)")
             if frozen:
                 print(f"frozen deck: skipped {frozen_tally['skipped_rewards']} "
-                      f"card rewards, refused {frozen_tally['refused']} actions")
+                      f"card rewards, refused {frozen_tally['refused']} actions, "
+                      f"walked past {frozen_tally['walked_past']} reward screens "
+                      f"(node 0, blind)")
             if args.dqn_watch:
                 d = dstats
                 decided = d["agree"] + d["disagree"]

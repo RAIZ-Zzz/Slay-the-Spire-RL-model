@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("STS2_Bridge")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d1a6ba8b0a4e9d23534e5a80c8e57944d00ea0f8")]
 [assembly: System.Reflection.AssemblyProductAttribute("STS2_Bridge")]
 [assembly: System.Reflection.AssemblyTitleAttribute("STS2_Bridge")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -62,6 +62,8 @@ public static partial class BridgeMod
             "advance_dialogue" => ExecuteAdvanceDialogue(),
             "choose_rest_option" => ExecuteChooseRestOption(data),
             "shop_purchase" => ExecuteShopPurchase(player, data),
+            "proceed_buttons" => ExecuteProceedButtons(data),
+            "reward_probe" => ExecuteRewardProbe(data),
             "claim_reward" => ExecuteClaimReward(data),
             "select_card_reward" => ExecuteSelectCardReward(data),
             "skip_card_reward" => ExecuteSkipCardReward(data),
@@ -669,6 +671,275 @@ public static partial class BridgeMod
         {
             ["status"] = "ok",
             ["message"] = $"Traveling to {target.Point.PointType} at ({target.Point.coord.col},{target.Point.coord.row})"
+        };
+    }
+
+
+    /// <summary>
+    /// Read - and optionally poke - the latches that decide whether the rewards
+    /// room lets go. Diagnostic first, mutation only when asked.
+    ///
+    /// Four bridge targets were tried on 2026-09-16 and all were accepted while
+    /// changing nothing: NRewardsScreen.RewardSkippedFrom, CardReward.OnSkipped,
+    /// NRewardButton's RewardSkipped signal, and the card screen's own skip. On
+    /// 2026-09-17 the DECLINED latch was tried instead and the room still would
+    /// not release: can_proceed was true, proceed was accepted, the screen did
+    /// not move, four times running.
+    ///
+    /// api_probe then found what every one of those attempts was missing. The
+    /// gate is not "was this skipped" - it is:
+    ///
+    ///     RewardsSet.AllRewardsSuccessfullySelected
+    ///         &lt;= every reward's CardReward.SuccessfullySelected
+    ///
+    /// Skipping sets neither. So this reports all of them before and after, and
+    /// `mode` decides how far to go:
+    ///
+    ///     report  read only, change nothing        &lt;- start here
+    ///     skip    invoke OnSkipped()
+    ///     force   set SuccessfullySelected = true
+    ///
+    /// ⚠️ `force` writes a game-internal flag by reflection. That is not a
+    /// simulated click and it can leave a run marked as having collected a
+    /// reward it never collected - the same objection that ruled out save
+    /// editing on 2026-09-07. It exists to answer "is this the gate", on a run
+    /// that is already a test run, not to be left switched on.
+    ///
+    /// Everything is read through reflection rather than typed access on
+    /// purpose: a property that vanished in a patch then comes back null and
+    /// says so, instead of failing the build - the same reason
+    /// BuildRewardsState reads CanSkip that way.
+    /// </summary>
+
+    /// <summary>
+    /// List every NProceedButton in the scene, and optionally click one by index.
+    ///
+    /// `FindLiveProceedButton` walks the whole tree from the root and returns the
+    /// **first** enabled, visible one. That was written when the lesson was "the
+    /// button belongs to the room, not the overlay" - but first-in-tree-order is
+    /// not the same as the one on top, and nothing ever checked how many there
+    /// are. On 2026-09-17 a human clicked past an unclaimed card reward in one
+    /// press while `proceed` reported success and moved nothing, so either the
+    /// wrong button is being clicked or ForceClick does not reach this one.
+    ///
+    /// Enumerating separates those two: if there is exactly one candidate then
+    /// ForceClick is the suspect, and if there are several then the choice is.
+    /// Clicking by index rather than trying them all in a loop because the state
+    /// has to be read between presses - two clicks in one call could advance two
+    /// rooms and the log would not say which one did it.
+    /// </summary>
+    private static Dictionary<string, object?> ExecuteProceedButtons(Dictionary<string, JsonElement> data)
+    {
+        var root = ((Godot.SceneTree)Godot.Engine.GetMainLoop()).Root;
+        var all = FindAll<NProceedButton>(root);
+
+        var listed = new List<Dictionary<string, object?>>();
+        for (int i = 0; i < all.Count; i++)
+        {
+            var b = all[i];
+            string path;
+            try { path = b.GetPath().ToString(); } catch { path = "<no path>"; }
+            listed.Add(new Dictionary<string, object?>
+            {
+                ["index"] = i,
+                ["path"] = path,
+                ["name"] = b.Name.ToString(),
+                ["is_enabled"] = b.IsEnabled,
+                ["visible_in_tree"] = b.IsVisibleInTree(),
+                ["parent"] = b.GetParent()?.GetType().Name,
+                // Which one `proceed` would have taken, so the list can be read
+                // against the behaviour that has been observed rather than
+                // against a guess about it.
+                ["would_be_picked"] = b.IsEnabled && b.IsVisibleInTree()
+                                      && ReferenceEquals(b, FindLiveProceedButton()),
+                // If neither entry point works, the remaining route is whatever
+                // the real click ends up emitting - so name the signals rather
+                // than guess at them next time.
+                ["signals"] = b.GetSignalList()
+                    .Select(s => s["name"].ToString()).ToList(),
+            });
+        }
+
+        string did = "listed only";
+        if (data.TryGetValue("click", out var clickElem))
+        {
+            int idx = clickElem.GetInt32();
+            if (idx < 0 || idx >= all.Count)
+                return Error($"click index {idx} out of range (found {all.Count})");
+
+            // 2026-09-17: `ForceClick` on the right button - RewardsScreen's own,
+            // enabled and visible, and the one `proceed` already picks - reports
+            // success and moves nothing, while a human clicking the same button
+            // leaves in one press. `NClickableControl` has a second entry point,
+            // `DebugPress`, which nothing here had ever tried. Both are exposed
+            // so the two can be compared on the same button in one session
+            // rather than one rebuild apart.
+            string method = "forceclick";
+            if (data.TryGetValue("method", out var mElem))
+                method = mElem.GetString() ?? "forceclick";
+
+            switch (method)
+            {
+                case "forceclick":
+                    all[idx].ForceClick();
+                    break;
+                case "debugpress":
+                    all[idx].DebugPress();
+                    break;
+                case "grabfocus":
+                    // Long shot, and cheap while we are here: a control that
+                    // ignores a synthetic click sometimes wants focus first.
+                    all[idx].GrabClickFocus();
+                    all[idx].ForceClick();
+                    break;
+                default:
+                    return Error($"Unknown method '{method}'. Use forceclick, debugpress or grabfocus.");
+            }
+            did = $"{method} on [{idx}] {listed[idx]["path"]}";
+        }
+
+        return new Dictionary<string, object?>
+        {
+            ["status"] = "ok",
+            ["message"] = did,
+            ["count"] = all.Count,
+            ["buttons"] = listed,
+        };
+    }
+
+    private static Dictionary<string, object?> ExecuteRewardProbe(Dictionary<string, JsonElement> data)
+    {
+        var overlay = NOverlayStack.Instance?.Peek();
+        if (overlay is not NRewardsScreen screen)
+            return Error("Rewards screen is not open (this reads the combat rewards screen)");
+
+        string mode = "report";
+        if (data.TryGetValue("mode", out var modeElem))
+            mode = modeElem.GetString() ?? "report";
+        if (mode != "report" && mode != "skip" && mode != "force" && mode != "skipfrom")
+            return Error($"Unknown mode '{mode}'. Use report, skip, skipfrom or force.");
+
+        var buttons = FindAll<NRewardButton>(screen).Where(b => b.Reward != null).ToList();
+        if (buttons.Count == 0)
+            return Error("No rewards on the screen");
+
+        int index = -1;
+        if (data.TryGetValue("index", out var idxElem))
+            index = idxElem.GetInt32();
+        if (mode != "report")
+        {
+            if (index < 0 || index >= buttons.Count)
+                return Error($"mode '{mode}' needs an index in 0..{buttons.Count - 1}");
+        }
+
+        var before = SnapshotRewards(screen, buttons);
+        string did = "nothing (mode=report)";
+
+        if (mode != "report")
+        {
+            var reward = buttons[index].Reward!;
+            var type = reward.GetType();
+            if (mode == "skipfrom")
+            {
+                // The one the 2026-09-16 attempts could not aim: RewardSkippedFrom
+                // wants the Control that was clicked, and the screen presumably
+                // matches it back to a reward. Passing anything else is a call
+                // the game accepts and drops - which is exactly what "accepted and
+                // changed nothing" looks like from outside. `FindAll<NRewardButton>`
+                // already gives us the real button; ExecuteClaimReward clicks the
+                // same object.
+                var m2 = screen.GetType().GetMethod("RewardSkippedFrom",
+                    BindingFlags.Public | BindingFlags.Instance);
+                if (m2 == null)
+                    return Error("NRewardsScreen has no RewardSkippedFrom(Control)");
+                m2.Invoke(screen, new object[] { buttons[index] });
+                did = $"called NRewardsScreen.RewardSkippedFrom(button[{index}])";
+            }
+            else if (mode == "skip")
+            {
+                var m = type.GetMethod("OnSkipped", BindingFlags.Public | BindingFlags.Instance);
+                if (m == null)
+                    return Error($"{type.Name} has no OnSkipped()");
+                m.Invoke(reward, null);
+                did = $"called {type.Name}.OnSkipped()";
+            }
+            else
+            {
+                var prop = type.GetProperty("SuccessfullySelected",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                if (prop == null)
+                    return Error($"{type.Name} has no SuccessfullySelected");
+                if (prop.CanWrite)
+                {
+                    prop.SetValue(reward, true);
+                    did = $"set {type.Name}.SuccessfullySelected = true (property)";
+                }
+                else
+                {
+                    // Auto-properties keep their value in a compiler-named field.
+                    // Named rather than guessed at, and reported when missing, so
+                    // a silent no-op cannot look like a success.
+                    var field = type.GetField($"<SuccessfullySelected>k__BackingField",
+                        BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (field == null)
+                        return Error($"{type.Name}.SuccessfullySelected has no setter and no backing field");
+                    field.SetValue(reward, true);
+                    did = $"set {type.Name}.SuccessfullySelected = true (backing field)";
+                }
+            }
+        }
+
+        var after = SnapshotRewards(screen, buttons);
+        return new Dictionary<string, object?>
+        {
+            ["status"] = "ok",
+            ["message"] = did,
+            ["mode"] = mode,
+            ["before"] = before,
+            ["after"] = after
+        };
+    }
+
+    /// <summary>Every latch that could be holding the rewards room shut.</summary>
+    private static Dictionary<string, object?> SnapshotRewards(
+        NRewardsScreen screen, List<NRewardButton> buttons)
+    {
+        static object? Read(object? target, string name)
+        {
+            if (target == null) return null;
+            var p = target.GetType().GetProperty(name,
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            if (p == null) return null;
+            try { return p.GetValue(target); } catch { return "<threw>"; }
+        }
+
+        var rewards = new List<Dictionary<string, object?>>();
+        object? parentSet = null;
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            var r = buttons[i].Reward!;
+            parentSet ??= Read(r, "ParentRewardSet");
+            rewards.Add(new Dictionary<string, object?>
+            {
+                ["index"] = i,
+                ["type"] = r.GetType().Name,
+                ["is_enabled"] = buttons[i].IsEnabled,
+                ["can_skip"] = Read(r, "CanSkip"),
+                ["can_reroll"] = Read(r, "CanReroll"),
+                ["successfully_selected"] = Read(r, "SuccessfullySelected"),
+            });
+        }
+
+        return new Dictionary<string, object?>
+        {
+            ["screen_is_complete"] = Read(screen, "IsComplete"),
+            ["rewards"] = rewards,
+            // The two on the set itself. `AllRewardsSuccessfullySelected` is the
+            // one the whole question turns on; `DisallowSkipping` says whether
+            // the room was ever going to allow this at all.
+            ["set_all_selected"] = Read(parentSet, "AllRewardsSuccessfullySelected"),
+            ["set_disallow_skipping"] = Read(parentSet, "DisallowSkipping"),
+            ["set_type"] = parentSet?.GetType().Name,
         };
     }
 
