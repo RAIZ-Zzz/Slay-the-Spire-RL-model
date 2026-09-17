@@ -202,55 +202,14 @@ class Replay:
 
 
 def build_net(torch, obs_dim: int, n_actions: int, hidden: int = 64):
-    """A 2-layer MLP: obs_dim -> hidden -> n_actions. **Yours to write.**
-
-    Contract:
-      in   a tensor of shape (batch, obs_dim)
-      out  a tensor of shape (batch, n_actions) - one Q value per action
-
-    Three things to decide, and each one is checkable afterwards:
-      * activation between the layers. Without one, two linear layers collapse
-        into a single linear layer and you have written the demo that oscillated.
-      * whether the output layer has an activation. Q values here run about
-        -2 to +4, so anything that squashes to [0,1] or [-1,1] cannot represent
-        them - a silent ceiling, not an error.
-      * `hidden`. 64 is a guess; the state is 19 floats and the fight is simple.
-
-    `nn.Sequential(...)` is enough. It needs no class.
-    """
-    raise NotImplementedError("yours - see the contract above")
+    return torch.nn.Sequential(torch.nn.Linear(obs_dim, hidden), torch.nn.ReLU(), torch.nn.Linear(hidden, n_actions))
 
 
 def td_target(torch, reward, next_q_row, done, gamma, next_legal):
-    """What the network should have said. **Yours to write.**
-
-    This is the same line you hand-computed for the table on 2026-09-14, and it
-    is still the only line with any RL in it:
-
-        target = reward + gamma * (the best Q over *legal* actions in next_obs)
-
-    Two things the table version also had, and both bite harder here:
-
-      * **done**. A terminal state has no next state, so the second term is zero.
-        Get this wrong and the net learns a future that does not exist - and with
-        a coarse observation a dead enemy looks like a live one, so `done` cannot
-        be recovered from the vector.
-      * **legality**. `next_q_row` has a value for all four actions including
-        the illegal ones, which are never trained and therefore hold whatever the
-        initialisation left there. Taking a plain `max` over the row lets an
-        untrained, unreachable action set the target for a real one.
-        `next_legal` is the list of indices that are actually playable.
-
-    Args:
-      reward        float
-      next_q_row    tensor of shape (n_actions,) - Q(next_obs, ·)
-      done          bool
-      gamma         float
-      next_legal    list[int] - legal action indices in next_obs
-
-    Returns: a float.
-    """
-    raise NotImplementedError("yours - see the contract above")
+    if done:
+        return reward
+    else:
+        return reward + gamma * max(next_q_row[i] for i in next_legal)
 
 
 # --- training ------------------------------------------------------------------
@@ -369,27 +328,39 @@ def greedy_of(torch, net, raw_obs: bool):
     return choose
 
 
-def report(args, curve, net) -> None:
+def report(args, curve, net) -> dict:
+    """Print the comparison table. Returns the measured win rates for the plot.
+
+    The return value is what lets `plot_all` draw the no-learning reference: the
+    training curve is measured *with* exploration, so it climbs on its own as
+    epsilon decays even when the policy never improves. Separating those two
+    needs the random win rate (where epsilon=1 lands) and the greedy win rate
+    (where epsilon=0 lands), and both are measured right here.
+    """
     torch = _require_torch()
     print(f"\n学习曲线（训练中的胜率，带探索）  variant={args.variant}")
     for i, rate in enumerate(curve):
         print(f"  {(i + 1) * max(1, args.episodes // 40):8} {rate:5.2f}  "
               + "#" * int(rate * 40))
 
+    measured = {}
     print(f"\n{'策略':>12} {'胜率':>8} {'平均奖励':>10} {'赢时剩血':>10} {'回合':>7}")
     for name, policy in tabular.BASELINES:
         s = tabular.evaluate(lambda st, rng, p=policy: (p(st, rng), None), args.fights)
+        measured[name] = s["win"]
         print(f"{name:>12} {s['win']:8.1%} {s['reward']:10.3f} {s['hp']:10.1f} "
               f"{s['turns']:7.1f}")
 
     s = tabular.evaluate(greedy_of(torch, net, args.raw_obs), args.fights)
+    measured["DQN"] = s["win"]
     print(f"{'DQN':>12} {s['win']:8.1%} {s['reward']:10.3f} {s['hp']:10.1f} "
           f"{s['turns']:7.1f}")
     print("\n参考（2026-09-16 实测）：表格 Q-learning 78.8%，"
           "本环境上限约 82.2%。差太多就是算法的锅，环境这次没有嫌疑。")
+    return measured
 
 
-def save_curve(args, curve) -> Path:
+def save_curve(args, curve, measured=None) -> Path:
     CURVE_DIR.mkdir(exist_ok=True)
     tag = args.variant + ("_rawobs" if args.raw_obs else "")
     path = CURVE_DIR / f"{tag}.json"
@@ -397,9 +368,54 @@ def save_curve(args, curve) -> Path:
         "variant": args.variant, "raw_obs": args.raw_obs, "episodes": args.episodes,
         "lr": args.lr, "hidden": args.hidden, "batch": args.batch,
         "replay_size": args.replay_size, "target_sync": args.target_sync,
-        "seed": args.seed, "curve": curve,
+        "seed": args.seed,
+        # The epsilon schedule is saved because the curve cannot be read without
+        # it - see `report`. Older files predate these keys; `plot_all` treats
+        # them as "no reference line available" rather than guessing.
+        "eps_start": args.eps_start, "eps_end": args.eps_end,
+        "measured": measured or {},
+        "curve": curve,
     }, indent=1), encoding="utf-8")
     return path
+
+
+# Colour is assigned by entity, in this fixed order, so that a missing run never
+# repaints the others. Three validated categorical slots; a fourth variant would
+# have to fold in rather than invent a hue.
+VARIANT_ORDER = ("naive", "replay", "dqn")
+SERIES_COLOURS = ("#2a78d6", "#eb6834", "#1baf7a")
+INK, MUTED, GRID, AXIS, SURFACE = "#0b0b0b", "#898781", "#e1e0d9", "#c3c2b7", "#fcfcfb"
+
+
+def _no_learning_reference(d):
+    """The curve a policy that never improved would still have drawn.
+
+    The training curve is measured **with** exploration: a fraction `epsilon` of
+    the actions are uniform-random, and epsilon decays over training. So the line
+    rises on its own even when nothing is learned - at the start most moves are
+    random (win rate near the random baseline), at the end almost none are (win
+    rate near the greedy one). Plotting the curve without this reference invites
+    reading epsilon decay as learning, which is exactly what happened on the
+    first `naive` run: it looked like a breakthrough at episode 15,000.
+
+    Mixing the two rates linearly is an approximation - one random action early in
+    a fight drags the rest of that fight with it - so this is a reference, not a
+    prediction. The part that matters is robust to that: where the real curve sits
+    **below** this line, the policy was genuinely worse than it ended up, and
+    closing that gap is the learning.
+    """
+    m = d.get("measured") or {}
+    rand, greedy = m.get("随机"), m.get("DQN")
+    if rand is None or greedy is None or "eps_start" not in d:
+        return None
+    n, eps0, eps1 = d["episodes"], d["eps_start"], d["eps_end"]
+    block = max(1, n // 40)
+    out = []
+    for i in range(len(d["curve"])):
+        ep = (i + 1) * block
+        eps = eps0 + (eps1 - eps0) * (ep / n)
+        out.append(eps * rand + (1 - eps) * greedy)
+    return out
 
 
 def plot_all() -> None:
@@ -412,23 +428,70 @@ def plot_all() -> None:
     if not files:
         print(f"no curves in {CURVE_DIR} yet - run the three variants first")
         return
-    plt.figure(figsize=(9, 5))
+
+    runs = []
     for f in files:
         d = json.loads(f.read_text(encoding="utf-8"))
+        v = d.get("variant", f.stem)
+        rank = VARIANT_ORDER.index(v) if v in VARIANT_ORDER else len(VARIANT_ORDER)
+        runs.append((rank, f.stem, d))
+    runs.sort(key=lambda r: (r[0], r[1]))
+
+    fig, ax = plt.subplots(figsize=(9.5, 5.4), facecolor=SURFACE)
+    ax.set_facecolor(SURFACE)
+
+    # Benchmarks first, so the data sits on top of them.
+    for y, text, style in ((0.788, "tabular Q  78.8%", (0, (5, 3))),
+                           (0.822, "four lines of `if`  82.2%", (0, (1, 2)))):
+        ax.axhline(y, ls=style, lw=1, color=MUTED, zorder=1)
+        # Right-aligned: the legend lives top-left and the two collided there.
+        ax.text(0.996, y + 0.008, text, fontsize=8, color=MUTED, ha="right",
+                transform=ax.get_yaxis_transform(), zorder=1)
+
+    labelled_reference = False
+    for i, (_, stem, d) in enumerate(runs):
+        colour = SERIES_COLOURS[min(i, len(SERIES_COLOURS) - 1)]
         block = max(1, d["episodes"] // 40)
-        xs = [(i + 1) * block for i in range(len(d["curve"]))]
-        plt.plot(xs, d["curve"], label=f.stem)
-    # The two lines that say whether any of it worked.
-    plt.axhline(0.788, ls="--", lw=1, color="grey")
-    plt.axhline(0.822, ls=":", lw=1, color="black")
-    plt.text(0, 0.792, "tabular Q 78.8%", fontsize=8, color="grey")
-    plt.text(0, 0.826, "four lines of `if` 82.2%", fontsize=8)
-    plt.xlabel("episodes")
-    plt.ylabel("win rate during training (with exploration)")
-    plt.legend()
-    plt.tight_layout()
+        xs = [(j + 1) * block for j in range(len(d["curve"]))]
+
+        ref = _no_learning_reference(d)
+        if ref is not None:
+            ax.plot(xs, ref, ls=(0, (4, 3)), lw=1.4, color=colour, alpha=0.55,
+                    zorder=2,
+                    label="no learning (epsilon decay alone)"
+                    if not labelled_reference else None)
+            labelled_reference = True
+
+        ax.plot(xs, d["curve"], lw=2, color=colour, label=stem, zorder=3)
+        # A coloured dot carries identity; the text stays ink. Direct labels are
+        # also the relief the palette check asks for on the low-contrast slot.
+        ax.plot(xs[-1], d["curve"][-1], "o", ms=6, color=colour,
+                mec=SURFACE, mew=2, zorder=4)
+        ax.annotate(f" {stem} {d['curve'][-1]:.0%}", (xs[-1], d["curve"][-1]),
+                    fontsize=9, color=INK, va="center", zorder=4)
+
+    ax.set_xlabel("episodes", fontsize=9, color=MUTED)
+    ax.set_ylabel("win rate during training (with exploration)",
+                  fontsize=9, color=MUTED)
+    ax.tick_params(labelsize=8, colors=MUTED, length=0)
+    ax.grid(axis="y", color=GRID, lw=1, zorder=0)
+    ax.set_axisbelow(True)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    for side in ("left", "bottom"):
+        ax.spines[side].set_color(AXIS)
+    ax.set_ylim(0.25, 0.88)
+    ax.margins(x=0.13)
+
+    handles, labels = ax.get_legend_handles_labels()
+    if len(handles) > 1:
+        leg = ax.legend(handles, labels, fontsize=8, frameon=False,
+                        loc="upper left", labelcolor=INK)
+        leg.set_zorder(5)
+
+    fig.tight_layout()
     out = CURVE_DIR / "curves.png"
-    plt.savefig(out, dpi=140)
+    fig.savefig(out, dpi=140, facecolor=SURFACE)
     print(f"wrote {out}")
 
 
@@ -541,8 +604,8 @@ def main() -> None:
           f"episodes {args.episodes:,}  lr {args.lr}  hidden {args.hidden}  "
           f"batch {args.batch}  gamma {args.gamma}")
     curve, net = train(args)
-    report(args, curve, net)
-    print(f"curve -> {save_curve(args, curve)}")
+    measured = report(args, curve, net)
+    print(f"curve -> {save_curve(args, curve, measured)}")
 
 
 if __name__ == "__main__":
