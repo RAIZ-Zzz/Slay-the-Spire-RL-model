@@ -1,7 +1,14 @@
 """Point the Stage 2 network at the real game's combat - as an instrument, not a policy.
 
     python tools/dqn_combat.py --selftest --net rl/stage2_dqn/target13.pt
-    python tools/play.py --policy fixed --dqn rl/stage2_dqn/target13.pt   # observe, sends nothing
+    python tools/play.py --policy heuristic --frozen-deck --act \
+        --dqn-watch rl/stage2_dqn/target13.pt      # observe, sends nothing
+
+⚠️ `--selftest` is a smoke test, not an evaluation. `schemas.json` holds exactly
+one normalized `combat_play` sample, and in it the hand is empty and energy is 0,
+so the only legal action is END_TURN and the margin comes back `inf`. It proves
+the net loads and the translation runs; it measures nothing about transfer. The
+numbers that do are the ones `--dqn-watch` collects over a live run.
 
 **This is not expected to play better than what is already there.** In the one
 environment where both have been measured, four lines of `if` score 82.2% and the

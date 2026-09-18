@@ -229,6 +229,49 @@ def choose_event(state):
     return action_adapter.choose_event_option(position), f"event @{position}: {text}"
 
 
+# The two rest-site option families, matched as substrings of `f"{name} {id}"`.
+# One copy, read by `choose_rest`, `deck_change_reason` and
+# `rest_without_deck_change`: a word added to only one of the three is a silent
+# hole, where the policy picks an option the guard no longer refuses, or the
+# guard refuses one the policy thinks is the safe fallback.
+#
+# The ids are in the tuples alongside the Chinese names because the names are
+# localised and the ids are not - the same lesson `skip_this_reward` learned from
+# 「跳过」 on 2026-09-14. Every rest site in `trajectories/` (3 of them) has been
+# the same pair, both enabled: 休息/HEAL and 强化/SMITH.
+#
+# The removal words are unobserved so far - no rest site has offered one - and
+# are in here because the frozen-deck run has no way to notice if one appears:
+# an unmatched option is accepted silently and the deck changes.
+# An event option that changes the deck, matched in `f"{title} {description}"`.
+#
+# Events were the hole in `--frozen-deck` until 2026-09-18: `deck_change_reason`
+# covered card rewards, shops and rest sites, and never looked at an event at
+# all. Neow is an event, Neow is floor 1, and this is the observed offer pool:
+#
+#   卷轴箱      从2个卡牌包中选择1包加入你的牌组
+#   沉重石板    从3张稀有牌中选择1张加入你的牌组。将1张受伤加入你的牌组
+#   涅奥的苦痛  将1张涅奥之怒加入你的牌组
+#   涅奥骨骰    获得2件随机遗物。将1张随机诅咒加入你的牌组
+#   橙型香盒    升级一张牌
+#   精准剪刀    从你的牌组中移除1张牌
+#
+# `event_score` ranks on EVENT_GOOD/EVENT_BAD, and neither tuple contains a word
+# about cards, so every one of those scores a flat 0 and ties break to the
+# earliest index. Measured consequence, from `trajectories/heuristic.jsonl`:
+# `event @0: 卷轴箱 - 从2个卡牌包中选择1包加入你的牌组`. That is where the run
+# with BODY_SLAM in it came from, and a foreign card is a permanent miss for
+# both `qtable_combat` and `dqn_combat` - their vocabulary is three cards.
+#
+# Matched on 牌组 rather than 牌 on purpose: 轰鸣海螺's "额外抽2张牌" is a draw
+# effect and must stay takeable, and it is the safe option Neow usually offers.
+EVENT_DECK_WORDS = ("牌组", "升级", "附魔", "变化", "卡牌奖励", "移除", "加入", "添加")
+
+REST_WORDS = ("休息", "REST", "Rest", "HEAL")
+DECK_CHANGING_REST_WORDS = ("强化", "升级", "SMITH", "UPGRADE",
+                            "移除", "删除", "REMOVE", "PURGE")
+
+
 def choose_rest(state):
     """Rest site: heal when hurt, otherwise upgrade.
 
@@ -252,8 +295,8 @@ def choose_rest(state):
 
     def rest_score(option):
         name = f"{option.get('name') or ''} {option.get('id') or ''}"
-        is_rest = any(w in name for w in ("休息", "REST", "Rest"))
-        is_upgrade = any(w in name for w in ("强化", "升级", "SMITH", "UPGRADE"))
+        is_rest = any(w in name for w in REST_WORDS)
+        is_upgrade = any(w in name for w in DECK_CHANGING_REST_WORDS)
         if want_heal:
             return (0 if is_rest else 1 if is_upgrade else 2, enabled.index(option))
         return (0 if is_upgrade else 1 if is_rest else 2, enabled.index(option))
@@ -598,8 +641,8 @@ COMBAT_IS_TABLE = """- Combat is played for you by a Q-table trained on this exa
 # deck stays (5打击, 4防御, 1痛击). One extra card and the `hand` component of
 # every key is wrong - silently, because a foreign card has an id the encoder has
 # never seen and the lookup just misses.
-DECK_IS_FROZEN = """- **The deck never changes, and that is the experiment.** No card is added, removed or upgraded for the whole run. Card rewards are skipped before you ever see them, rest sites never smith, and a purchase of a card or of a card-removal is refused. Do not plan around improving the deck.
-- On a combat rewards screen the `card` entry is not offered to you. Claim the gold, potions and relics, then `proceed` and leave the card entry sitting in the list. The game allows that; a listed reward does not have to be taken.
+DECK_IS_FROZEN = """- **The deck never changes, and that is the experiment.** No card is added, removed or upgraded for the whole run. Card rewards are answered with 跳过 before you ever see them, rest sites rest instead of smithing, and a purchase of a card or of a card-removal is refused. Do not plan around improving the deck.
+- On a combat rewards screen the `card` entry is claimed like any other, which opens the card screen, and the card screen is then answered with 跳过 without you being asked. The reward stays outstanding afterwards - the game declares that skip `EndSelectionAndDoNotCompleteReward` - so the room is left through the map rather than through `proceed`. None of this is yours to decide; claim the gold, potions and relics and move on.
 - So the route is the only real lever, and it matters more than usual. The deck's damage is fixed at roughly 15 a turn and cannot grow, while enemies get bigger every act. A fight is decided by the enemy's total hp and how hard it hits, far more than by how it is played. Prefer weak monster nodes, take rest sites to heal, and avoid elites unless the hp cushion is large. Gold is still worth having for potions and relics."""
 
 # The deck-shaping advice the normal run needs, lifted out of SYSTEM_TEMPLATE so
@@ -640,12 +683,16 @@ FROZEN_DECK = False
 # heuristic decides to skip dilutive cards during ordinary play, and until now
 # that decision led straight into the same loop.
 #
-# 🔴 One thing is still unmeasured: whether the rewards room lets go while a
-# card entry sits unclaimed. It looked like it would not, but every observation
-# of that was tangled up with a `proceed` that had been broken and a screen that
-# earlier attempts had corrupted. `read_loop`'s stuck detector will answer it
-# loudly on the next fight - a single repeated decision is exactly what it
-# catches.
+# ✅ Measured on 2026-09-18, and the answer is no: the rewards room does **not**
+# let go while a card entry sits unclaimed. Over `trajectories/heuristic.jsonl`,
+# `proceed` with a card entry still listed is 1 for 499; with no card entry it
+# is 6 for 6. Pressing 跳过 does not clear the entry either - the floor 15 state
+# still lists the card after a successful skip, which matches the game declaring
+# that option `EndSelectionAndDoNotCompleteReward`.
+#
+# What the skip *does* release is the map: `choose_map_node` is 0 for 10 before
+# 跳过 and 6 for 6 after it. So the room is left through the map, and
+# `leave_declined_rewards` is the one place that knows it.
 DECLINED: set[tuple] = set()
 
 
@@ -653,6 +700,45 @@ def _floor_key(state: dict) -> tuple:
     """Which rewards screen this is. One combat rewards screen per floor."""
     ctx = state.get("context") or {}
     return (ctx.get("act"), ctx.get("floor"))
+
+
+def leave_declined_rewards(key: tuple, tally: dict) -> tuple[dict, str]:
+    """Get off a rewards screen whose card has been declined. Proceed, then map.
+
+    Reached only after `skip_card_reward` has been sent, which is what puts a
+    floor in DECLINED. All three actions are needed and the order is fixed:
+    **跳过 releases the reward, `proceed` closes the screen so the map is
+    uncovered, `choose_map_node` then moves the run on.**
+
+    The order was flipped to map-first for about an hour on 2026-09-18 and the
+    live run rejected it immediately - floors 2, 3 and 4 each went
+    `跳过 → map (nothing) → proceed → map (moved)`, three exit polls where
+    `proceed → 跳过 → map` had needed two, on floors 6, 8, 12, 14 and 15.
+
+    The reasoning behind the flip was a mismeasurement worth recording, because
+    the number looked authoritative: `proceed` was scored by "did the next
+    logged decision differ", which came out 1 in 499. That is the wrong test for
+    this action. `proceed` uncovers the map *underneath* and deliberately does
+    not advance the run, so every load-bearing `proceed` scored as a failure,
+    while the denominator was dominated by one 200-call stall on floor 5 where
+    the screen was wedged and nothing would have worked.
+
+    ⚠️ Node 0 is chosen **blind**. The state carries no `choices` while the
+    overlay is up - checked on 2026-09-18 against the floor 15 brief, which
+    lists reward `options` and no map at all. 2026-09-16 measured route choice
+    as *the* lever in a frozen run, so this spends it, once per fight. The fix
+    is bridge-side: expose the map behind the overlay.
+    """
+    n = tally.setdefault("exit_tries", {}).get(key, 0)
+    tally["exit_tries"][key] = n + 1
+    if n == 0:
+        return action_adapter.proceed(), (
+            f"declined the card on floor {key[1]}; nothing else to claim, "
+            f"leaving via proceed")
+    tally["walked_past"] = tally.get("walked_past", 0) + 1
+    return action_adapter.choose_map_node(0), (
+        f"declined the card on floor {key[1]}; proceed left the screen up, "
+        f"walking to the map - node 0, chosen blind")
 
 
 def with_declined_rewards(inner, tally: dict):
@@ -671,30 +757,13 @@ def with_declined_rewards(inner, tally: dict):
             items = state.get("items") or []
             others = [i for i in items if i.get("type") != "card"]
             if not others:
-                # proceed, then the map. Not a condition on `can_proceed` and not
-                # a condition on anything else: this branch sent `proceed` on
-                # every poll and the run sat on floor 5 doing it, because the
-                # early return never reached the frozen-deck wrapper where the
-                # fallback lived. Counting the tries here is what makes the
-                # second exit reachable at all.
-                #
-                # proceed opens the map. `choose_map_node` only works once it is
-                # open - it answers "Map screen is not open" otherwise - so the
-                # order is fixed, and one of the two always applies.
-                n = tally.setdefault("exit_tries", {}).get(key, 0)
-                tally["exit_tries"][key] = n + 1
-                if n == 0:
-                    return action_adapter.proceed(), (
-                        f"declined the card on floor {key[1]}; nothing else to "
-                        f"claim, leaving via proceed")
-                # ⚠️ Blind: an overlay hides the map, so there is no `choices`
-                # list to read and node 0 is the only index sure to resolve.
-                # Route choice was measured as the main lever on 2026-09-16, so
-                # this spends it - the fix is bridge-side.
-                tally["walked_past"] = tally.get("walked_past", 0) + 1
-                return action_adapter.choose_map_node(0), (
-                    f"declined the card on floor {key[1]}; proceed left the "
-                    f"screen up, walking to the map - node 0, chosen blind")
+                # Not a condition on `can_proceed` and not a condition on
+                # anything else: this branch sent its exit on every poll and the
+                # run sat on floor 5 doing it, because the early return never
+                # reached the frozen-deck wrapper where the counting lived.
+                # Counting the tries here is what makes the second exit
+                # reachable at all.
+                return leave_declined_rewards(key, tally)
 
         payload, reason = inner(state, grid_picks)
 
@@ -716,13 +785,18 @@ def with_declined_rewards(inner, tally: dict):
             if item is None and isinstance(index, int) and 0 <= index < len(items):
                 item = items[index]
             if (item or {}).get("type") == "card":
-                if state.get("can_proceed"):
-                    return action_adapter.proceed(), (
-                        f"declined floor {key[1]}'s card; leaving instead of "
-                        f"re-claiming it (policy wanted: {reason})")
-                return None, (
-                    f"declined floor {key[1]}'s card and there is no proceed "
-                    f"(policy wanted: {reason})")
+                # Same exit as the branch above, and it has to be: this is the
+                # shape the first branch cannot see, where a non-card entry is
+                # listed but unclaimable, so `others` is non-empty and the run
+                # falls through to here instead. Floor 15 on 2026-09-18 was
+                # exactly that - a 爆炸安瓿 with all three potion slots full,
+                # plus the declined card - and it left through the map.
+                #
+                # No longer conditional on `can_proceed`. That condition is what
+                # made the refusal flicker on and off across polls, and `proceed`
+                # is not the exit here anyway.
+                exit_payload, note = leave_declined_rewards(key, tally)
+                return exit_payload, f"{note} (policy wanted: {reason})"
         return payload, reason
     return choose
 
@@ -763,39 +837,51 @@ def deck_change_reason(payload: dict, state: dict) -> str | None:
             # bridge accepts a wrong index without complaint.
             return f"shop entry {index!r} could not be identified"
 
-    if verb == "claim_reward" and state.get("can_proceed"):
-        # Do not open a card reward's screen: walk out of the rewards room and
-        # leave the entry behind, which is what a human does ("遇到奖励直接跳过,
-        # 一个不拿"). Non-card entries are claimed normally first, because
-        # `legal_verbs` only hides the card and gold is not a deck change.
-        #
-        # 🔴 Five versions of this on 2026-09-16. The record, because every one
-        # of them looked like the obvious next thing:
-        #
-        #   v1  refuse the claim, always      -> nothing to substitute when
-        #                                        can_proceed was false; stalled
-        #   v2  refuse it when can_proceed    -> `proceed` did nothing
-        #   v3  NRewardsScreen
-        #       .RewardSkippedFrom            -> bookkeeping. 26 calls, no change
-        #   v3.5 make `proceed` click the
-        #       screen's own button           -> still nothing
-        #   v4  the card screen's 跳过 via
-        #       the screen's own handler      -> game declares that option
-        #                                        `EndSelectionAndDoNotCompleteReward`
-        #   v5  CardReward.OnSkipped()        -> CanSkip=True, nothing changed
-        #
-        # What they have in common is that four of them assumed the failing part
-        # was *which method*. It was the *click*: `ForceClick()` presses without
-        # releasing, and a Godot button's handler hangs off release. So this is
-        # v2's shape again, with the click fixed in the bridge rather than the
-        # method swapped for another guess.
-        items = state.get("items") or []
+    # `claim_reward` on a card entry is deliberately NOT refused (2026-09-18).
+    #
+    # It used to be, on the theory that the card screen should never be opened:
+    # claim the gold and the relic, then walk out and leave the entry listed.
+    # That theory is from 2026-09-16, when 跳过 did not work - five versions of
+    # it, v1 through v5, each assuming the broken part was *which method*
+    # (RewardSkippedFrom, CardReward.OnSkipped, the RewardSkipped signal, the
+    # screen's own handler) until the real answer turned out to be the *click*:
+    # `ForceClick()` presses without releasing, and a Godot button's handler
+    # hangs off release. That was fixed bridge-side, and the refusal outlived
+    # the reason for it.
+    #
+    # `trajectories/heuristic.jsonl` says so plainly:
+    #
+    #   跳过 via alternatives           7 sent, 7 accepted
+    #   proceed, card entry listed    499 sent, 1 closed the screen
+    #   proceed, no card entry          6 sent, 6 closed the screen
+    #   choose_map_node after 跳过      6 sent, 6 moved the run on
+    #   choose_map_node before 跳过    10 sent, 0
+    #
+    # The walk-out this refusal existed to force has never once worked, and the
+    # path that does work is the one it was trying to avoid. It was not even a
+    # stable refusal: it hung off `can_proceed`, which flips to false as soon as
+    # the substituted `proceed` is sent, so the same card on the same screen was
+    # refused on one poll and allowed on the next - and every successful run
+    # escaped through that flicker rather than through the intended route.
+    # Floor 14, 01:21:58 refused → 01:21:59 allowed → 01:22:00 跳过.
+    #
+    # The deck is still safe without it. `select_card_reward` is what adds a
+    # card and is refused in FROZEN_ACTIONS; `with_frozen_deck` answers the card
+    # screen with 跳过 before any policy is asked. Opening the screen costs
+    # nothing but the click that closes it again.
+
+    if verb == "choose_event_option":
+        # Indices are positions in the *unlocked* list, which is what
+        # `choose_event` sends. Locked options are still listed by the game.
+        options = state.get("options") or []
+        unlocked = [o for o in options if not o.get("is_locked")]
         index = payload.get("index")
-        item = next((i for i in items if i.get("index") == index), None)
-        if item is None and isinstance(index, int) and 0 <= index < len(items):
-            item = items[index]
-        if (item or {}).get("type") == "card":
-            return "the card entry is left behind; the room can be left without it"
+        if isinstance(index, int) and 0 <= index < len(unlocked):
+            o = unlocked[index]
+            text = f"{o.get('title') or ''} {o.get('description') or ''}"
+            hit = [w for w in EVENT_DECK_WORDS if w in text]
+            if hit:
+                return f"the event option changes the deck ({'/'.join(hit)})"
 
     if verb == "choose_rest_option":
         options = state.get("options") or []
@@ -803,8 +889,8 @@ def deck_change_reason(payload: dict, state: dict) -> str | None:
         index = payload.get("index")
         if isinstance(index, int) and 0 <= index < len(enabled):
             name = f"{enabled[index].get('name') or ''} {enabled[index].get('id') or ''}"
-            if any(w in name for w in ("强化", "升级", "SMITH", "UPGRADE")):
-                return "the rest site option is an upgrade"
+            if any(w in name for w in DECK_CHANGING_REST_WORDS):
+                return "the rest site option changes the deck"
     return None
 
 
@@ -830,6 +916,88 @@ def skip_this_reward(state: dict) -> tuple[dict, str]:
     if state.get("can_skip"):
         return action_adapter.skip_card_reward(), "frozen deck: skip (legacy can_skip)"
     return None, "frozen deck: card reward offers no way to skip"
+
+
+def event_without_deck_change(state: dict) -> tuple[dict | None, str]:
+    """Pick an event option that leaves the deck alone, or say why there is none.
+
+    Same shape as `rest_without_deck_change`, and for the same reason: the safe
+    answer is on the screen, so leaving is not the fallback. The safe set is
+    found by asking `deck_change_reason` about each option rather than by
+    re-reading EVENT_DECK_WORDS here, so one table is consulted one way.
+
+    Among the safe options the policy's own ranking is kept - `choose_event`
+    still prefers max hp and relics over damage and curses. This only removes
+    candidates; it does not re-decide.
+    """
+    unlocked = [o for o in (state.get("options") or []) if not o.get("is_locked")]
+    safe = [i for i in range(len(unlocked))
+            if deck_change_reason(action_adapter.choose_event_option(i), state) is None]
+    if not safe:
+        titles = [o.get("title") for o in unlocked]
+        return None, f"every event option changes the deck, of {titles}"
+
+    # `choose_event`'s ranking, restricted to the safe set. Reusing its scoring
+    # rather than taking safe[0]: a "lose 9 hp" option and a "+11 max hp" option
+    # are both deck-safe and they are not equally good.
+    def score(i: int):
+        o = unlocked[i]
+        text = f"{o.get('title') or ''} {o.get('description') or ''}"
+        good = any(w in text for w in EVENT_GOOD)
+        bad = any(w in text for w in EVENT_BAD)
+        return (bad - good, i)
+
+    position = min(safe, key=score)
+    pick = unlocked[position]
+    return action_adapter.choose_event_option(position), (
+        f"event @{position} {pick.get('title')!r} - {pick.get('description')}")
+
+
+def rest_without_deck_change(state: dict) -> tuple[dict | None, str]:
+    """Pick a rest site option that leaves the deck alone, or say why there is none.
+
+    Not shaped like `skip_this_reward`, and the difference is the point. A card
+    reward under a frozen deck has exactly one legal answer, so that function is
+    the whole decision and runs before the policy is even asked. A rest site
+    still holds a real choice among its safe options - heal now, or whatever a
+    relic has added to the fire - so the policy keeps deciding and this runs only
+    after `deck_change_reason` has refused what it wanted.
+
+    The safe set is found by asking `deck_change_reason` about each option rather
+    than by re-reading the keyword table here. One table, consulted one way: a
+    word added to `DECK_CHANGING_REST_WORDS` cannot end up refused by the guard
+    and still offered by this fallback.
+
+    Indices are positions in the *enabled* list, which is the convention
+    `choose_rest` and `deck_change_reason` already use. With HEAL and SMITH both
+    enabled the enabled-order and options-order indices happen to be identical,
+    so a mix-up here would not show up on any state observed so far.
+    """
+    enabled = [o for o in (state.get("options") or []) if o.get("is_enabled")]
+    safe = [i for i in range(len(enabled))
+            if deck_change_reason(action_adapter.choose_rest_option(i), state) is None]
+    if not safe:
+        names = [f"{o.get('name')}/{o.get('id')}" for o in enabled]
+        return None, f"every enabled rest option changes the deck, of {names}"
+
+    def prefers_rest(i: int) -> int:
+        name = f"{enabled[i].get('name') or ''} {enabled[i].get('id') or ''}"
+        return 0 if any(w in name for w in REST_WORDS) else 1
+
+    position = min(safe, key=lambda i: (prefers_rest(i), i))
+    pick = enabled[position]
+    return action_adapter.choose_rest_option(position), (
+        f"resting instead: @{position} asked for {pick.get('name')!r} "
+        f"- compare with the bridge echo")
+
+
+# How many times one floor's rest site may be answered with a substituted option
+# before the run gives up and leaves. A successful rest resolves the room, so the
+# second visit means the click is not landing - and the failure that matters is
+# the unproven one in `choose_rest`'s docstring: the state numbers the options in
+# model order while the handler indexes the scene tree, so an index that is meant
+# to be 休息 could be pressing 强化 over and over. Bounded, rather than trusted.
+REST_SUBSTITUTION_LIMIT = 3
 
 
 def with_frozen_deck(inner, tally: dict):
@@ -876,6 +1044,61 @@ def with_frozen_deck(inner, tally: dict):
 
         tally["refused"] += 1
         refused = f"{payload.get('action')}({payload})"
+        key = _floor_key(state)
+
+        # A rest site is answered *on the screen*, not walked out of (2026-09-18).
+        # The exits below assume the refused action was the only thing this screen
+        # offered, which is true of a card reward and false of a campfire: 休息 is
+        # right there, it is safe, and it is also how the room is left - there is
+        # no separate leave button for `proceed` to press.
+        #
+        # The first frozen campfire showed what leaving costs. At 60/70 hp
+        # `choose_rest` scored 强化 above 休息 (want_heal is hp/max_hp < 0.7, and
+        # 0.857 is not), the guard refused it, and the run fell through to
+        # `proceed` and then to a blind node 0 - giving up the heal *and* the one
+        # lever 2026-09-16 measured as mattering most. Both losses, for a screen
+        # that had a safe answer on it the whole time.
+        # Events, same shape as the rest site below: the safe answer is on the
+        # screen. Unlike a rest site, an event usually has no way to decline at
+        # all - there is no `proceed` on Neow - so the exits further down would
+        # wedge the run rather than leave it.
+        if state.get("decision") == "event_choice":
+            substitute, note = event_without_deck_change(state)
+            if substitute is not None:
+                tally["events_rerouted"] = tally.get("events_rerouted", 0) + 1
+                return substitute, (
+                    f"frozen deck: REFUSED {refused} because {why}; {note} "
+                    f"(policy wanted: {reason})")
+            # Nothing on this event is safe. An unattended run has two ways to
+            # be useless and only one of them is visible: wedging here stops the
+            # night at the first such event, while taking the option silently
+            # contaminates the deck and every later combat lookup misses.
+            #
+            # So: take it, and make it loud. The invariant is broken either way
+            # by the time this line runs; what is still in our control is
+            # whether the morning can tell.
+            tally["deck_changed"] = tally.get("deck_changed", 0) + 1
+            print(f"\n  🔴 DECK CHANGED at an event: {why}")
+            print(f"     {note}")
+            print("     every option on this screen changes the deck, so the run "
+                  "took one rather than wedging.")
+            print("     combat lookups after this point may miss on a foreign "
+                  "card - check the fell-back counts before trusting this run.\n")
+            return payload, (
+                f"frozen deck: BROKEN at floor {key[1]} - {why}; {note}; "
+                f"took it anyway (policy wanted: {reason})")
+
+        if state.get("decision") == "rest_site":
+            tries = tally.setdefault("rest_tries", {})
+            tries[key] = tries.get(key, 0) + 1
+            if tries[key] <= REST_SUBSTITUTION_LIMIT:
+                substitute, note = rest_without_deck_change(state)
+                if substitute is not None:
+                    tally["rested"] = tally.get("rested", 0) + 1
+                    return substitute, (
+                        f"frozen deck: REFUSED {refused} because {why}; {note} "
+                        f"(policy wanted: {reason})")
+            # No safe option, or the clicks are not landing. Leave, as below.
 
         # Two exits, tried in order, because which one works depends on state
         # nobody can read from here.
@@ -893,7 +1116,6 @@ def with_frozen_deck(inner, tally: dict):
         # proceed first. If it worked, the next poll is a map and this branch is
         # not reached again; if the screen is still here, the map is open behind
         # it and node 0 resolves.
-        key = _floor_key(state)
         n = tally.setdefault("exit_tries", {}).get(key, 0)
         tally["exit_tries"][key] = n + 1
 
@@ -984,40 +1206,51 @@ def with_dqn_watch(inner, path: str, stats: dict):
     return watched
 
 
-def with_qtable_combat(inner, path: str, stats: dict):
-    """Wrap a policy so combat comes from a trained Q-table, with a fallback.
+def with_learned_combat(inner, pick, stats: dict):
+    """Wrap a policy so combat comes from a trained model, with a fallback.
 
     Only `combat_play` is intercepted; every other decision goes to `inner`
-    untouched, which is what makes "LLM plays the meta, the table plays the
+    untouched, which is what makes "LLM plays the meta, the model plays the
     fights" a composition rather than a rewrite.
 
-    On a miss the greedy policy answers instead, and the miss is counted with its
-    reason. That is the headline number: the previous attempt to carry a table
+    `pick(state) -> (payload, reason)`, answering `(None, reason)` when it
+    cannot read the state. That contract is identical for a table and for a
+    network, so the body is written once. It was very nearly written twice: the
+    rewards-screen exit on 2026-09-18 had two copies of the same six lines and
+    only one of them got fixed, so a whole class of screen kept the old
+    behaviour with every test passing.
+
+    On a miss the greedy policy answers instead, and the miss is counted with
+    its reason. That is the headline number: the first attempt to carry a table
     into the real game missed on 100% of lookups, and the run would still have
     printed a plausible-looking log, because a missing row ties across every
     legal action and `max` hands back a perfectly ordinary-looking choice.
     """
-    # Imported here rather than at module scope so that a run without --qtable
-    # does not depend on rl/ existing at all.
-    import exp1_combat
-    import qtable_combat
-
-    table = qtable_combat.load_table(path)
-    encode = exp1_combat.encode_coarse
-    rng = random.Random(0)
-    print(f"loaded {len(table):,} rows from {path}")
-
     def choose(state: dict, grid_picks: int = 0):
         if state.get("decision") != "combat_play":
             return inner(state, grid_picks)
 
-        payload, reason = qtable_combat.choose(state, table, encode, rng,
-                                               action_adapter)
+        payload, reason = pick(state)
         if payload is not None:
             stats["hit"] += 1
             return payload, reason
 
         stats["miss"] += 1
+        if not stats.get("warned"):
+            # Once, loudly, at the first miss rather than in the summary. A run
+            # is minutes long and the per-decision log scrolls; finding out at
+            # the end that the model never read a single state wastes the run.
+            #
+            # The case this is for: `--frozen-deck` freezes the deck from the
+            # moment the run starts, and does **not** undo cards already in it.
+            # Resuming a save that picked up a foreign card - observed at act 1
+            # floor 2 with BODY_SLAM in hand - means every lookup misses and the
+            # greedy fallback plays the whole run, while the log still reads
+            # like a model was playing.
+            stats["warned"] = True
+            print(f"\n  ⚠️ first combat state not answered by the model: {reason}")
+            print("     if this is a foreign card, the deck is not the one the "
+                  "model was trained on - start a fresh run rather than resuming\n")
         # Keep the *kind* of miss, not the key. The first version split on "{"
         # and the key is a tuple, so every distinct key became its own kind -
         # thousands of rows burying the one line that says which assumption
@@ -1030,11 +1263,78 @@ def with_qtable_combat(inner, path: str, stats: dict):
     return choose
 
 
+def with_qtable_combat(inner, path: str, stats: dict):
+    """Combat from a Q-table trained by `rl/stage1_tabular/qlearn_exp1.py`."""
+    # Imported here rather than at module scope so that a run without --qtable
+    # does not depend on rl/ existing at all.
+    import exp1_combat
+    import qtable_combat
+
+    table = qtable_combat.load_table(path)
+    encode = exp1_combat.encode_coarse
+    rng = random.Random(0)
+    print(f"loaded {len(table):,} rows from {path}")
+    return with_learned_combat(
+        inner,
+        lambda s: qtable_combat.choose(s, table, encode, rng, action_adapter),
+        stats)
+
+
+def with_dqn_combat(inner, path: str, stats: dict):
+    """Combat from the Stage 2 network. **Measured as a downgrade, deployed anyway.**
+
+    In the one environment where all of these have been scored, this net is not
+    the best thing available and it is not close:
+
+        痛击优先 (one line of `if`)   0.8225
+        DQN, 19-dim                  0.796   <- cannot be used here, see below
+        DQN, 13-dim                  0.728   <- this
+        只打打击                      0.714
+        挡够了才打                    0.648
+        随机                          0.369
+
+    and `greedy_combat`, which is what the fallback below uses, has a rule the
+    toy fight cannot express at all - finish off a killable enemy - because that
+    fight has one enemy.
+
+    So do not read a run's outcome as a verdict on the net. A single run is one
+    sample of a process whose variance is dominated by routing and by which
+    elite shows up; 9.4 points of win rate in a 2000-episode toy does not
+    survive contact with n=1. What this mode produces that `--dqn-watch` cannot
+    is the net's behaviour *downstream of its own choices* - the states it
+    steers into, which no observer sitting beside another policy ever visits.
+
+    `dqn_combat.load` refuses a 19-dim net rather than quietly mis-feeding it:
+    `to_toy_state` fills draw and discard with `(0, 0, 0)` markers, and zeroing
+    those six components moves the argmax in 26.1% of states. The table never
+    noticed because `encode_coarse` provably ignores them.
+    """
+    import dqn_combat
+    import dqn_exp1
+
+    torch = dqn_exp1._require_torch()
+    net, meta = dqn_combat.load(path)
+    rng = random.Random(0)
+    scores = meta.get("measured") or {}
+    print(f"combat: DQN {path} (obs_dim {meta['obs_dim']}, "
+          f"scored {scores.get('DQN')} in the toy fight where "
+          f"痛击优先 scored {scores.get('痛击优先')})")
+    print("  ⚠️ the net is the weaker policy by every number measured so far; "
+          "this run is for watching what it does, not for deciding who wins")
+    return with_learned_combat(
+        inner,
+        lambda s: dqn_combat.choose(s, net, rng, action_adapter, torch),
+        stats)
+
+
+COMBAT_IS_NET = """- Combat is played for you by a small neural network trained on this exact deck, one action at a time, and it falls back to a planning policy on any state it cannot read. You never choose a card to play. Nothing about combat is yours to weigh."""
+
 COMBAT_PARAGRAPH = {
     "llm": COMBAT_IS_YOURS,
     "greedy": COMBAT_IS_GREEDY,
     "fixed": COMBAT_IS_FIXED,
     "qtable": COMBAT_IS_TABLE,
+    "dqn": COMBAT_IS_NET,
 }
 
 # ⚠️ Whether a potion is worth buying depends on **who plays combat**, and it was
@@ -1145,11 +1445,11 @@ def legal_verbs(state: dict) -> list[str]:
         # `== 0`, not `or 0`: if the field is missing, treating it as "full"
         # would drop every potion reward for the rest of the run in silence.
         potions_full = (state.get("player") or {}).get("open_potion_slots") == 0
-        # A card entry is not claimable under --frozen-deck, the same way a
-        # potion is not claimable with full slots: clicking it cannot lead
-        # anywhere this run will go. `and can_proceed` because hiding it with no
-        # way out leaves this function returning nothing at all - which is how
-        # the floor-2 stall happened.
+        # There is deliberately no `--frozen-deck` filter here. A paragraph used
+        # to describe one, and it never matched the code below; as of 2026-09-18
+        # it would also be wrong, because a frozen run *does* claim the card
+        # entry - that is how the card screen opens so 跳过 can close it.
+        #
         # A card entry we already declined is not claimable - the same shape as
         # a potion with no free slot: the game will take the click and nothing
         # this run wants will happen. `DECLINED` is keyed by floor, so this only
@@ -1773,6 +2073,10 @@ def main() -> int:
     ap.add_argument("--dqn-watch", metavar="PATH", dest="dqn_watch",
                     help="跑一个 Stage 2 网络在旁边旁观，报告它和实际策略的分歧率、"
                          "Q 值差距、观测越界次数。**它不出牌**，只测量。需要 --no-piles 训的网络")
+    ap.add_argument("--dqn", metavar="PATH",
+                    help="让 Stage 2 网络真的打战斗（不是旁观）。隐含 --frozen-deck。"
+                         "读不懂的状态回落到贪心策略并计数。需要 --no-piles 训的网络。"
+                         "⚠️ 玩具环境里它比一行 if 低 9.4 点，别把单局胜负当结论")
     ap.add_argument("--qtable", metavar="PATH",
                     help="play combat from a Q-table trained by rl/stage1_tabular/qlearn_exp1.py "
                          "(implies --frozen-deck: the table's keys assume the "
@@ -1839,7 +2143,28 @@ def main() -> int:
     # `--qtable` implies `--frozen-deck` rather than warning about it: the table's
     # `hand` component counts copies of exactly three cards, so a run that adds a
     # fourth does not make the table worse, it makes every lookup meaningless.
-    frozen = args.frozen_deck or bool(args.qtable)
+    # Refused rather than resolved, because both combinations produce a log that
+    # reads perfectly well and means nothing.
+    #
+    #   --dqn --qtable      both intercept combat_play. Whichever wraps last
+    #                       wins every decision and the other is never called,
+    #                       but both print a summary line, so the loser reports
+    #                       "0/0 answered" and looks merely idle.
+    #   --dqn --dqn-watch   the watcher compares the net against the policy that
+    #                       ran, which is now the net. Agreement is 100% by
+    #                       construction and says nothing whatsoever.
+    if args.dqn and args.qtable:
+        print("--dqn and --qtable both play combat; pick one")
+        return 1
+    if args.dqn and args.dqn_watch:
+        print("--dqn-watch would be watching --dqn play, so it would agree with "
+              "itself 100% of the time; pick one")
+        return 1
+
+    # Both learned combat modes imply it: their whole vocabulary is the three
+    # starting cards (`qtable_combat.CARD_IDS`), so a deck that grows is a deck
+    # they cannot read - it comes back as a miss on every lookup.
+    frozen = args.frozen_deck or bool(args.qtable) or bool(args.dqn)
     if frozen:
         # 🔴 Blocked rather than allowed to wedge. The premise needs a way to
         # decline a combat card reward, and on 2026-09-16 four bridge-side
@@ -1882,14 +2207,16 @@ def main() -> int:
     global FROZEN_DECK
     FROZEN_DECK = frozen
     frozen_tally = {"skipped_rewards": 0, "refused": 0, "declined": 0,
-                    "walked_past": 0, "exit_tries": {}}
+                    "walked_past": 0, "rested": 0, "events_rerouted": 0,
+                    "deck_changed": 0, "exit_tries": {}, "rest_tries": {}}
     qstats = {"hit": 0, "miss": 0, "reasons": {}}
     dstats = {"seen": 0, "agree": 0, "disagree": 0, "miss": 0, "error": 0,
               "out_of_range": 0, "margin": 0.0, "margin_n": 0, "reasons": {}}
 
     # One string, used for both the routing and the prompt, so the two cannot
     # disagree - which they did for a day and a half in 2026-09-14.
-    combat_mode = "qtable" if args.qtable else ("fixed" if args.no_combat else args.combat)
+    combat_mode = ("qtable" if args.qtable else "dqn" if args.dqn
+                   else "fixed" if args.no_combat else args.combat)
 
     if args.policy == "fixed":
         inner = DEFAULT_CHOOSE
@@ -1936,6 +2263,9 @@ def main() -> int:
 
     if args.dqn_watch:
         inner = with_dqn_watch(inner, args.dqn_watch, dstats)
+
+    if args.dqn:
+        inner = with_dqn_combat(inner, args.dqn, qstats)
 
     if args.qtable:
         inner = with_qtable_combat(inner, args.qtable, qstats)
@@ -2013,8 +2343,17 @@ def main() -> int:
             if frozen:
                 print(f"frozen deck: skipped {frozen_tally['skipped_rewards']} "
                       f"card rewards, refused {frozen_tally['refused']} actions, "
+                      f"rested instead of smithing {frozen_tally['rested']} times, "
+                      f"rerouted {frozen_tally['events_rerouted']} events, "
                       f"walked past {frozen_tally['walked_past']} reward screens "
                       f"(node 0, blind)")
+                # Printed on its own line and only when non-zero, because it is
+                # the one number that invalidates the run rather than describing
+                # it. A frozen run with this above zero is not a frozen run.
+                if frozen_tally["deck_changed"]:
+                    print(f"  🔴 DECK CHANGED {frozen_tally['deck_changed']} times "
+                          "- no option on those screens was safe. This run's "
+                          "combat numbers are not about the starting deck.")
             if args.dqn_watch:
                 d = dstats
                 decided = d["agree"] + d["disagree"]
@@ -2033,16 +2372,25 @@ def main() -> int:
                 for kind, n in sorted(d["reasons"].items(), key=lambda kv: -kv[1])[:6]:
                     print(f"   x{n}: {kind}")
 
-            if args.qtable:
+            if args.qtable or args.dqn:
                 looked = qstats["hit"] + qstats["miss"]
                 # The number this whole line of work exists to produce. Printed
-                # even at zero lookups, because "the table was never consulted"
-                # and "the table answered everything" are both results and the
+                # even at zero lookups, because "the model was never consulted"
+                # and "the model answered everything" are both results and the
                 # absence of a line does not distinguish them.
-                print(f"qtable: {qstats['hit']}/{looked} lookups answered"
+                #
+                # For a network the reading is different from a table's and it
+                # is worth saying out loud: a table's hit rate is "states I have
+                # a row for", and a miss is the table declining. A net declines
+                # only when `to_toy_state` cannot translate at all, so a high
+                # hit rate here means the *translation* worked, not that the net
+                # recognised anything. What it recognised is in the margins in
+                # the trajectory log, not in this line.
+                what = "dqn" if args.dqn else "qtable"
+                print(f"{what}: {qstats['hit']}/{looked} combat states answered"
                       + (f" ({100 * qstats['hit'] / looked:.1f}%)" if looked else ""))
                 for kind, n in sorted(qstats["reasons"].items(), key=lambda kv: -kv[1]):
-                    print(f"   miss x{n}: {kind}")
+                    print(f"   fell back x{n}: {kind}")
 
         # One line per run. Until this existed the only record of how a run ended
         # was a line printed to a terminal that then scrolled away - awkward for

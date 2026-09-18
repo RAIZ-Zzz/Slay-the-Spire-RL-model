@@ -514,6 +514,8 @@ check("...and says so in the reason", "declined floor 6" in why, True)
 
 check("declined -> the card is no longer claimable",
       play.legal_verbs(CARD_ONLY), ["proceed"])
+# 2026-09-18: the map, not proceed. Same flip as the sequence block below.
+dtally["exit_tries"] = {}
 check("declined -> leave instead of re-claiming",
       wrapped(CARD_ONLY)[0], {"action": "proceed"})
 
@@ -525,7 +527,11 @@ check("claiming the gold passes through",
       play.with_declined_rewards(
           lambda st, g=0: (action_adapter.claim_reward(1), "gold"), dtally)(MIXED)[0],
       {"action": "claim_reward", "index": 1})
-check("claiming the declined card is vetoed", wrapped(MIXED)[0], {"action": "proceed"})
+# Reset: the check above already spent this floor's first exit try, and the
+# veto shares the counter with it on purpose - both are the same room.
+dtally["exit_tries"] = {}
+check("claiming the declined card is vetoed", wrapped(MIXED)[0],
+      {"action": "proceed"})
 
 OTHER = dict(CARD_ONLY, context={"act": 1, "floor": 7})
 check("another floor is unaffected", play.legal_verbs(OTHER), ["claim_reward"])
@@ -535,10 +541,22 @@ check("...and is claimed normally", wrapped(OTHER)[0],
 # 2026-09-17: measured, and the answer changed this branch. It used to return
 # None here so read_loop would stall loudly, on the reasoning that a room with no
 # proceed meant declining was impossible and that was worth stopping to learn.
-# It is learned: the way out is the map, not the rewards screen. `proceed` opens
-# it, `choose_map_node` only works once it is open, so both are sent in that
-# order and neither is conditional. The old assertion is gone rather than
-# relaxed - keeping a check that a wedge is "correct" would outlive the belief.
+# It is learned: the way out is the map, not the rewards screen. The old
+# assertion is gone rather than relaxed - keeping a check that a wedge is
+# "correct" would outlive the belief.
+#
+# 2026-09-18: this order was flipped to map-first for an hour and put back, and
+# the assertions are unchanged from before that. Recorded because the flip was
+# argued from a number: `proceed` looked like it worked 1 time in 499. The test
+# behind that number was "did the next logged decision differ", which `proceed`
+# is not supposed to make differ - its job is to uncover the map underneath
+# without advancing the run, so every load-bearing call scored as a failure.
+#
+# The live run settled it in three floors: with the map tried first, floors 2, 3
+# and 4 each went 跳过 → map (nothing) → proceed → map (moved), three exit polls
+# for what floors 6, 8, 12, 14 and 15 had done in two.
+#
+# Both orders pass a single-call check, which is why the sequence is asserted.
 #
 # The run that forced this sat on floor 5 sending `proceed` every poll: this
 # branch returns early, so the fallback added to `with_frozen_deck` was never
